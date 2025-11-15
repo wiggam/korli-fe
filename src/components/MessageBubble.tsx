@@ -1,5 +1,6 @@
 import type { ChatMessage } from '../types/chat';
 import { AudioPlayer } from './AudioPlayer';
+import { Languages } from 'lucide-react';
 
 interface MessageBubbleProps {
 	message: ChatMessage;
@@ -10,13 +11,9 @@ interface MessageBubbleProps {
 }
 
 const TranslationIcon = ({ active }: { active?: boolean }) => (
-	<svg
-		viewBox="0 0 24 24"
+	<Languages
 		className={`h-4 w-4 ${active ? 'text-blue-600' : 'text-slate-600'}`}
-		fill="currentColor"
-	>
-		<path d="M4 5h16v2H4zm3 4h2.5l2 5h2l2-5H18l-3.5 9h-2z" />
-	</svg>
+	/>
 );
 
 const CorrectionIcon = ({ active }: { active?: boolean }) => (
