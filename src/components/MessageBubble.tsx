@@ -109,6 +109,11 @@ const AssistantMessage = ({
 		previousUserMessage?.role === 'user' &&
 		Boolean(previousUserMessage.correction?.corrected);
 
+	// Check if AI TTS of user's message is available (even without corrections)
+	const userTTSAvailable =
+		previousUserMessage?.role === 'user' &&
+		Boolean(previousUserMessage.correction?.audioUrl);
+
 	return (
 		<div className="flex justify-start">
 			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -123,33 +128,48 @@ const AssistantMessage = ({
 					)}
 				</div>
 
-				{/* Actions row */}
-				<div className="mt-3 flex flex-wrap items-center gap-2">
-					{translationAvailable && (
-						<IconButton
-							label="Translate"
-							active={showTranslation}
-							onClick={onToggleTranslation}
-							icon={<TranslationIcon active={showTranslation} />}
-						/>
-					)}
+				{/* Actions row - with left and right sections */}
+				<div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+					{/* Left side: Translation, AI audio, and corrections button */}
+					<div className="flex flex-wrap items-center gap-2">
+						{translationAvailable && (
+							<IconButton
+								label="Translate"
+								active={showTranslation}
+								onClick={onToggleTranslation}
+								icon={<TranslationIcon active={showTranslation} />}
+							/>
+						)}
 
-					{message.audioUrl && (
-						<AudioPlayer
-							src={message.audioUrl}
-							label="Play audio"
-							tone="light"
-							size="sm"
-						/>
-					)}
+						{message.audioUrl && (
+							<AudioPlayer
+								src={message.audioUrl}
+								label="Play audio"
+								tone="light"
+								size="sm"
+							/>
+						)}
 
-					{correctionAvailable && (
-						<IconButton
-							label="Show corrections"
-							active={showCorrection}
-							onClick={onToggleCorrection}
-							icon={<CorrectionIcon active={showCorrection} />}
-						/>
+						{correctionAvailable && (
+							<IconButton
+								label="Show corrections"
+								active={showCorrection}
+								onClick={onToggleCorrection}
+								icon={<CorrectionIcon active={showCorrection} />}
+							/>
+						)}
+					</div>
+
+					{/* Right side: User's corrected audio playback (AI TTS of user's message) */}
+					{userTTSAvailable && (
+						<div className="ml-auto">
+							<AudioPlayer
+								src={previousUserMessage.correction?.audioUrl}
+								label="Play your message"
+								tone="light"
+								size="sm"
+							/>
+						</div>
 					)}
 				</div>
 
