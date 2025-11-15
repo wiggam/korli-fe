@@ -103,7 +103,7 @@ export const AudioPlayer = ({
   const toneClasses =
     tone === 'dark'
       ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 focus-visible:ring-white/30'
-      : 'bg-korli-dark/10 text-korli-dark border border-korli-border hover:bg-white focus-visible:ring-korli-border';
+      : 'bg-white text-slate-700 hover:bg-gray-100 focus-visible:ring-gray-300';
 
   return (
     <button

@@ -31,16 +31,16 @@ export const ChatWindow = ({
   }, [messages]);
 
   return (
-    <section className="flex flex-col rounded-3xl border border-white/10 bg-[#0d111b] p-4 shadow-2xl">
+    <section className="flex flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-lg">
       <div
         ref={scrollRef}
-        className="relative h-[420px] w-full overflow-y-auto rounded-2xl bg-gradient-to-b from-[#111627] to-[#090d18] p-4 sm:h-[520px]"
+        className="relative h-[420px] w-full overflow-y-auto rounded-2xl bg-white p-4 sm:h-[520px]"
       >
         {messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 text-center text-white/60">
+          <div className="flex h-full flex-col items-center justify-center gap-3 text-center text-slate-500">
             <p className="text-lg font-semibold">Your tutor is ready</p>
             <p className="text-sm max-w-sm">
-              Select your languages and level, then press <span className="text-white">Start</span> to
+              Select your languages and level, then press <span className="text-slate-900">Start</span> to
               receive your first message.
             </p>
           </div>
@@ -88,7 +88,7 @@ export const ChatWindow = ({
       </div>
 
       {isStreaming && (
-        <div className="mt-3 flex items-center gap-2 text-sm text-white/70">
+        <div className="mt-3 flex items-center gap-2 text-sm text-slate-600">
           <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
           Waiting for the tutor to finish responding…
         </div>

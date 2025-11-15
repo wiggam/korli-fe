@@ -43,10 +43,10 @@ const IconButton = ({
 	<button
 		type="button"
 		onClick={onClick}
-		className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+		className={`inline-flex h-9 items-center gap-2 rounded-full bg-white px-3 text-xs font-medium transition ${
 			active
-				? 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
-				: 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+				? 'bg-gray-100 text-blue-700 hover:bg-gray-200'
+				: 'text-slate-700 hover:bg-gray-100'
 		}`}
 	>
 		{icon}
@@ -61,11 +61,11 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 	return (
 		<div className="flex justify-end">
 			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
-				<div className="rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 px-4 py-3 text-sm leading-relaxed text-white shadow-md sm:text-base">
+				<div className="rounded-3xl bg-blue-100 px-4 py-3 text-sm leading-relaxed text-blue-900 shadow-sm sm:text-base">
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.status === 'transcribing' && (
-						<span className="mt-2 inline-flex items-center gap-2 text-xs text-white/90">
-							<span className="h-2 w-2 animate-ping rounded-full bg-white" />
+						<span className="mt-2 inline-flex items-center gap-2 text-xs text-blue-700">
+							<span className="h-2 w-2 animate-ping rounded-full bg-blue-600" />
 							Transcribing audio…
 						</span>
 					)}
