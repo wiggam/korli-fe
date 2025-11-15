@@ -1,180 +1,240 @@
-import type { ReactNode } from 'react';
-
 import type { ChatMessage } from '../types/chat';
 import { AudioPlayer } from './AudioPlayer';
 
 interface MessageBubbleProps {
-  message: ChatMessage;
-  showTranslation?: boolean;
-  showCorrection?: boolean;
-  onToggleTranslation?: () => void;
-  onToggleCorrection?: () => void;
+	message: ChatMessage;
+	showTranslation?: boolean;
+	showCorrection?: boolean;
+	onToggleTranslation?: () => void;
+	onToggleCorrection?: () => void;
 }
 
 const TranslationIcon = ({ active }: { active?: boolean }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={`h-4 w-4 ${active ? 'text-blue-500' : 'text-white/70'}`}
-    fill="currentColor"
-  >
-    <path d="M4 5h16v2H4zm3 4h2.5l2 5h2l2-5H18l-3.5 9h-2z" />
-  </svg>
+	<svg
+		viewBox="0 0 24 24"
+		className={`h-4 w-4 ${active ? 'text-blue-600' : 'text-slate-600'}`}
+		fill="currentColor"
+	>
+		<path d="M4 5h16v2H4zm3 4h2.5l2 5h2l2-5H18l-3.5 9h-2z" />
+	</svg>
 );
 
 const CorrectionIcon = ({ active }: { active?: boolean }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={`h-4 w-4 ${active ? 'text-amber-400' : 'text-white/70'}`}
-    fill="currentColor"
-  >
-    <path d="M12 2 3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6z" />
-  </svg>
+	<svg
+		viewBox="0 0 24 24"
+		className={`h-4 w-4 ${active ? 'text-amber-600' : 'text-slate-600'}`}
+		fill="currentColor"
+	>
+		<path d="M12 2 3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6z" />
+	</svg>
 );
 
 const IconButton = ({
-  label,
-  active,
-  onClick,
-  icon,
+	label,
+	active,
+	onClick,
+	icon,
 }: {
-  label: string;
-  active?: boolean;
-  icon: ReactNode;
-  onClick?: () => void;
+	label: string;
+	active?: boolean;
+	icon: React.ReactNode;
+	onClick?: () => void;
 }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium transition ${
-      active
-        ? 'border-blue-400 bg-blue-500/10 text-blue-100'
-        : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/10'
-    }`}
-  >
-    {icon}
-    {label}
-  </button>
+	<button
+		type="button"
+		onClick={onClick}
+		className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+			active
+				? 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
+				: 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+		}`}
+	>
+		{icon}
+		{label}
+	</button>
 );
 
-export const MessageBubble = ({
-  message,
-  showTranslation,
-  showCorrection,
-  onToggleTranslation,
-  onToggleCorrection,
-}: MessageBubbleProps) => {
-  const isAssistant = message.role === 'ai';
-  const bubbleColor = isAssistant
-    ? 'bg-korli-ai text-slate-900'
-    : 'bg-gradient-to-br from-blue-500 to-blue-600 text-white';
-  const metaAlign = isAssistant ? 'justify-start' : 'justify-end';
+// User Message Component - Right-aligned bubble (iMessage style)
+const UserMessage = ({ message }: { message: ChatMessage }) => {
+	if (message.role !== 'user') return null;
 
-  const translationAvailable = isAssistant && Boolean(message.translation);
-  const correctionAvailable = !isAssistant && Boolean(message.correction?.corrected);
-  const playbackAvailable = !isAssistant && Boolean(message.correction?.audioUrl);
+	return (
+		<div className="flex justify-end">
+			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
+				<div className="rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 px-4 py-3 text-sm leading-relaxed text-white shadow-md sm:text-base">
+					<p className="whitespace-pre-wrap">{message.content}</p>
+					{message.status === 'transcribing' && (
+						<span className="mt-2 inline-flex items-center gap-2 text-xs text-white/90">
+							<span className="h-2 w-2 animate-ping rounded-full bg-white" />
+							Transcribing audio…
+						</span>
+					)}
+				</div>
 
-  return (
-    <div className={`flex ${isAssistant ? 'justify-start' : 'justify-end'}`}>
-      <div className="relative flex w-full max-w-[85%] flex-col gap-2 sm:max-w-[70%]">
-        {showTranslation && isAssistant && message.translation && (
-          <div className="absolute -top-24 left-0 z-20 w-64 rounded-3xl border border-white/40 bg-white/95 p-4 text-sm text-slate-900 shadow-xl sm:w-80">
-            <p className="font-semibold uppercase text-slate-500">Translation</p>
-            <p className="mt-1 whitespace-pre-wrap leading-relaxed">{message.translation}</p>
-          </div>
-        )}
-
-        {showCorrection && !isAssistant && message.correction && (
-          <div className="absolute -top-28 right-0 z-20 w-64 rounded-3xl border border-amber-200 bg-korli-ai/90 p-4 text-sm text-slate-900 shadow-xl sm:w-80">
-            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-amber-600">
-              <span>Correction</span>
-              <span>AI Tutor</span>
-            </div>
-            {message.correction.correctedMessage && (
-              <p className="mt-2 font-medium whitespace-pre-wrap">
-                {message.correction.correctedMessage}
-              </p>
-            )}
-            {message.correction.translation && (
-              <p className="mt-1 text-slate-600 whitespace-pre-wrap">
-                {message.correction.translation}
-              </p>
-            )}
-            {message.correction.audioUrl && (
-              <div className="mt-3">
-                <AudioPlayer
-                  src={message.correction.audioUrl}
-                  label="Correction audio"
-                  tone="dark"
-                  size="sm"
-                />
-              </div>
-            )}
-          </div>
-        )}
-
-        {!isAssistant && message.userAudio?.localUrl && (
-          <div className="flex justify-end">
-            <AudioPlayer
-              src={message.userAudio.localUrl}
-              label="Your recording"
-              tone="light"
-              size="sm"
-            />
-          </div>
-        )}
-
-        <div
-          className={`rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-lg sm:text-base ${bubbleColor}`}
-        >
-          <p className="whitespace-pre-wrap">{message.content}</p>
-          {message.role === 'ai' && message.isStreaming && (
-            <span className="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-slate-500" />
-              AI tutor is responding…
-            </span>
-          )}
-          {message.role === 'user' && message.status === 'transcribing' && (
-            <span className="mt-2 inline-flex items-center gap-2 text-xs text-white/80">
-              <span className="h-2 w-2 animate-ping rounded-full bg-white" />
-              Transcribing audio…
-            </span>
-          )}
-        </div>
-
-        <div className={`flex flex-wrap gap-2 text-xs ${metaAlign}`}>
-          {translationAvailable && (
-            <IconButton
-              label="Translation"
-              active={showTranslation}
-              onClick={onToggleTranslation}
-              icon={<TranslationIcon active={showTranslation} />}
-            />
-          )}
-
-          {isAssistant && message.audioUrl && (
-            <AudioPlayer src={message.audioUrl} label="Play audio" tone="dark" size="sm" />
-          )}
-
-          {!isAssistant && correctionAvailable && (
-            <IconButton
-              label="See correction"
-              active={showCorrection}
-              onClick={onToggleCorrection}
-              icon={<CorrectionIcon active={showCorrection} />}
-            />
-          )}
-
-          {!isAssistant && playbackAvailable && (
-            <AudioPlayer
-              src={message.correction?.audioUrl}
-              label="AI playback"
-              tone="light"
-              size="sm"
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
+				{message.userAudio?.localUrl && (
+					<AudioPlayer
+						src={message.userAudio.localUrl}
+						label="Play original recording"
+						tone="light"
+						size="sm"
+					/>
+				)}
+			</div>
+		</div>
+	);
 };
 
+// AI Message Component - Full-width ChatGPT-style card
+const AssistantMessage = ({
+	message,
+	showTranslation,
+	onToggleTranslation,
+	previousUserMessage,
+	showCorrection,
+	onToggleCorrection,
+}: {
+	message: ChatMessage;
+	showTranslation?: boolean;
+	onToggleTranslation?: () => void;
+	previousUserMessage?: ChatMessage;
+	showCorrection?: boolean;
+	onToggleCorrection?: () => void;
+}) => {
+	if (message.role !== 'ai') return null;
+
+	const translationAvailable = Boolean(message.translation);
+
+	// Check if previous user message has corrections
+	const correctionAvailable =
+		previousUserMessage?.role === 'user' &&
+		Boolean(previousUserMessage.correction?.corrected);
+
+	return (
+		<div className="flex justify-start">
+			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+				{/* Main AI text */}
+				<div className="text-sm leading-relaxed text-slate-900 sm:text-base">
+					<p className="whitespace-pre-wrap">{message.content}</p>
+					{message.isStreaming && (
+						<span className="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+							<span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
+							AI tutor is responding…
+						</span>
+					)}
+				</div>
+
+				{/* Actions row */}
+				<div className="mt-3 flex flex-wrap items-center gap-2">
+					{translationAvailable && (
+						<IconButton
+							label="Translate"
+							active={showTranslation}
+							onClick={onToggleTranslation}
+							icon={<TranslationIcon active={showTranslation} />}
+						/>
+					)}
+
+					{message.audioUrl && (
+						<AudioPlayer
+							src={message.audioUrl}
+							label="Play audio"
+							tone="light"
+							size="sm"
+						/>
+					)}
+
+					{correctionAvailable && (
+						<IconButton
+							label="Show corrections"
+							active={showCorrection}
+							onClick={onToggleCorrection}
+							icon={<CorrectionIcon active={showCorrection} />}
+						/>
+					)}
+				</div>
+
+				{/* Translation section (inline) */}
+				{showTranslation && message.translation && (
+					<div className="mt-3 rounded-lg border border-blue-200 bg-blue-50 p-3">
+						<p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+							Translation
+						</p>
+						<p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
+							{message.translation}
+						</p>
+					</div>
+				)}
+
+				{/* Corrections section (inline) - showing corrections from previous user message */}
+				{showCorrection &&
+					previousUserMessage?.role === 'user' &&
+					previousUserMessage.correction && (
+						<div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+							<div className="flex items-center justify-between">
+								<p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+									Corrections
+								</p>
+								<span className="text-xs text-amber-600">AI Tutor</span>
+							</div>
+
+							{previousUserMessage.correction.correctedMessage && (
+								<div className="mt-2">
+									<p className="text-xs font-medium text-slate-600">
+										Corrected version:
+									</p>
+									<p className="mt-1 whitespace-pre-wrap text-sm font-medium leading-relaxed text-slate-900">
+										{previousUserMessage.correction.correctedMessage}
+									</p>
+								</div>
+							)}
+
+							{previousUserMessage.correction.translation && (
+								<p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
+									{previousUserMessage.correction.translation}
+								</p>
+							)}
+
+							{previousUserMessage.correction.audioUrl && (
+								<div className="mt-3">
+									<AudioPlayer
+										src={previousUserMessage.correction.audioUrl}
+										label="Play corrected audio"
+										tone="light"
+										size="sm"
+									/>
+								</div>
+							)}
+						</div>
+					)}
+			</div>
+		</div>
+	);
+};
+
+interface MessageBubbleExtendedProps extends MessageBubbleProps {
+	previousUserMessage?: ChatMessage;
+}
+
+export const MessageBubble = ({
+	message,
+	showTranslation,
+	showCorrection,
+	onToggleTranslation,
+	onToggleCorrection,
+	previousUserMessage,
+}: MessageBubbleExtendedProps) => {
+	if (message.role === 'user') {
+		return <UserMessage message={message} />;
+	}
+
+	return (
+		<AssistantMessage
+			message={message}
+			showTranslation={showTranslation}
+			showCorrection={showCorrection}
+			onToggleTranslation={onToggleTranslation}
+			onToggleCorrection={onToggleCorrection}
+			previousUserMessage={previousUserMessage}
+		/>
+	);
+};

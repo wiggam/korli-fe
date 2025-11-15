@@ -46,28 +46,43 @@ export const ChatWindow = ({
           </div>
         ) : (
           <div className="flex flex-col gap-6">
-            {messages.map((message) => (
-              <MessageBubble
-                key={message.id}
-                message={message}
-                showTranslation={
-                  activeOverlay?.messageId === message.id && activeOverlay.type === 'translation'
+            {messages.map((message, index) => {
+              // For AI messages, find the previous user message to check for corrections
+              let previousUserMessage: ChatMessage | undefined;
+              if (message.role === 'ai' && index > 0) {
+                // Look backwards to find the most recent user message
+                for (let i = index - 1; i >= 0; i--) {
+                  if (messages[i].role === 'user') {
+                    previousUserMessage = messages[i];
+                    break;
+                  }
                 }
-                showCorrection={
-                  activeOverlay?.messageId === message.id && activeOverlay.type === 'correction'
-                }
-                onToggleTranslation={
-                  message.role === 'ai'
-                    ? () => onToggleOverlay(message.id, 'translation')
-                    : undefined
-                }
-                onToggleCorrection={
-                  message.role === 'user'
-                    ? () => onToggleOverlay(message.id, 'correction')
-                    : undefined
-                }
-              />
-            ))}
+              }
+
+              return (
+                <MessageBubble
+                  key={message.id}
+                  message={message}
+                  previousUserMessage={previousUserMessage}
+                  showTranslation={
+                    activeOverlay?.messageId === message.id && activeOverlay.type === 'translation'
+                  }
+                  showCorrection={
+                    activeOverlay?.messageId === message.id && activeOverlay.type === 'correction'
+                  }
+                  onToggleTranslation={
+                    message.role === 'ai'
+                      ? () => onToggleOverlay(message.id, 'translation')
+                      : undefined
+                  }
+                  onToggleCorrection={
+                    message.role === 'ai'
+                      ? () => onToggleOverlay(message.id, 'correction')
+                      : undefined
+                  }
+                />
+              );
+            })}
           </div>
         )}
       </div>
