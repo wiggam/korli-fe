@@ -30,7 +30,6 @@ function App() {
     sendTextMessage,
     sendAudioMessage,
     toggleOverlay,
-    resetChat,
     clearError,
   } = useChat();
 
@@ -53,125 +52,13 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-korli-dark px-4 py-6 text-white">
+    <div className="min-h-screen bg-slate-50 px-4 py-6">
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-        <header className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#141b32] via-[#10162a] to-[#0b0f1f] p-6 shadow-2xl">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-blue-300">Korli Tutor</p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-                AI language coach
-              </h1>
-              <p className="mt-2 text-sm text-white/70">
-                Configure your target language, level, and genders to start practicing instantly.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white/70">
-              <p className="font-semibold uppercase tracking-wide text-white">
-                Session status
-              </p>
-              <p className="mt-1 text-base text-emerald-300">
-                {hasSession ? 'Live tutoring' : 'Awaiting configuration'}
-              </p>
-            </div>
-          </div>
-
-          <form onSubmit={handleStart} className="mt-6 grid gap-4 md:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm">
-              <span className="font-semibold text-white/80">Native language</span>
-              <select
-                value={form.nativeLanguage}
-                onChange={handleField('nativeLanguage')}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-              >
-                {sortedLanguages.map((language) => (
-                  <option className="text-black" key={language} value={language}>
-                    {language}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm">
-              <span className="font-semibold text-white/80">Foreign language</span>
-              <select
-                value={form.foreignLanguage}
-                onChange={handleField('foreignLanguage')}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-              >
-                {sortedLanguages.map((language) => (
-                  <option className="text-black" key={language} value={language}>
-                    {language}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm">
-              <span className="font-semibold text-white/80">Student level</span>
-              <select
-                value={form.studentLevel}
-                onChange={handleField('studentLevel')}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-              >
-                {LEVELS.map((level) => (
-                  <option className="text-black" key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <label className="flex flex-col gap-2">
-                <span className="font-semibold text-white/80">Tutor gender</span>
-                <select
-                  value={form.tutorGender}
-                  onChange={handleField('tutorGender')}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-                >
-                  {GENDERS.map((gender) => (
-                    <option key={gender} value={gender} className="text-black capitalize">
-                      {gender}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-2">
-                <span className="font-semibold text-white/80">Student gender</span>
-                <select
-                  value={form.studentGender}
-                  onChange={handleField('studentGender')}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-                >
-                  {GENDERS.map((gender) => (
-                    <option key={gender} value={gender} className="text-black capitalize">
-                      {gender}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <div className="flex flex-col gap-3 md:col-span-2 md:flex-row md:items-center md:justify-end">
-              <button
-                type="submit"
-                disabled={isStarting}
-                className="inline-flex items-center justify-center rounded-2xl bg-blue-500 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isStarting ? 'Starting…' : hasSession ? 'Restart session' : 'Start session'}
-              </button>
-              {hasSession && (
-                <button
-                  type="button"
-                  onClick={resetChat}
-                  className="rounded-2xl border border-white/15 px-6 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10"
-                >
-                  Reset chat
-                </button>
-              )}
-            </div>
-          </form>
+        <header className="text-center">
+          <p className="text-xs uppercase tracking-[0.35em] text-blue-600">Korli Tutor</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+            AI Language Coach
+          </h1>
         </header>
 
         {error && (
@@ -187,21 +74,31 @@ function App() {
           </div>
         )}
 
-        {/* Unified chat area - messages and input in one container */}
+        {/* Unified chat area - configuration, messages, and input */}
         <section className="flex flex-col rounded-3xl border border-slate-200 bg-white shadow-lg">
           <ChatWindow
             messages={messages}
             activeOverlay={activeOverlay}
             onToggleOverlay={toggleOverlay}
             isStreaming={isStreaming}
+            config={form}
+            languages={sortedLanguages}
+            levels={LEVELS}
+            genders={GENDERS}
+            onConfigChange={handleField}
+            onStartSession={handleStart}
+            hasSession={hasSession}
+            isStarting={isStarting}
           />
           
-          <InputBar
-            disabled={!hasSession || isStreaming}
-            hasSession={hasSession}
-            onSendText={sendTextMessage}
-            onSendAudio={sendAudioMessage}
-          />
+          {hasSession && (
+            <InputBar
+              disabled={!hasSession || isStreaming}
+              hasSession={hasSession}
+              onSendText={sendTextMessage}
+              onSendAudio={sendAudioMessage}
+            />
+          )}
         </section>
       </main>
     </div>
