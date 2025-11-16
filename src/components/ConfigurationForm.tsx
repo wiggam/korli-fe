@@ -9,6 +9,7 @@ interface ConfigurationFormProps {
 	genders: GenderOption[];
 	onChange: (field: keyof ChatConfig) => (event: ChangeEvent<HTMLSelectElement>) => void;
 	onSubmit: (event: FormEvent) => void;
+	onReset?: () => void;
 	hasSession: boolean;
 	isStarting: boolean;
 }
@@ -20,103 +21,47 @@ export const ConfigurationForm = ({
 	genders,
 	onChange,
 	onSubmit,
+	onReset,
 	hasSession,
 	isStarting,
 }: ConfigurationFormProps) => {
 	if (hasSession) {
-		// Compact mode - horizontal layout above chat
+		// Text display mode - show current config as text with restart button
 		return (
-			<form onSubmit={onSubmit} className="border-b border-slate-200 p-4">
-				<div className="flex flex-wrap items-end gap-3">
-					<div className="flex flex-col gap-1">
-						<label className="text-xs font-medium text-slate-600">Foreign</label>
-						<select
-							value={config.foreignLanguage}
-							onChange={onChange('foreignLanguage')}
-							className="h-9 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-							size={1}
-						>
-							{languages.map((language) => (
-								<option key={language} value={language}>
-									{language}
-								</option>
-							))}
-						</select>
+			<div className="border-b border-slate-200 p-4">
+				<div className="flex items-center justify-between">
+					<div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+						<span>
+							<span className="font-medium text-slate-900">{config.foreignLanguage}</span> →{' '}
+							{config.nativeLanguage}
+						</span>
+						<span className="text-slate-400">•</span>
+						<span>
+							Level: <span className="font-medium text-slate-900">{config.studentLevel}</span>
+						</span>
+						<span className="text-slate-400">•</span>
+						<span>
+							Tutor:{' '}
+							<span className="font-medium text-slate-900 capitalize">{config.tutorGender}</span>
+						</span>
+						<span className="text-slate-400">•</span>
+						<span>
+							Student:{' '}
+							<span className="font-medium text-slate-900 capitalize">
+								{config.studentGender}
+							</span>
+						</span>
 					</div>
 
-					<div className="flex flex-col gap-1">
-						<label className="text-xs font-medium text-slate-600">Native</label>
-						<select
-							value={config.nativeLanguage}
-							onChange={onChange('nativeLanguage')}
-							className="h-9 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-							size={1}
-						>
-							{languages.map((language) => (
-								<option key={language} value={language}>
-									{language}
-								</option>
-							))}
-						</select>
-					</div>
-
-					<div className="flex flex-col gap-1">
-						<label className="text-xs font-medium text-slate-600">Level</label>
-						<select
-							value={config.studentLevel}
-							onChange={onChange('studentLevel')}
-							className="h-9 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-							size={1}
-						>
-							{levels.map((level) => (
-								<option key={level} value={level}>
-									{level}
-								</option>
-							))}
-						</select>
-					</div>
-
-					<div className="flex flex-col gap-1">
-						<label className="text-xs font-medium text-slate-600">Tutor</label>
-						<select
-							value={config.tutorGender}
-							onChange={onChange('tutorGender')}
-							className="h-9 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-900 capitalize focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-							size={1}
-						>
-							{genders.map((gender) => (
-								<option key={gender} value={gender} className="capitalize">
-									{gender}
-								</option>
-							))}
-						</select>
-					</div>
-
-					<div className="flex flex-col gap-1">
-						<label className="text-xs font-medium text-slate-600">Student</label>
-						<select
-							value={config.studentGender}
-							onChange={onChange('studentGender')}
-							className="h-9 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-900 capitalize focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-							size={1}
-						>
-							{genders.map((gender) => (
-								<option key={gender} value={gender} className="capitalize">
-									{gender}
-								</option>
-							))}
-						</select>
-					</div>
-
-					<button
-						type="submit"
-						disabled={isStarting}
-						className="h-9 rounded-full bg-blue-500 px-6 text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
-					>
-						{isStarting ? 'Restarting…' : 'Restart'}
-					</button>
+				<button
+					type="button"
+					onClick={onReset}
+					className="h-9 rounded-full bg-slate-100 px-6 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"
+				>
+					Restart
+				</button>
 				</div>
-			</form>
+			</div>
 		);
 	}
 

@@ -22,6 +22,7 @@ interface ChatWindowProps {
 	genders: GenderOption[];
 	onConfigChange: (field: keyof ChatConfig) => (event: ChangeEvent<HTMLSelectElement>) => void;
 	onStartSession: (event: FormEvent) => void;
+	onReset: () => void;
 	hasSession: boolean;
 	isStarting: boolean;
 }
@@ -37,6 +38,7 @@ export const ChatWindow = ({
 	genders,
 	onConfigChange,
 	onStartSession,
+	onReset,
 	hasSession,
 	isStarting,
 }: ChatWindowProps) => {
@@ -82,6 +84,7 @@ export const ChatWindow = ({
 					genders={genders}
 					onChange={onConfigChange}
 					onSubmit={onStartSession}
+					onReset={onReset}
 					hasSession={hasSession}
 					isStarting={isStarting}
 				/>
@@ -94,6 +97,7 @@ export const ChatWindow = ({
 						genders={genders}
 						onChange={onConfigChange}
 						onSubmit={onStartSession}
+						onReset={onReset}
 						hasSession={hasSession}
 						isStarting={isStarting}
 					/>
