@@ -70,3 +70,19 @@ export interface StartTextChatResponse {
   };
 }
 
+export interface ContinueTextChatPayload {
+  threadId: string;
+  message: string;
+  foreignLanguage: string;
+  tutorGender?: GenderOption;
+  studentGender?: GenderOption;
+}
+
+export interface VoiceChatPayload {
+  threadId: string;
+  audioFile: Blob;
+  foreignLanguage: string;
+  tutorGender?: GenderOption;
+  studentGender?: GenderOption;
+}
+

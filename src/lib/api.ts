@@ -1,4 +1,4 @@
-import type { ChatConfig, SSEventPayload, StartTextChatResponse } from '../types/chat';
+import type { ChatConfig, ContinueTextChatPayload, SSEventPayload, StartTextChatResponse, VoiceChatPayload } from '../types/chat';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
 
@@ -148,38 +148,37 @@ export const startTextChat = async (config: ChatConfig): Promise<StartTextChatRe
   return (await response.json()) as StartTextChatResponse;
 };
 
-export interface ContinueTextChatPayload {
-  threadId: string;
-  message: string;
-  foreignLanguage: string;
-}
-
 export const continueTextChatSSE = (
   payload: ContinueTextChatPayload,
   callbacks: SSECallbacks,
-) =>
-  startSSE(
+) => {
+  const body: Record<string, unknown> = {
+    thread_id: payload.threadId,
+    message: payload.message,
+    stream: true,
+    foreign_language: payload.foreignLanguage,
+  };
+
+  // Only include gender if provided
+  if (payload.tutorGender !== undefined) {
+    body.tutor_gender = payload.tutorGender;
+  }
+  if (payload.studentGender !== undefined) {
+    body.student_gender = payload.studentGender;
+  }
+
+  return startSSE(
     toUrl('/api/chat/text'),
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: buildJsonBody({
-        thread_id: payload.threadId,
-        message: payload.message,
-        stream: true,
-        foreign_language: payload.foreignLanguage,
-      }),
+      body: buildJsonBody(body),
     },
     callbacks,
   );
-
-export interface VoiceChatPayload {
-  threadId: string;
-  audioFile: Blob;
-  foreignLanguage: string;
-}
+};
 
 export const voiceChatSSE = (payload: VoiceChatPayload, callbacks: SSECallbacks) => {
   const formData = new FormData();
@@ -187,6 +186,14 @@ export const voiceChatSSE = (payload: VoiceChatPayload, callbacks: SSECallbacks)
   formData.append('foreign_language', payload.foreignLanguage);
   formData.append('stream', 'true');
   formData.append('audio_file', payload.audioFile, 'message.webm');
+
+  // Only include gender if provided
+  if (payload.tutorGender !== undefined) {
+    formData.append('tutor_gender', payload.tutorGender);
+  }
+  if (payload.studentGender !== undefined) {
+    formData.append('student_gender', payload.studentGender);
+  }
 
   return startSSE(
     toUrl('/api/chat/voice'),

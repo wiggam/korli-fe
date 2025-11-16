@@ -1,13 +1,13 @@
 import { type FormEvent, useMemo, useState } from 'react';
 
 import { ChatWindow } from './components/ChatWindow';
+import { GenderSettings } from './components/GenderSettings';
 import { InputBar } from './components/InputBar';
 import { LANGUAGES } from './constants/languages';
 import { useChat } from './hooks/useChat';
 import type { ChatConfig, GenderOption, StudentLevel } from './types/chat';
 
 const LEVELS: StudentLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-const GENDERS: GenderOption[] = ['female', 'male'];
 
 const initialConfig: ChatConfig = {
 	nativeLanguage: 'English',
@@ -19,6 +19,11 @@ const initialConfig: ChatConfig = {
 
 function App() {
 	const [form, setForm] = useState<ChatConfig>(initialConfig);
+	const [tutorGender, setTutorGender] = useState<GenderOption>('female');
+	const [studentGender, setStudentGender] = useState<GenderOption>('female');
+	const [genderChanged, setGenderChanged] = useState(false);
+	const [showGenderSettings, setShowGenderSettings] = useState(false);
+	
 	const {
 		threadId,
 		messages,
@@ -46,9 +51,52 @@ function App() {
 		event.preventDefault();
 
 		try {
-			await startConversation(form);
+			// Always use female/female for initial conversation
+			await startConversation({
+				...form,
+				tutorGender: 'female',
+				studentGender: 'female',
+			});
+			setTutorGender('female');
+			setStudentGender('female');
+			setGenderChanged(false);
 		} catch {
 			// error handled within the hook
+		}
+	};
+
+	const handleApplyGenderSettings = (newTutorGender: GenderOption, newStudentGender: GenderOption) => {
+		const changed = newTutorGender !== tutorGender || newStudentGender !== studentGender;
+		setTutorGender(newTutorGender);
+		setStudentGender(newStudentGender);
+		if (changed) {
+			setGenderChanged(true);
+		}
+	};
+
+	const handleOpenGenderSettings = () => {
+		setShowGenderSettings(true);
+	};
+
+	const handleCloseGenderSettings = () => {
+		setShowGenderSettings(false);
+	};
+
+	const handleSendText = async (message: string) => {
+		if (genderChanged) {
+			await sendTextMessage(message, tutorGender, studentGender);
+			setGenderChanged(false);
+		} else {
+			await sendTextMessage(message);
+		}
+	};
+
+	const handleSendAudio = async (audioFile: Blob) => {
+		if (genderChanged) {
+			await sendAudioMessage(audioFile, tutorGender, studentGender);
+			setGenderChanged(false);
+		} else {
+			await sendAudioMessage(audioFile);
 		}
 	};
 
@@ -87,7 +135,6 @@ function App() {
 						config={form}
 						languages={sortedLanguages}
 						levels={LEVELS}
-						genders={GENDERS}
 						onConfigChange={handleField}
 						onStartSession={handleStart}
 						onReset={resetChat}
@@ -99,11 +146,22 @@ function App() {
 						<InputBar
 							disabled={!hasSession || isStreaming}
 							hasSession={hasSession}
-							onSendText={sendTextMessage}
-							onSendAudio={sendAudioMessage}
+							onSendText={handleSendText}
+							onSendAudio={handleSendAudio}
+							onOpenGenderSettings={handleOpenGenderSettings}
 						/>
 					)}
 				</section>
+
+				{/* Gender Settings Modal */}
+				{showGenderSettings && (
+					<GenderSettings
+						tutorGender={tutorGender}
+						studentGender={studentGender}
+						onApply={handleApplyGenderSettings}
+						onClose={handleCloseGenderSettings}
+					/>
+				)}
 			</main>
 		</div>
 	);

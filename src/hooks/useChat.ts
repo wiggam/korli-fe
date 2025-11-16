@@ -5,6 +5,7 @@ import type {
   AIMessage,
   ChatConfig,
   ChatMessage,
+  GenderOption,
   OverlayState,
   OverlayType,
   SSEventPayload,
@@ -365,7 +366,7 @@ export const useChat = () => {
   );
 
   const sendTextMessage = useCallback(
-    async (rawMessage: string) => {
+    async (rawMessage: string, tutorGender?: GenderOption, studentGender?: GenderOption) => {
       if (!threadId || !config) {
         throw new Error('Start the session before sending a message.');
       }
@@ -396,6 +397,8 @@ export const useChat = () => {
           threadId,
           message,
           foreignLanguage: config.foreignLanguage,
+          tutorGender,
+          studentGender,
         },
         {
           onEvent: handleStreamEvent,
@@ -408,7 +411,7 @@ export const useChat = () => {
   );
 
   const sendAudioMessage = useCallback(
-    async (audioFile: Blob) => {
+    async (audioFile: Blob, tutorGender?: GenderOption, studentGender?: GenderOption) => {
       if (!threadId || !config) {
         throw new Error('Start the session before sending audio.');
       }
@@ -444,6 +447,8 @@ export const useChat = () => {
           threadId,
           audioFile,
           foreignLanguage: config.foreignLanguage,
+          tutorGender,
+          studentGender,
         },
         {
           onEvent: handleStreamEvent,

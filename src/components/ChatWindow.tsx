@@ -3,7 +3,6 @@ import { type ChangeEvent, type FormEvent, useEffect, useRef } from 'react';
 import type {
 	ChatConfig,
 	ChatMessage,
-	GenderOption,
 	OverlayState,
 	OverlayType,
 	StudentLevel,
@@ -19,7 +18,6 @@ interface ChatWindowProps {
 	config: ChatConfig;
 	languages: string[];
 	levels: StudentLevel[];
-	genders: GenderOption[];
 	onConfigChange: (field: keyof ChatConfig) => (event: ChangeEvent<HTMLSelectElement>) => void;
 	onStartSession: (event: FormEvent) => void;
 	onReset: () => void;
@@ -35,7 +33,6 @@ export const ChatWindow = ({
 	config,
 	languages,
 	levels,
-	genders,
 	onConfigChange,
 	onStartSession,
 	onReset,
@@ -81,7 +78,6 @@ export const ChatWindow = ({
 					config={config}
 					languages={languages}
 					levels={levels}
-					genders={genders}
 					onChange={onConfigChange}
 					onSubmit={onStartSession}
 					onReset={onReset}
@@ -94,7 +90,6 @@ export const ChatWindow = ({
 						config={config}
 						languages={languages}
 						levels={levels}
-						genders={genders}
 						onChange={onConfigChange}
 						onSubmit={onStartSession}
 						onReset={onReset}

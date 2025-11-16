@@ -1,13 +1,12 @@
 import type { FormEvent } from 'react';
 
 import { Dropdown } from './Dropdown';
-import type { ChatConfig, GenderOption, StudentLevel } from '../types/chat';
+import type { ChatConfig, StudentLevel } from '../types/chat';
 
 interface ConfigurationFormProps {
 	config: ChatConfig;
 	languages: string[];
 	levels: StudentLevel[];
-	genders: GenderOption[];
 	onChange: (field: keyof ChatConfig) => (value: string) => void;
 	onSubmit: (event: FormEvent) => void;
 	onReset?: () => void;
@@ -19,7 +18,6 @@ export const ConfigurationForm = ({
 	config,
 	languages,
 	levels,
-	genders,
 	onChange,
 	onSubmit,
 	onReset,
@@ -39,18 +37,6 @@ export const ConfigurationForm = ({
 						<span className="text-slate-400">•</span>
 						<span>
 							Level: <span className="font-medium text-slate-900">{config.studentLevel}</span>
-						</span>
-						<span className="text-slate-400">•</span>
-						<span>
-							Tutor:{' '}
-							<span className="font-medium text-slate-900 capitalize">{config.tutorGender}</span>
-						</span>
-						<span className="text-slate-400">•</span>
-						<span>
-							Student:{' '}
-							<span className="font-medium text-slate-900 capitalize">
-								{config.studentGender}
-							</span>
 						</span>
 					</div>
 
@@ -80,7 +66,7 @@ export const ConfigurationForm = ({
 				</div>
 
 				<div className="space-y-4">
-					{/* Row 1: Foreign, Native, Level */}
+					{/* Row: Foreign, Native, Level */}
 					<div className="grid gap-4 sm:grid-cols-3">
 					<div className="flex flex-col gap-2">
 						<label className="text-sm font-medium text-slate-700">
@@ -115,33 +101,6 @@ export const ConfigurationForm = ({
 							options={levels}
 							onChange={onChange('studentLevel')}
 							searchable={false}
-						/>
-					</div>
-					</div>
-
-					{/* Row 2: Tutor and Student Gender */}
-					<div className="grid gap-4 sm:grid-cols-2">
-					<div className="flex flex-col gap-2">
-						<label className="text-sm font-medium text-slate-700">Tutor Gender</label>
-						<Dropdown
-							value={config.tutorGender}
-							options={genders}
-							onChange={onChange('tutorGender')}
-							searchable={false}
-							capitalize={true}
-						/>
-					</div>
-
-					<div className="flex flex-col gap-2">
-						<label className="text-sm font-medium text-slate-700">
-							Student Gender
-						</label>
-						<Dropdown
-							value={config.studentGender}
-							options={genders}
-							onChange={onChange('studentGender')}
-							searchable={false}
-							capitalize={true}
 						/>
 					</div>
 					</div>

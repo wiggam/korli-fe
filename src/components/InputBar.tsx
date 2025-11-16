@@ -7,6 +7,7 @@ interface InputBarProps {
 	hasSession: boolean;
 	onSendText: (message: string) => Promise<void>;
 	onSendAudio: (file: Blob) => Promise<void>;
+	onOpenGenderSettings: () => void;
 }
 
 type RecordingState = 'idle' | 'recording' | 'preview';
@@ -39,11 +40,27 @@ const SendIcon = () => (
 	</svg>
 );
 
+const GenderIcon = () => (
+	<svg
+		viewBox="0 0 24 24"
+		className="h-5 w-5 text-slate-700"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	>
+		<circle cx="9" cy="9" r="6" />
+		<path d="M9 15v6M6 18h6M19 5l-5.4 5.4M19 5h-5M19 5v5" />
+	</svg>
+);
+
 export const InputBar = ({
 	disabled,
 	hasSession,
 	onSendText,
 	onSendAudio,
+	onOpenGenderSettings,
 }: InputBarProps) => {
 	const [text, setText] = useState('');
 	const [recordingState, setRecordingState] = useState<RecordingState>('idle');
@@ -309,6 +326,19 @@ export const InputBar = ({
 				/>
 
 				<div className="flex items-center gap-1">
+					<button
+						type="button"
+						onClick={onOpenGenderSettings}
+						disabled={!hasSession}
+						className={`flex h-9 w-9 items-center justify-center rounded-full transition ${
+							hasSession
+								? 'bg-white text-slate-700 hover:bg-gray-100'
+								: 'cursor-not-allowed opacity-50'
+						}`}
+						aria-label="Gender settings"
+					>
+						<GenderIcon />
+					</button>
 					<button
 						type="button"
 						className={`flex h-9 w-9 items-center justify-center rounded-full transition ${
