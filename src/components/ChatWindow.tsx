@@ -28,7 +28,7 @@ export const ChatWindow = ({
       top: el.scrollHeight,
       behavior: 'smooth',
     });
-  }, [messages]);
+  }, [messages, activeOverlay]);
 
   return (
     <section className="flex flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-lg">

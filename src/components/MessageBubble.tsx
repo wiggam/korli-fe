@@ -149,7 +149,7 @@ const AssistantMessage = ({
 
 						{correctionAvailable && (
 							<IconButton
-								label="Show corrections"
+								label="Correction"
 								active={showCorrection}
 								onClick={onToggleCorrection}
 								icon={<CorrectionIcon active={showCorrection} />}
@@ -157,8 +157,8 @@ const AssistantMessage = ({
 						)}
 					</div>
 
-					{/* Right side: User's corrected audio playback (AI TTS of user's message) */}
-					{userTTSAvailable && (
+					{/* Right side: User's audio playback (AI TTS) - only show if no corrections */}
+					{userTTSAvailable && !correctionAvailable && (
 						<div className="ml-auto">
 							<AudioPlayer
 								src={previousUserMessage.correction?.audioUrl}
@@ -191,7 +191,7 @@ const AssistantMessage = ({
 								<p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
 									Corrections
 								</p>
-								<span className="text-xs text-amber-600">AI Tutor</span>
+								<span className="text-xs text-amber-600">Korli</span>
 							</div>
 
 							{previousUserMessage.correction.correctedMessage && (
