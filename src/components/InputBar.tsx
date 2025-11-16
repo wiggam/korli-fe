@@ -252,7 +252,7 @@ export const InputBar = ({
 	const micDisabled = disabled || recordingState === 'preview';
 
 	return (
-		<div className="space-y-3 border-t border-slate-200 p-4">
+		<div className="space-y-3 p-4">
 			{recordingState === 'preview' && previewUrl && (
 				<div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-col gap-1 text-sm text-slate-700">
