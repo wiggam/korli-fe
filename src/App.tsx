@@ -103,13 +103,12 @@ function App() {
 	return (
 		<div className="min-h-screen bg-slate-50 px-4 py-6">
 			<main className="mx-auto flex w-full max-w-5xl flex-col gap-6">
-				<header className="text-center">
-					<p className="text-xs uppercase tracking-[0.35em] text-blue-600">
-						Korli Tutor
-					</p>
-					<h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-						AI Language Coach
-					</h1>
+				<header className="flex justify-center">
+					<img 
+						src="/korli-logo.png" 
+						alt="Korli - AI Language Coach" 
+						className="h-16 w-auto sm:h-20"
+					/>
 				</header>
 
 				{error && (
