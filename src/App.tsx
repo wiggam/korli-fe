@@ -187,19 +187,22 @@ function App() {
           </div>
         )}
 
-        <ChatWindow
-          messages={messages}
-          activeOverlay={activeOverlay}
-          onToggleOverlay={toggleOverlay}
-          isStreaming={isStreaming}
-        />
-
-        <InputBar
-          disabled={!hasSession || isStreaming}
-          hasSession={hasSession}
-          onSendText={sendTextMessage}
-          onSendAudio={sendAudioMessage}
-        />
+        {/* Unified chat area - messages and input in one container */}
+        <section className="flex flex-col rounded-3xl border border-slate-200 bg-white shadow-lg">
+          <ChatWindow
+            messages={messages}
+            activeOverlay={activeOverlay}
+            onToggleOverlay={toggleOverlay}
+            isStreaming={isStreaming}
+          />
+          
+          <InputBar
+            disabled={!hasSession || isStreaming}
+            hasSession={hasSession}
+            onSendText={sendTextMessage}
+            onSendAudio={sendAudioMessage}
+          />
+        </section>
       </main>
     </div>
   );

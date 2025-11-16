@@ -16,7 +16,7 @@ const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const MicIcon = () => (
   <svg
     viewBox="0 0 24 24"
-    className="h-5 w-5 text-white"
+    className="h-5 w-5 text-slate-700"
     fill="currentColor"
   >
     <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V22h-2v-2.06A8 8 0 0 1 4 12a1 1 0 0 1 2 0 6 6 0 0 0 12 0z" />
@@ -24,7 +24,7 @@ const MicIcon = () => (
 );
 
 const StopIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4 text-white" fill="currentColor">
+  <svg viewBox="0 0 24 24" className="h-4 w-4 text-slate-700" fill="currentColor">
     <path d="M6 6h12v12H6z" />
   </svg>
 );
@@ -244,11 +244,11 @@ export const InputBar = ({
   const micDisabled = disabled || recordingState === 'preview';
 
   return (
-    <div className="mt-6 space-y-3 rounded-3xl border border-white/10 bg-[#0c101a] p-4">
+    <div className="space-y-3 border-t border-slate-200 p-4">
       {recordingState === 'preview' && previewUrl && (
-        <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-1 text-sm text-white/80">
-            <span className="font-semibold uppercase tracking-wide text-white/60">
+        <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-1 text-sm text-slate-700">
+            <span className="font-semibold uppercase tracking-wide text-slate-500">
               Audio preview
             </span>
             <AudioPlayer src={previewUrl} label="Play recording" tone="light" size="sm" />
@@ -265,7 +265,7 @@ export const InputBar = ({
             <button
               type="button"
               onClick={resetPreview}
-              className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/10"
+              className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               Delete
             </button>
@@ -273,7 +273,7 @@ export const InputBar = ({
         </div>
       )}
 
-      <div className="flex flex-col gap-2 rounded-2xl bg-[#0f1524] p-3 sm:flex-row sm:items-end">
+      <div className="flex flex-col gap-2 rounded-2xl bg-slate-50 p-3 sm:flex-row sm:items-end">
         <div className="flex-1">
           <textarea
             value={text}
@@ -286,7 +286,7 @@ export const InputBar = ({
               }
             }}
             rows={2}
-            className="w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 disabled:cursor-not-allowed disabled:opacity-50"
             placeholder={
               hasSession
                 ? recordingState === 'recording'
@@ -301,8 +301,8 @@ export const InputBar = ({
             type="button"
             className={`flex h-11 w-11 items-center justify-center rounded-full border transition ${
               recordingState === 'recording'
-                ? 'border-red-400 bg-red-500/20'
-                : 'border-white/20 bg-white/10 hover:bg-white/20'
+                ? 'border-red-400 bg-red-50'
+                : 'border-slate-300 bg-white hover:bg-slate-50'
             } ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
             onClick={recordingState === 'recording' ? stopRecording : startRecording}
             disabled={micDisabled}
@@ -322,13 +322,13 @@ export const InputBar = ({
       </div>
 
       {recordingState === 'recording' && (
-        <div className="flex items-center gap-2 text-sm text-red-400">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-red-400" />
+        <div className="flex items-center gap-2 text-sm text-red-600">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
           Recording… {formattedTimer}
         </div>
       )}
 
-      {recordingError && <p className="text-sm text-red-400">{recordingError}</p>}
+      {recordingError && <p className="text-sm text-red-600">{recordingError}</p>}
     </div>
   );
 };

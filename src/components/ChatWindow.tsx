@@ -48,7 +48,7 @@ export const ChatWindow = ({
   }, [activeOverlay]);
 
   return (
-    <section className="flex flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-lg">
+    <div className="flex flex-col p-4">
       <div
         ref={scrollRef}
         className="relative h-[420px] w-full overflow-y-auto rounded-2xl bg-white p-4 sm:h-[520px]"
@@ -110,7 +110,7 @@ export const ChatWindow = ({
           Waiting for the tutor to finish responding…
         </div>
       )}
-    </section>
+    </div>
   );
 };
 
