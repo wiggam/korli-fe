@@ -56,7 +56,7 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 	if (message.role !== 'user') return null;
 
 	return (
-		<div className="flex justify-end">
+		<div className="flex justify-end" data-message-id={message.id}>
 			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
 				<div className="rounded-3xl bg-blue-100 px-4 py-3 text-sm leading-relaxed text-blue-900 shadow-sm sm:text-base">
 					<p className="whitespace-pre-wrap">{message.content}</p>
@@ -112,7 +112,7 @@ const AssistantMessage = ({
 		Boolean(previousUserMessage.correction?.audioUrl);
 
 	return (
-		<div className="flex justify-start">
+		<div className="flex justify-start" data-message-id={message.id}>
 			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
 				{/* Main AI text */}
 				<div className="text-sm leading-relaxed text-slate-900 sm:text-base">

@@ -18,6 +18,7 @@ export const ChatWindow = ({
 }: ChatWindowProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Scroll to bottom when new messages arrive
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) {
@@ -28,7 +29,23 @@ export const ChatWindow = ({
       top: el.scrollHeight,
       behavior: 'smooth',
     });
-  }, [messages, activeOverlay]);
+  }, [messages]);
+
+  // Scroll to specific message when overlay is opened (but not when closed)
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !activeOverlay) {
+      return;
+    }
+
+    // Small delay to allow the DOM to update with the expanded content
+    setTimeout(() => {
+      const activeElement = el.querySelector(`[data-message-id="${activeOverlay.messageId}"]`);
+      if (activeElement) {
+        activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 50);
+  }, [activeOverlay]);
 
   return (
     <section className="flex flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-lg">
