@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { UserCircle2 } from 'lucide-react';
 
 import { AudioPlayer } from './AudioPlayer';
 
@@ -37,21 +38,6 @@ const StopIcon = () => (
 const SendIcon = () => (
 	<svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
 		<path d="M3.4 20.4 21 12 3.4 3.6l.05 6.9L15 12l-11.55 1.5z" />
-	</svg>
-);
-
-const GenderIcon = () => (
-	<svg
-		viewBox="0 0 24 24"
-		className="h-5 w-5 text-slate-700"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="2"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-	>
-		<circle cx="9" cy="9" r="6" />
-		<path d="M9 15v6M6 18h6M19 5l-5.4 5.4M19 5h-5M19 5v5" />
 	</svg>
 );
 
@@ -337,7 +323,7 @@ export const InputBar = ({
 						}`}
 						aria-label="Gender settings"
 					>
-						<GenderIcon />
+						<UserCircle2 className="h-5 w-5" />
 					</button>
 					<button
 						type="button"
