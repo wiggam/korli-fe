@@ -3,45 +3,45 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
-  color: #0a0d14;
-  background-color: #04070d;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system,
+		BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	color: #0a0d14;
+	background-color: #04070d;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  @apply min-h-screen bg-korli-dark text-white;
-  margin: 0;
+	@apply min-h-screen bg-korli-dark text-white;
+	margin: 0;
 }
 
 /* Limit dropdown height and style scrollbar */
 select[size='1'] {
-  max-height: 250px;
+	max-height: 250px;
 }
 
 select option {
-  padding: 8px;
+	padding: 8px;
 }
 
 /* Styled scrollbar for select dropdowns */
 select::-webkit-scrollbar {
-  width: 8px;
+	width: 8px;
 }
 
 select::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 4px;
+	background: #f1f5f9;
+	border-radius: 4px;
 }
 
 select::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+	background: #cbd5e1;
+	border-radius: 4px;
 }
 
 select::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+	background: #94a3b8;
 }

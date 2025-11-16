@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FormEvent, useMemo, useState } from 'react';
+import { type FormEvent, useMemo, useState } from 'react';
 
 import { ChatWindow } from './components/ChatWindow';
 import { InputBar } from './components/InputBar';
@@ -38,8 +38,8 @@ function App() {
 	const sortedLanguages = useMemo(() => [...LANGUAGES].sort(), []);
 
 	const handleField =
-		(field: keyof ChatConfig) => (event: ChangeEvent<HTMLSelectElement>) => {
-			setForm((prev) => ({ ...prev, [field]: event.target.value }));
+		(field: keyof ChatConfig) => (value: string) => {
+			setForm((prev) => ({ ...prev, [field]: value }));
 		};
 
 	const handleStart = async (event: FormEvent) => {

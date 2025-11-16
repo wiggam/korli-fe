@@ -1,5 +1,6 @@
-import type { ChangeEvent, FormEvent } from 'react';
+import type { FormEvent } from 'react';
 
+import { Dropdown } from './Dropdown';
 import type { ChatConfig, GenderOption, StudentLevel } from '../types/chat';
 
 interface ConfigurationFormProps {
@@ -7,7 +8,7 @@ interface ConfigurationFormProps {
 	languages: string[];
 	levels: StudentLevel[];
 	genders: GenderOption[];
-	onChange: (field: keyof ChatConfig) => (event: ChangeEvent<HTMLSelectElement>) => void;
+	onChange: (field: keyof ChatConfig) => (value: string) => void;
 	onSubmit: (event: FormEvent) => void;
 	onReset?: () => void;
 	hasSession: boolean;
@@ -81,96 +82,68 @@ export const ConfigurationForm = ({
 				<div className="space-y-4">
 					{/* Row 1: Foreign, Native, Level */}
 					<div className="grid gap-4 sm:grid-cols-3">
-						<div className="flex flex-col gap-2">
-							<label className="text-sm font-medium text-slate-700">
-								Foreign Language
-							</label>
-							<select
-								value={config.foreignLanguage}
-								onChange={onChange('foreignLanguage')}
-								className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-								size={1}
-							>
-								{languages.map((language) => (
-									<option key={language} value={language}>
-										{language}
-									</option>
-								))}
-							</select>
-						</div>
+					<div className="flex flex-col gap-2">
+						<label className="text-sm font-medium text-slate-700">
+							Foreign Language
+						</label>
+						<Dropdown
+							value={config.foreignLanguage}
+							options={languages}
+							onChange={onChange('foreignLanguage')}
+							searchable={true}
+						/>
+					</div>
 
-						<div className="flex flex-col gap-2">
-							<label className="text-sm font-medium text-slate-700">
-								Native Language
-							</label>
-							<select
-								value={config.nativeLanguage}
-								onChange={onChange('nativeLanguage')}
-								className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-								size={1}
-							>
-								{languages.map((language) => (
-									<option key={language} value={language}>
-										{language}
-									</option>
-								))}
-							</select>
-						</div>
+					<div className="flex flex-col gap-2">
+						<label className="text-sm font-medium text-slate-700">
+							Native Language
+						</label>
+						<Dropdown
+							value={config.nativeLanguage}
+							options={languages}
+							onChange={onChange('nativeLanguage')}
+							searchable={true}
+						/>
+					</div>
 
-						<div className="flex flex-col gap-2">
-							<label className="text-sm font-medium text-slate-700">
-								Student Level
-							</label>
-							<select
-								value={config.studentLevel}
-								onChange={onChange('studentLevel')}
-								className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-								size={1}
-							>
-								{levels.map((level) => (
-									<option key={level} value={level}>
-										{level}
-									</option>
-								))}
-							</select>
-						</div>
+					<div className="flex flex-col gap-2">
+						<label className="text-sm font-medium text-slate-700">
+							Student Level
+						</label>
+						<Dropdown
+							value={config.studentLevel}
+							options={levels}
+							onChange={onChange('studentLevel')}
+							searchable={false}
+						/>
+					</div>
 					</div>
 
 					{/* Row 2: Tutor and Student Gender */}
 					<div className="grid gap-4 sm:grid-cols-2">
-						<div className="flex flex-col gap-2">
-							<label className="text-sm font-medium text-slate-700">Tutor Gender</label>
-							<select
-								value={config.tutorGender}
-								onChange={onChange('tutorGender')}
-								className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 capitalize focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-								size={1}
-							>
-								{genders.map((gender) => (
-									<option key={gender} value={gender} className="capitalize">
-										{gender}
-									</option>
-								))}
-							</select>
-						</div>
+					<div className="flex flex-col gap-2">
+						<label className="text-sm font-medium text-slate-700">Tutor Gender</label>
+						<Dropdown
+							value={config.tutorGender}
+							options={genders}
+							onChange={onChange('tutorGender')}
+							searchable={false}
+							capitalize={true}
+						/>
+					</div>
 
-						<div className="flex flex-col gap-2">
-							<label className="text-sm font-medium text-slate-700">
-								Student Gender
-							</label>
-							<select
-								value={config.studentGender}
-								onChange={onChange('studentGender')}
-								className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 capitalize focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
-								size={1}
-							>
-								{genders.map((gender) => (
-									<option key={gender} value={gender} className="capitalize">
-										{gender}
-									</option>
-								))}
-							</select>
-						</div>
+					<div className="flex flex-col gap-2">
+						<label className="text-sm font-medium text-slate-700">
+							Student Gender
+						</label>
+						<Dropdown
+							value={config.studentGender}
+							options={genders}
+							onChange={onChange('studentGender')}
+							searchable={false}
+							capitalize={true}
+						/>
+					</div>
 					</div>
 				</div>
 
