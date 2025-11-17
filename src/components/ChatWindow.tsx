@@ -96,7 +96,7 @@ export const ChatWindow = ({
 						hasSession={hasSession}
 						isStarting={isStarting}
 					/>
-					<div className="flex flex-1 flex-col p-2 sm:p-3 md:p-4 min-h-0">
+					<div className="flex flex-1 flex-col px-2 sm:px-3 md:px-4 pt-2 sm:pt-3 md:pt-4 pb-1 sm:pb-1.5 md:pb-2 min-h-0">
 						<div
 							ref={scrollRef}
 							className="relative flex-1 w-full overflow-y-auto rounded-2xl bg-white p-2 sm:p-3 md:p-4"

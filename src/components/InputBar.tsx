@@ -18,7 +18,7 @@ const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const MicIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-5 w-5 text-slate-700"
+		className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700"
 		fill="currentColor"
 	>
 		<path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V22h-2v-2.06A8 8 0 0 1 4 12a1 1 0 0 1 2 0 6 6 0 0 0 12 0z" />
@@ -28,7 +28,7 @@ const MicIcon = () => (
 const StopIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-4 w-4 text-slate-700"
+		className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-700"
 		fill="currentColor"
 	>
 		<path d="M6 6h12v12H6z" />
@@ -36,7 +36,7 @@ const StopIcon = () => (
 );
 
 const SendIcon = () => (
-	<svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+	<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="currentColor">
 		<path d="M3.4 20.4 21 12 3.4 3.6l.05 6.9L15 12l-11.55 1.5z" />
 	</svg>
 );
@@ -281,7 +281,7 @@ export const InputBar = ({
 	const micDisabled = disabled || recordingState === 'preview';
 
 	return (
-		<div className="space-y-3 p-4">
+		<div className="space-y-3 px-2 sm:px-4 py-1.5 sm:py-2">
 			{recordingState === 'preview' && previewUrl && (
 				<div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-col gap-1 text-sm text-slate-700">
@@ -315,20 +315,20 @@ export const InputBar = ({
 				</div>
 			)}
 
-		<div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-3">
-			<textarea
-				ref={textareaRef}
-				value={text}
-				disabled={textDisabled}
-				onChange={handleTextChange}
-				onKeyDown={(event) => {
-					if (event.key === 'Enter' && !event.shiftKey) {
-						event.preventDefault();
-						void sendText();
-					}
-				}}
-				rows={1}
-				className="flex-1 resize-none overflow-hidden bg-transparent text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+	<div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-3">
+		<textarea
+			ref={textareaRef}
+			value={text}
+			disabled={textDisabled}
+			onChange={handleTextChange}
+			onKeyDown={(event) => {
+				if (event.key === 'Enter' && !event.shiftKey) {
+					event.preventDefault();
+					void sendText();
+				}
+			}}
+			rows={1}
+			className="flex-1 resize-none overflow-hidden bg-transparent text-xs sm:text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 				placeholder={
 					hasSession
 						? recordingState === 'recording'
@@ -339,65 +339,65 @@ export const InputBar = ({
 				style={{ minHeight: '24px', paddingTop: '2px', paddingBottom: '2px' }}
 			/>
 
-				<div className="flex items-center gap-1">
-					<button
-						type="button"
-						onClick={onOpenGenderSettings}
-						disabled={!hasSession}
-						className={`flex h-9 w-9 items-center justify-center rounded-full transition ${
-							hasSession
-								? 'bg-white text-slate-700 hover:bg-gray-100'
-								: 'cursor-not-allowed opacity-50'
-						}`}
-						aria-label="Gender settings"
-					>
-						<UserCircle2 className="h-5 w-5" />
-					</button>
-					<button
-						type="button"
-						className={`flex h-9 w-9 items-center justify-center rounded-full transition ${
-							recordingState === 'recording'
-								? 'bg-red-50 text-red-600'
-								: 'bg-white text-slate-700 hover:bg-gray-100'
-						} ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
-						onClick={
-							recordingState === 'recording' ? stopRecording : startRecording
-						}
-						disabled={micDisabled}
-						aria-label={
-							recordingState === 'recording'
-								? 'Stop recording'
-								: 'Start recording'
-						}
-					>
-						{recordingState === 'recording' ? <StopIcon /> : <MicIcon />}
-					</button>
-					<button
-						type="button"
-						onClick={sendText}
-						disabled={
-							!hasSession ||
-							disabled ||
-							!text.trim() ||
-							recordingState !== 'idle'
-						}
-						className="inline-flex h-9 items-center justify-center rounded-full bg-blue-500 px-4 text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
-					>
-						<SendIcon />
-					</button>
-				</div>
+			<div className="flex items-center gap-1">
+				<button
+					type="button"
+					onClick={onOpenGenderSettings}
+					disabled={!hasSession}
+					className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
+						hasSession
+							? 'bg-white text-slate-700 hover:bg-gray-100'
+							: 'cursor-not-allowed opacity-50'
+					}`}
+					aria-label="Gender settings"
+				>
+					<UserCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
+				</button>
+				<button
+					type="button"
+					className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
+						recordingState === 'recording'
+							? 'bg-red-50 text-red-600'
+							: 'bg-white text-slate-700 hover:bg-gray-100'
+					} ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
+					onClick={
+						recordingState === 'recording' ? stopRecording : startRecording
+					}
+					disabled={micDisabled}
+					aria-label={
+						recordingState === 'recording'
+							? 'Stop recording'
+							: 'Start recording'
+					}
+				>
+					{recordingState === 'recording' ? <StopIcon /> : <MicIcon />}
+				</button>
+				<button
+					type="button"
+					onClick={sendText}
+					disabled={
+						!hasSession ||
+						disabled ||
+						!text.trim() ||
+						recordingState !== 'idle'
+					}
+					className="inline-flex h-8 sm:h-9 items-center justify-center rounded-full bg-blue-500 px-3 sm:px-4 text-xs sm:text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+				>
+					<SendIcon />
+				</button>
+			</div>
 			</div>
 
-			{recordingState === 'recording' && (
-				<div className="flex items-center gap-2 text-sm text-red-600">
-					<span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
-					Recording… {formattedTimer}
-				</div>
-			)}
+		{recordingState === 'recording' && (
+			<div className="flex items-center gap-2 text-xs sm:text-sm text-red-600">
+				<span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
+				Recording… {formattedTimer}
+			</div>
+		)}
 
-			{recordingError && (
-				<p className="text-sm text-red-600">{recordingError}</p>
-			)}
+		{recordingError && (
+			<p className="text-xs sm:text-sm text-red-600">{recordingError}</p>
+		)}
 		</div>
 	);
 };
