@@ -27,26 +27,31 @@ export const ConfigurationForm = ({
 	if (hasSession) {
 		// Text display mode - show current config as text with restart button
 		return (
-			<div className="border-b border-slate-200 p-3">
+			<div className="border-b border-slate-200 px-2.5 sm:px-3 py-1.5 sm:py-2.5">
 				<div className="flex items-center justify-between">
-					<div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+					<div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-[10px] sm:text-xs text-slate-600">
 						<span>
-							<span className="font-medium text-slate-900">{config.foreignLanguage}</span> →{' '}
-							{config.nativeLanguage}
+							<span className="font-medium text-slate-900">
+								{config.foreignLanguage}
+							</span>{' '}
+							→ {config.nativeLanguage}
 						</span>
 						<span className="text-slate-400">•</span>
 						<span>
-							Level: <span className="font-medium text-slate-900">{config.studentLevel}</span>
+							Level:{' '}
+							<span className="font-medium text-slate-900">
+								{config.studentLevel}
+							</span>
 						</span>
 					</div>
 
-				<button
-					type="button"
-					onClick={onReset}
-					className="h-8 rounded-full bg-slate-100 px-5 text-xs font-semibold text-slate-700 transition hover:bg-slate-200"
-				>
-					Restart
-				</button>
+					<button
+						type="button"
+						onClick={onReset}
+						className="h-6 sm:h-8 rounded-full bg-slate-100 px-2.5 sm:px-4 text-[9px] sm:text-xs font-semibold text-slate-700 transition hover:bg-slate-200"
+					>
+						Reset
+					</button>
 				</div>
 			</div>
 		);
@@ -68,41 +73,41 @@ export const ConfigurationForm = ({
 				<div className="space-y-3">
 					{/* Row: Foreign, Native, Level */}
 					<div className="grid gap-3 sm:grid-cols-3">
-					<div className="flex flex-col gap-1.5">
-						<label className="text-xs font-medium text-slate-700">
-							Foreign Language
-						</label>
-						<Dropdown
-							value={config.foreignLanguage}
-							options={languages}
-							onChange={onChange('foreignLanguage')}
-							searchable={true}
-						/>
-					</div>
+						<div className="flex flex-col gap-1.5">
+							<label className="text-xs font-medium text-slate-700">
+								Foreign Language
+							</label>
+							<Dropdown
+								value={config.foreignLanguage}
+								options={languages}
+								onChange={onChange('foreignLanguage')}
+								searchable={true}
+							/>
+						</div>
 
-					<div className="flex flex-col gap-1.5">
-						<label className="text-xs font-medium text-slate-700">
-							Native Language
-						</label>
-						<Dropdown
-							value={config.nativeLanguage}
-							options={languages}
-							onChange={onChange('nativeLanguage')}
-							searchable={true}
-						/>
-					</div>
+						<div className="flex flex-col gap-1.5">
+							<label className="text-xs font-medium text-slate-700">
+								Native Language
+							</label>
+							<Dropdown
+								value={config.nativeLanguage}
+								options={languages}
+								onChange={onChange('nativeLanguage')}
+								searchable={true}
+							/>
+						</div>
 
-					<div className="flex flex-col gap-1.5">
-						<label className="text-xs font-medium text-slate-700">
-							Student Level
-						</label>
-						<Dropdown
-							value={config.studentLevel}
-							options={levels}
-							onChange={onChange('studentLevel')}
-							searchable={false}
-						/>
-					</div>
+						<div className="flex flex-col gap-1.5">
+							<label className="text-xs font-medium text-slate-700">
+								Student Level
+							</label>
+							<Dropdown
+								value={config.studentLevel}
+								options={levels}
+								onChange={onChange('studentLevel')}
+								searchable={false}
+							/>
+						</div>
 					</div>
 				</div>
 
@@ -119,4 +124,3 @@ export const ConfigurationForm = ({
 		</div>
 	);
 };
-
