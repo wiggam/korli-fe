@@ -23,7 +23,7 @@ function App() {
 	const [studentGender, setStudentGender] = useState<GenderOption>('female');
 	const [genderChanged, setGenderChanged] = useState(false);
 	const [showGenderSettings, setShowGenderSettings] = useState(false);
-	
+
 	const {
 		threadId,
 		messages,
@@ -42,10 +42,9 @@ function App() {
 	const hasSession = Boolean(threadId);
 	const sortedLanguages = useMemo(() => [...LANGUAGES].sort(), []);
 
-	const handleField =
-		(field: keyof ChatConfig) => (value: string) => {
-			setForm((prev) => ({ ...prev, [field]: value }));
-		};
+	const handleField = (field: keyof ChatConfig) => (value: string) => {
+		setForm((prev) => ({ ...prev, [field]: value }));
+	};
 
 	const handleStart = async (event: FormEvent) => {
 		event.preventDefault();
@@ -65,8 +64,12 @@ function App() {
 		}
 	};
 
-	const handleApplyGenderSettings = (newTutorGender: GenderOption, newStudentGender: GenderOption) => {
-		const changed = newTutorGender !== tutorGender || newStudentGender !== studentGender;
+	const handleApplyGenderSettings = (
+		newTutorGender: GenderOption,
+		newStudentGender: GenderOption
+	) => {
+		const changed =
+			newTutorGender !== tutorGender || newStudentGender !== studentGender;
 		setTutorGender(newTutorGender);
 		setStudentGender(newStudentGender);
 		if (changed) {
@@ -101,12 +104,12 @@ function App() {
 	};
 
 	return (
-		<div className="flex min-h-screen flex-col bg-slate-50 px-4 py-6">
-			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6">
+		<div className="flex min-h-screen flex-col bg-slate-50 px-4 pt-3 sm:pt-4 pb-5 sm:pb-6">
+			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-3 sm:gap-4">
 				<header className="flex justify-center">
-					<img 
-						src="/korli-logo.png" 
-						alt="Korli - AI Language Coach" 
+					<img
+						src="/korli-logo.png"
+						alt="Korli - AI Language Coach"
 						className="h-10 w-auto sm:h-11"
 					/>
 				</header>
@@ -124,10 +127,10 @@ function App() {
 					</div>
 				)}
 
-			{/* Unified chat area - configuration, messages, and input */}
-			<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-8rem)]">
-				<ChatWindow
-					messages={messages}
+				{/* Unified chat area - configuration, messages, and input */}
+				<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-5rem)]">
+					<ChatWindow
+						messages={messages}
 						activeOverlay={activeOverlay}
 						onToggleOverlay={toggleOverlay}
 						isStreaming={isStreaming}
