@@ -337,14 +337,14 @@ export const InputBar = ({
 						: 'Start the session to begin chatting'
 				}
 				style={{ minHeight: '24px', paddingTop: '2px', paddingBottom: '2px' }}
-			/>
+		/>
 
-			<div className="flex items-center gap-1">
-				<button
-					type="button"
-					onClick={onOpenGenderSettings}
+		<div className="flex items-center gap-0 sm:gap-0.5">
+			<button
+				type="button"
+				onClick={onOpenGenderSettings}
 					disabled={!hasSession}
-					className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
+					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
 						hasSession
 							? 'bg-white text-slate-700 hover:bg-gray-100'
 							: 'cursor-not-allowed opacity-50'
@@ -355,7 +355,7 @@ export const InputBar = ({
 				</button>
 				<button
 					type="button"
-					className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
+					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
 						recordingState === 'recording'
 							? 'bg-red-50 text-red-600'
 							: 'bg-white text-slate-700 hover:bg-gray-100'
@@ -372,19 +372,19 @@ export const InputBar = ({
 				>
 					{recordingState === 'recording' ? <StopIcon /> : <MicIcon />}
 				</button>
-				<button
-					type="button"
-					onClick={sendText}
-					disabled={
-						!hasSession ||
-						disabled ||
-						!text.trim() ||
-						recordingState !== 'idle'
-					}
-					className="inline-flex h-8 sm:h-9 items-center justify-center rounded-full bg-blue-500 px-3 sm:px-4 text-xs sm:text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
-				>
-					<SendIcon />
-				</button>
+			<button
+				type="button"
+				onClick={sendText}
+				disabled={
+					!hasSession ||
+					disabled ||
+					!text.trim() ||
+					recordingState !== 'idle'
+				}
+				className="inline-flex h-7 sm:h-9 items-center justify-center rounded-full bg-blue-500 px-3 sm:px-4 text-xs sm:text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				<SendIcon />
+			</button>
 			</div>
 			</div>
 
