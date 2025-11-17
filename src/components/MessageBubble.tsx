@@ -115,16 +115,16 @@ const AssistantMessage = ({
 	return (
 		<div className="flex justify-start" data-message-id={message.id}>
 			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
-				{/* Main AI text */}
-				<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
-					<p className="whitespace-pre-wrap">{message.content}</p>
-					{message.isStreaming && (
-						<span className="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
-							<span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
-							AI tutor is responding…
-						</span>
-					)}
-				</div>
+			{/* Main AI text */}
+			<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
+				<p className="whitespace-pre-wrap">{message.content}</p>
+				{message.isStreaming && !message.content && (
+					<span className="inline-flex items-center gap-2 text-xs text-slate-500">
+						<span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
+						Korli is responding…
+					</span>
+				)}
+			</div>
 
 				{/* Actions row - with left and right sections */}
 				<div className="mt-3 flex flex-wrap items-center justify-between gap-2">

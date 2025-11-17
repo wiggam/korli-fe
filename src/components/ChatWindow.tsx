@@ -150,13 +150,6 @@ export const ChatWindow = ({
 								</div>
 							)}
 						</div>
-
-						{isStreaming && (
-							<div className="mt-3 flex items-center gap-2 text-sm text-slate-600">
-								<span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-								Waiting for the tutor to finish responding…
-							</div>
-						)}
 					</div>
 				</>
 			)}
