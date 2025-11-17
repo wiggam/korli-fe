@@ -62,6 +62,7 @@ export const InputBar = ({
 	const recordedSizeRef = useRef(0);
 	const sizeExceededRef = useRef(false);
 	const previewUrlRef = useRef<string | null>(null);
+	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
 	const clearTimer = () => {
 		if (timerRef.current) {
@@ -90,6 +91,22 @@ export const InputBar = ({
 		mediaRecorderRef.current?.stop();
 		mediaRecorderRef.current = null;
 	}, []);
+
+	const autoResizeTextarea = useCallback(() => {
+		const textarea = textareaRef.current;
+		if (!textarea) return;
+		
+		// Reset height to auto to get the correct scrollHeight
+		textarea.style.height = 'auto';
+		// Set height based on scrollHeight, with a max of ~5 lines (120px)
+		textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+	}, []);
+
+	const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setText(event.target.value);
+		// Small delay to allow state to update before resizing
+		setTimeout(autoResizeTextarea, 0);
+	};
 
 	const startRecording = async () => {
 		if (disabled || !hasSession) {
@@ -213,6 +230,15 @@ export const InputBar = ({
 		[]
 	);
 
+	useEffect(() => {
+		if (text === '') {
+			const textarea = textareaRef.current;
+			if (textarea) {
+				textarea.style.height = 'auto';
+			}
+		}
+	}, [text]);
+
 	const sendText = async () => {
 		const value = text.trim();
 		if (!value || disabled || recordingState !== 'idle') {
@@ -289,27 +315,29 @@ export const InputBar = ({
 				</div>
 			)}
 
-			<div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-3">
-				<textarea
-					value={text}
-					disabled={textDisabled}
-					onChange={(event) => setText(event.target.value)}
-					onKeyDown={(event) => {
-						if (event.key === 'Enter' && !event.shiftKey) {
-							event.preventDefault();
-							void sendText();
-						}
-					}}
-					rows={1}
-					className="flex-1 resize-none bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-					placeholder={
-						hasSession
-							? recordingState === 'recording'
-								? 'Recording in progress…'
-								: 'Type your message'
-							: 'Start the session to begin chatting'
+		<div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-3">
+			<textarea
+				ref={textareaRef}
+				value={text}
+				disabled={textDisabled}
+				onChange={handleTextChange}
+				onKeyDown={(event) => {
+					if (event.key === 'Enter' && !event.shiftKey) {
+						event.preventDefault();
+						void sendText();
 					}
-				/>
+				}}
+				rows={1}
+				className="flex-1 resize-none overflow-hidden bg-transparent text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+				placeholder={
+					hasSession
+						? recordingState === 'recording'
+							? 'Recording in progress…'
+							: 'Type your message'
+						: 'Start the session to begin chatting'
+				}
+				style={{ minHeight: '24px', paddingTop: '2px', paddingBottom: '2px' }}
+			/>
 
 				<div className="flex items-center gap-1">
 					<button
