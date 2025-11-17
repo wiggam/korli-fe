@@ -107,7 +107,7 @@ function App() {
 					<img 
 						src="/korli-logo.png" 
 						alt="Korli - AI Language Coach" 
-						className="h-16 w-auto sm:h-20"
+						className="h-12 w-auto sm:h-14"
 					/>
 				</header>
 
