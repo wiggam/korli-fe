@@ -96,10 +96,10 @@ export const ChatWindow = ({
 						hasSession={hasSession}
 						isStarting={isStarting}
 					/>
-					<div className="flex flex-1 flex-col p-4 min-h-0">
+					<div className="flex flex-1 flex-col p-2 sm:p-3 md:p-4 min-h-0">
 						<div
 							ref={scrollRef}
-							className="relative flex-1 w-full overflow-y-auto rounded-2xl bg-white p-4"
+							className="relative flex-1 w-full overflow-y-auto rounded-2xl bg-white p-2 sm:p-3 md:p-4"
 						>
 							{messages.length === 0 ? (
 								<div className="flex h-full flex-col items-center justify-center gap-3 text-center text-slate-500">
