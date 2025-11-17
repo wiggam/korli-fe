@@ -40,6 +40,7 @@ const IconButton = ({
 	<button
 		type="button"
 		onClick={onClick}
+		aria-label={label}
 		className={`inline-flex h-7 items-center gap-1.5 rounded-full bg-white px-2 text-[10px] font-medium transition ${
 			active
 				? 'bg-gray-100 text-blue-700 hover:bg-gray-200'
@@ -47,7 +48,7 @@ const IconButton = ({
 		}`}
 	>
 		{icon}
-		{label}
+		<span className="hidden sm:inline">{label}</span>
 	</button>
 );
 

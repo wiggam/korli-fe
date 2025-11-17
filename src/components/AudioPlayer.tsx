@@ -110,11 +110,11 @@ export const AudioPlayer = ({
       type="button"
       onClick={togglePlayback}
       disabled={!src}
-      className={`inline-flex items-center gap-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-40 disabled:cursor-not-allowed ${sizeClasses} ${toneClasses}`}
+      className={`inline-flex items-center gap-1.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-40 disabled:cursor-not-allowed ${sizeClasses} ${toneClasses}`}
       aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
     >
       <PlayPauseIcon isPlaying={isPlaying} />
-      {label && <span className="font-medium">{label}</span>}
+      {label && <span className="hidden sm:inline font-medium">{label}</span>}
       <audio ref={audioRef} src={src} preload="none" className="hidden" />
     </button>
   );
