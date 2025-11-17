@@ -71,7 +71,7 @@ export const ChatWindow = ({
   }, [activeOverlay]);
 
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-1 flex-col min-h-0">
 			{/* Configuration Form - Centered before session, Compact after */}
 			{!hasSession ? (
 				<ConfigurationForm
@@ -96,10 +96,10 @@ export const ChatWindow = ({
 						hasSession={hasSession}
 						isStarting={isStarting}
 					/>
-					<div className="p-4">
+					<div className="flex flex-1 flex-col p-4 min-h-0">
 						<div
 							ref={scrollRef}
-							className="relative h-[420px] w-full overflow-y-auto rounded-2xl bg-white p-4 sm:h-[520px]"
+							className="relative flex-1 w-full overflow-y-auto rounded-2xl bg-white p-4"
 						>
 							{messages.length === 0 ? (
 								<div className="flex h-full flex-col items-center justify-center gap-3 text-center text-slate-500">

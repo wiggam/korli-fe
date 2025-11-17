@@ -101,8 +101,8 @@ function App() {
 	};
 
 	return (
-		<div className="min-h-screen bg-slate-50 px-4 py-6">
-			<main className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+		<div className="flex min-h-screen flex-col bg-slate-50 px-4 py-6">
+			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6">
 				<header className="flex justify-center">
 					<img 
 						src="/korli-logo.png" 
@@ -125,7 +125,7 @@ function App() {
 				)}
 
 				{/* Unified chat area - configuration, messages, and input */}
-				<section className="flex flex-col rounded-3xl border border-slate-200 bg-white shadow-lg">
+				<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg">
 					<ChatWindow
 						messages={messages}
 						activeOverlay={activeOverlay}
