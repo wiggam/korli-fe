@@ -124,10 +124,10 @@ function App() {
 					</div>
 				)}
 
-				{/* Unified chat area - configuration, messages, and input */}
-				<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg">
-					<ChatWindow
-						messages={messages}
+			{/* Unified chat area - configuration, messages, and input */}
+			<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-8rem)]">
+				<ChatWindow
+					messages={messages}
 						activeOverlay={activeOverlay}
 						onToggleOverlay={toggleOverlay}
 						isStreaming={isStreaming}
