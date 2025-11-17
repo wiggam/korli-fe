@@ -59,7 +59,7 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 	return (
 		<div className="flex justify-end" data-message-id={message.id}>
 			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
-				<div className="rounded-3xl bg-blue-100 px-3 py-2 text-xs leading-relaxed text-blue-900 shadow-sm sm:text-sm">
+				<div className="rounded-3xl bg-blue-100 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs leading-relaxed text-blue-900 shadow-sm sm:text-sm">
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.status === 'transcribing' && (
 						<span className="mt-2 inline-flex items-center gap-2 text-xs text-blue-700">
@@ -114,20 +114,20 @@ const AssistantMessage = ({
 
 	return (
 		<div className="flex justify-start" data-message-id={message.id}>
-			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
-			{/* Main AI text */}
-			<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
-				<p className="whitespace-pre-wrap">{message.content}</p>
-				{message.isStreaming && !message.content && (
-					<span className="inline-flex items-center gap-2 text-xs text-slate-500">
-						<span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
-						Korli is responding…
-					</span>
-				)}
-			</div>
+			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-2 sm:p-2.5 md:p-3 shadow-sm">
+				{/* Main AI text */}
+				<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
+					<p className="whitespace-pre-wrap">{message.content}</p>
+					{message.isStreaming && !message.content && (
+						<span className="inline-flex items-center gap-2 text-xs text-slate-500">
+							<span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
+							Korli is responding…
+						</span>
+					)}
+				</div>
 
 				{/* Actions row - with left and right sections */}
-				<div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+				<div className="mt-1.5 sm:mt-2 flex flex-wrap items-center justify-between gap-2">
 					{/* Left side: Translation, AI audio, and corrections button */}
 					<div className="flex flex-wrap items-center gap-2">
 						{translationAvailable && (
