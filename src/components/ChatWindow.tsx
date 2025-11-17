@@ -107,7 +107,7 @@ export const ChatWindow = ({
 									<p className="text-sm max-w-sm">Start typing or recording to begin your conversation</p>
 								</div>
 							) : (
-								<div className="flex flex-col gap-6">
+								<div className="flex flex-col gap-4">
 									{messages.map((message, index) => {
 										// For AI messages, find the previous user message to check for corrections
 										let previousUserMessage: ChatMessage | undefined;

@@ -27,9 +27,9 @@ export const ConfigurationForm = ({
 	if (hasSession) {
 		// Text display mode - show current config as text with restart button
 		return (
-			<div className="border-b border-slate-200 p-4">
+			<div className="border-b border-slate-200 p-3">
 				<div className="flex items-center justify-between">
-					<div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+					<div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
 						<span>
 							<span className="font-medium text-slate-900">{config.foreignLanguage}</span> →{' '}
 							{config.nativeLanguage}
@@ -43,7 +43,7 @@ export const ConfigurationForm = ({
 				<button
 					type="button"
 					onClick={onReset}
-					className="h-9 rounded-full bg-slate-100 px-6 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"
+					className="h-8 rounded-full bg-slate-100 px-5 text-xs font-semibold text-slate-700 transition hover:bg-slate-200"
 				>
 					Restart
 				</button>
@@ -54,22 +54,22 @@ export const ConfigurationForm = ({
 
 	// Centered mode - prominent layout in empty chat
 	return (
-		<div className="flex min-h-[520px] items-center justify-center p-8">
-			<form onSubmit={onSubmit} className="w-full max-w-3xl space-y-6">
+		<div className="flex min-h-[520px] items-center justify-center p-6">
+			<form onSubmit={onSubmit} className="w-full max-w-3xl space-y-5">
 				<div className="text-center">
-					<h2 className="text-2xl font-semibold text-slate-900">
+					<h2 className="text-xl font-semibold text-slate-900">
 						Start Your Language Practice
 					</h2>
-					<p className="mt-2 text-sm text-slate-600">
+					<p className="mt-2 text-xs text-slate-600">
 						Configure your learning preferences to begin
 					</p>
 				</div>
 
-				<div className="space-y-4">
+				<div className="space-y-3">
 					{/* Row: Foreign, Native, Level */}
-					<div className="grid gap-4 sm:grid-cols-3">
-					<div className="flex flex-col gap-2">
-						<label className="text-sm font-medium text-slate-700">
+					<div className="grid gap-3 sm:grid-cols-3">
+					<div className="flex flex-col gap-1.5">
+						<label className="text-xs font-medium text-slate-700">
 							Foreign Language
 						</label>
 						<Dropdown
@@ -80,8 +80,8 @@ export const ConfigurationForm = ({
 						/>
 					</div>
 
-					<div className="flex flex-col gap-2">
-						<label className="text-sm font-medium text-slate-700">
+					<div className="flex flex-col gap-1.5">
+						<label className="text-xs font-medium text-slate-700">
 							Native Language
 						</label>
 						<Dropdown
@@ -92,8 +92,8 @@ export const ConfigurationForm = ({
 						/>
 					</div>
 
-					<div className="flex flex-col gap-2">
-						<label className="text-sm font-medium text-slate-700">
+					<div className="flex flex-col gap-1.5">
+						<label className="text-xs font-medium text-slate-700">
 							Student Level
 						</label>
 						<Dropdown
@@ -110,7 +110,7 @@ export const ConfigurationForm = ({
 					<button
 						type="submit"
 						disabled={isStarting}
-						className="h-12 rounded-full bg-blue-500 px-12 text-base font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+						className="h-10 rounded-full bg-blue-500 px-10 text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{isStarting ? 'Starting…' : 'Start Chat'}
 					</button>

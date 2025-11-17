@@ -111,14 +111,14 @@ export const Dropdown = ({
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				onKeyDown={handleKeyDown}
-				className={`h-11 w-full rounded-full border border-slate-200 bg-white px-4 text-left text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
+				className={`h-9 w-full rounded-full border border-slate-200 bg-white px-3.5 text-left text-xs text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
 					capitalize ? 'capitalize' : ''
 				}`}
 			>
 				<div className="flex items-center justify-between">
 					<span className={capitalize ? 'capitalize' : ''}>{value || placeholder}</span>
 					<svg
-						className={`h-4 w-4 text-slate-400 transition-transform ${
+						className={`h-3.5 w-3.5 text-slate-400 transition-transform ${
 							isOpen ? 'rotate-180' : ''
 						}`}
 						fill="none"
@@ -151,7 +151,7 @@ export const Dropdown = ({
 								}}
 								onKeyDown={handleKeyDown}
 								placeholder="Search..."
-								className="h-9 w-full rounded-lg border border-slate-200 px-3 text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
+								className="h-8 w-full rounded-lg border border-slate-200 px-2.5 text-xs text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
 							/>
 						</div>
 					)}
@@ -165,7 +165,7 @@ export const Dropdown = ({
 									type="button"
 									onClick={() => handleSelect(option)}
 									onMouseEnter={() => setHighlightedIndex(index)}
-									className={`w-full rounded-lg px-3 py-2 text-left text-sm transition ${
+									className={`w-full rounded-lg px-2.5 py-1.5 text-left text-xs transition ${
 										capitalize ? 'capitalize' : ''
 									} ${
 										option === value
@@ -179,7 +179,7 @@ export const Dropdown = ({
 								</button>
 							))
 						) : (
-							<div className="px-3 py-6 text-center text-sm text-slate-500">
+							<div className="px-2.5 py-4 text-center text-xs text-slate-500">
 								No results found
 							</div>
 						)}

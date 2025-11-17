@@ -40,7 +40,7 @@ const IconButton = ({
 	<button
 		type="button"
 		onClick={onClick}
-		className={`inline-flex h-9 items-center gap-2 rounded-full bg-white px-3 text-xs font-medium transition ${
+		className={`inline-flex h-7 items-center gap-1.5 rounded-full bg-white px-2 text-[10px] font-medium transition ${
 			active
 				? 'bg-gray-100 text-blue-700 hover:bg-gray-200'
 				: 'text-slate-700 hover:bg-gray-100'
@@ -58,7 +58,7 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 	return (
 		<div className="flex justify-end" data-message-id={message.id}>
 			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
-				<div className="rounded-3xl bg-blue-100 px-4 py-3 text-sm leading-relaxed text-blue-900 shadow-sm sm:text-base">
+				<div className="rounded-3xl bg-blue-100 px-3 py-2 text-xs leading-relaxed text-blue-900 shadow-sm sm:text-sm">
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.status === 'transcribing' && (
 						<span className="mt-2 inline-flex items-center gap-2 text-xs text-blue-700">
@@ -113,9 +113,9 @@ const AssistantMessage = ({
 
 	return (
 		<div className="flex justify-start" data-message-id={message.id}>
-			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
 				{/* Main AI text */}
-				<div className="text-sm leading-relaxed text-slate-900 sm:text-base">
+				<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.isStreaming && (
 						<span className="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
@@ -172,11 +172,11 @@ const AssistantMessage = ({
 
 				{/* Translation section (inline) */}
 				{showTranslation && message.translation && (
-					<div className="mt-3 rounded-lg border border-blue-200 bg-blue-50 p-3">
+					<div className="mt-3 rounded-lg border border-blue-200 bg-blue-50 p-2">
 						<p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
 							Translation
 						</p>
-						<p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
+						<p className="mt-1 whitespace-pre-wrap text-xs leading-relaxed text-slate-700">
 							{message.translation}
 						</p>
 					</div>
@@ -186,7 +186,7 @@ const AssistantMessage = ({
 				{showCorrection &&
 					previousUserMessage?.role === 'user' &&
 					previousUserMessage.correction && (
-						<div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+						<div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-2">
 							<div className="flex items-center justify-between">
 								<p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
 									Corrections
@@ -199,14 +199,14 @@ const AssistantMessage = ({
 									<p className="text-xs font-medium text-slate-600">
 										Corrected version:
 									</p>
-									<p className="mt-1 whitespace-pre-wrap text-sm font-medium leading-relaxed text-slate-900">
+									<p className="mt-1 whitespace-pre-wrap text-xs font-medium leading-relaxed text-slate-900">
 										{previousUserMessage.correction.correctedMessage}
 									</p>
 								</div>
 							)}
 
 							{previousUserMessage.correction.translation && (
-								<p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
+								<p className="mt-2 whitespace-pre-wrap text-xs leading-relaxed text-slate-700">
 									{previousUserMessage.correction.translation}
 								</p>
 							)}

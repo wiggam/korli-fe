@@ -99,7 +99,7 @@ export const AudioPlayer = ({
     audioRef.current.pause();
   };
 
-  const sizeClasses = size === 'sm' ? 'h-9 px-3 text-xs' : 'h-10 px-4 text-sm';
+  const sizeClasses = size === 'sm' ? 'h-7 px-2 text-[10px]' : 'h-10 px-4 text-sm';
   const toneClasses =
     tone === 'dark'
       ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 focus-visible:ring-white/30'
