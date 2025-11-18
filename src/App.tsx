@@ -1,8 +1,12 @@
 import { type FormEvent, useMemo, useState } from 'react';
+import { Settings as SettingsIcon } from 'lucide-react';
 
+import { AppInformation } from './components/AppInformation';
 import { ChatWindow } from './components/ChatWindow';
 import { GenderSettings } from './components/GenderSettings';
 import { InputBar } from './components/InputBar';
+import { NavigationTabs } from './components/NavigationTabs';
+import { Settings } from './components/Settings';
 import { LANGUAGES } from './constants/languages';
 import { useChat } from './hooks/useChat';
 import type { ChatConfig, GenderOption, StudentLevel } from './types/chat';
@@ -23,6 +27,8 @@ function App() {
 	const [studentGender, setStudentGender] = useState<GenderOption>('female');
 	const [genderChanged, setGenderChanged] = useState(false);
 	const [showGenderSettings, setShowGenderSettings] = useState(false);
+	const [showSettings, setShowSettings] = useState(false);
+	const [activePage, setActivePage] = useState<'chat' | 'info'>('chat');
 
 	const {
 		threadId,
@@ -85,6 +91,14 @@ function App() {
 		setShowGenderSettings(false);
 	};
 
+	const handleOpenSettings = () => {
+		setShowSettings(true);
+	};
+
+	const handleCloseSettings = () => {
+		setShowSettings(false);
+	};
+
 	const handleSendText = async (message: string) => {
 		if (genderChanged) {
 			await sendTextMessage(message, tutorGender, studentGender);
@@ -103,15 +117,30 @@ function App() {
 		}
 	};
 
-	return (
+	const handlePageChange = (page: 'chat' | 'info') => {
+		setActivePage(page);
+	};
+
+		return (
 		<div className="flex min-h-screen flex-col bg-slate-50 px-4 pt-3 sm:pt-4 pb-5 sm:pb-6">
-			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-3 sm:gap-4">
-				<header className="flex justify-center">
-					<img
-						src="/korli-logo.png"
-						alt="Korli - AI Language Coach"
-						className="h-6 w-auto sm:h-8"
-					/>
+			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-2 sm:gap-3">
+				<header className="relative flex items-center">
+					<NavigationTabs activePage={activePage} onPageChange={handlePageChange} />
+					<div className="absolute left-0 right-0 flex justify-center pointer-events-none">
+						<img
+							src="/korli-logo.png"
+							alt="Korli - AI Language Coach"
+							className="h-6 w-auto sm:h-8 pointer-events-auto"
+						/>
+					</div>
+					<button
+						type="button"
+						onClick={handleOpenSettings}
+						className="absolute right-0 p-1.5 sm:p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 rounded-full"
+						aria-label="Settings"
+					>
+						<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+					</button>
 				</header>
 
 				{error && (
@@ -127,33 +156,37 @@ function App() {
 					</div>
 				)}
 
-				{/* Unified chat area - configuration, messages, and input */}
-				<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]">
-					<ChatWindow
-						messages={messages}
-						activeOverlay={activeOverlay}
-						onToggleOverlay={toggleOverlay}
-						isStreaming={isStreaming}
-						config={form}
-						languages={sortedLanguages}
-						levels={LEVELS}
-						onConfigChange={handleField}
-						onStartSession={handleStart}
-						onReset={resetChat}
-						hasSession={hasSession}
-						isStarting={isStarting}
-					/>
-
-					{hasSession && (
-						<InputBar
-							disabled={!hasSession || isStreaming}
+				{activePage === 'chat' ? (
+					/* Unified chat area - configuration, messages, and input */
+					<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]">
+						<ChatWindow
+							messages={messages}
+							activeOverlay={activeOverlay}
+							onToggleOverlay={toggleOverlay}
+							isStreaming={isStreaming}
+							config={form}
+							languages={sortedLanguages}
+							levels={LEVELS}
+							onConfigChange={handleField}
+							onStartSession={handleStart}
+							onReset={resetChat}
 							hasSession={hasSession}
-							onSendText={handleSendText}
-							onSendAudio={handleSendAudio}
-							onOpenGenderSettings={handleOpenGenderSettings}
+							isStarting={isStarting}
 						/>
-					)}
-				</section>
+
+						{hasSession && (
+							<InputBar
+								disabled={!hasSession || isStreaming}
+								hasSession={hasSession}
+								onSendText={handleSendText}
+								onSendAudio={handleSendAudio}
+								onOpenGenderSettings={handleOpenGenderSettings}
+							/>
+						)}
+					</section>
+				) : (
+					<AppInformation />
+				)}
 
 				{/* Gender Settings Modal */}
 				{showGenderSettings && (
@@ -164,6 +197,9 @@ function App() {
 						onClose={handleCloseGenderSettings}
 					/>
 				)}
+
+				{/* Settings Modal */}
+				{showSettings && <Settings onClose={handleCloseSettings} />}
 			</main>
 		</div>
 	);
