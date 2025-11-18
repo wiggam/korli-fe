@@ -54,15 +54,15 @@ export const darkModeColors = {
 	buttonSecondaryHover: 'hover:bg-slate-100 dark:hover:bg-slate-600',
 
 	// Input fields
-	inputBg: 'bg-white dark:bg-slate-400',
+	inputBg: 'bg-white dark:bg-slate-300',
 	inputBorder: 'border-slate-200 dark:border-slate-500',
 	inputText: 'text-slate-900 dark:text-white',
-	inputPlaceholder: 'text-slate-400 dark:text-slate-300',
+	inputPlaceholder: 'text-slate-400 dark:text-white',
 	// Input bar icon buttons (person, mic icons)
-	inputIconBg: 'bg-white dark:bg-slate-400',
+	inputIconBg: 'bg-white dark:bg-slate-300',
 	inputIconBorder: 'border-transparent dark:border-transparent',
 	inputIconText: 'text-slate-700 dark:text-white',
-	inputIconHover: 'hover:bg-gray-100 dark:hover:bg-slate-500',
+	inputIconHover: 'hover:bg-gray-100 dark:hover:bg-slate-400',
 
 	// Navigation tabs
 	tabBg: 'bg-slate-100 dark:bg-slate-500',
@@ -194,9 +194,9 @@ export const getThemeBorderButtonClasses = (
 
 /**
  * Get classes for user message pills that work in both light and dark mode
- * Uses theme color in light mode, medium-light grey in dark mode
+ * Uses theme color in both light and dark mode
  */
 export const getUserMessagePillClasses = (color: ThemeColor): string => {
 	const classes = getThemeColorClasses(color);
-	return `${classes.lightBg} ${darkModeColors.messageUserPill} ${classes.darkText} ${darkModeColors.messageUserText} shadow-sm`;
+	return `${classes.lightBg} ${classes.darkPrimary} ${classes.darkText} ${darkModeColors.messageUserText} shadow-sm`;
 };

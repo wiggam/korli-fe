@@ -15,7 +15,7 @@ interface MessageBubbleProps {
 const TranslationIcon = ({ active }: { active?: boolean }) => (
 	<Languages
 		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
-			active ? 'text-blue-600 dark:text-blue-400' : darkModeColors.messageAiIconText
+			active ? 'text-blue-600 dark:text-blue-200' : darkModeColors.messageAiIconText
 		}`}
 	/>
 );
@@ -24,7 +24,7 @@ const CorrectionIcon = ({ active }: { active?: boolean }) => (
 	<svg
 		viewBox="0 0 24 24"
 		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
-			active ? 'text-amber-600 dark:text-amber-400' : darkModeColors.messageAiIconText
+			active ? 'text-amber-600 dark:text-amber-200' : darkModeColors.messageAiIconText
 		}`}
 		fill="currentColor"
 	>
@@ -42,21 +42,28 @@ const IconButton = ({
 	active?: boolean;
 	icon: React.ReactNode;
 	onClick?: () => void;
-}) => (
-	<button
-		type="button"
-		onClick={onClick}
-		aria-label={label}
-		className={`inline-flex h-6 sm:h-7 items-center gap-1.5 rounded-full ${darkModeColors.messageAiIconBg} ${darkModeColors.messageAiIconBorder} px-1.5 sm:px-2 text-[10px] font-medium transition ${
-			active
-				? `${darkModeColors.bgHover} text-blue-700 dark:text-blue-400 ${darkModeColors.buttonHover}`
-				: `${darkModeColors.messageAiIconText} ${darkModeColors.bgHover}`
-		}`}
-	>
-		{icon}
-		<span className="hidden sm:inline">{label}</span>
-	</button>
-);
+}) => {
+	const isCorrection = label === 'Correction';
+	const activeColorClasses = isCorrection
+		? 'text-amber-700 dark:text-amber-200 dark:bg-amber-900/40'
+		: 'text-blue-700 dark:text-blue-200 dark:bg-blue-900/40';
+	
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			aria-label={label}
+			className={`inline-flex h-6 sm:h-7 items-center gap-1.5 rounded-full ${darkModeColors.messageAiIconBg} ${darkModeColors.messageAiIconBorder} px-1.5 sm:px-2 text-[10px] font-medium transition ${
+				active
+					? `${darkModeColors.bgHover} ${activeColorClasses} ${darkModeColors.buttonHover}`
+					: `${darkModeColors.messageAiIconText} ${darkModeColors.bgHover}`
+			}`}
+		>
+			{icon}
+			<span className="hidden sm:inline">{label}</span>
+		</button>
+	);
+};
 
 // User Message Component - Right-aligned bubble (iMessage style)
 const UserMessage = ({ message }: { message: ChatMessage }) => {
@@ -183,8 +190,8 @@ const AssistantMessage = ({
 
 				{/* Translation section (inline) */}
 				{showTranslation && message.translation && (
-					<div className={`mt-1.5 sm:mt-2 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30 p-2`}>
-						<p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-400">
+					<div className={`mt-1.5 sm:mt-2 rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-2`}>
+						<p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-200">
 							Translation
 						</p>
 						<p className={`mt-1 whitespace-pre-wrap text-xs leading-relaxed ${darkModeColors.messageAiText}`}>
@@ -197,8 +204,8 @@ const AssistantMessage = ({
 				{showCorrection &&
 					previousUserMessage?.role === 'user' &&
 					previousUserMessage.correction && (
-						<div className="mt-1.5 sm:mt-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 p-2 relative">
-							<p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-400">
+						<div className="mt-1.5 sm:mt-2 rounded-lg border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/60 p-2 relative">
+							<p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-200">
 								Corrections
 							</p>
 							{previousUserMessage.correction.audioUrl && (
