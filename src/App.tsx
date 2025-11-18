@@ -106,13 +106,13 @@ function App() {
 	return (
 		<div className="flex min-h-screen flex-col bg-slate-50 px-4 pt-3 sm:pt-4 pb-5 sm:pb-6">
 			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-3 sm:gap-4">
-			<header className="flex justify-center">
-				<img
-					src="/korli-logo.png"
-					alt="Korli - AI Language Coach"
-					className="h-8 w-auto sm:h-11"
-				/>
-			</header>
+				<header className="flex justify-center">
+					<img
+						src="/korli-logo.png"
+						alt="Korli - AI Language Coach"
+						className="h-6 w-auto sm:h-8"
+					/>
+				</header>
 
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-100">
@@ -127,9 +127,9 @@ function App() {
 					</div>
 				)}
 
-		{/* Unified chat area - configuration, messages, and input */}
-		<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-3.5rem)] sm:max-h-[calc(100vh-4.5rem)]">
-			<ChatWindow
+				{/* Unified chat area - configuration, messages, and input */}
+				<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]">
+					<ChatWindow
 						messages={messages}
 						activeOverlay={activeOverlay}
 						onToggleOverlay={toggleOverlay}

@@ -12,14 +12,18 @@ interface MessageBubbleProps {
 
 const TranslationIcon = ({ active }: { active?: boolean }) => (
 	<Languages
-		className={`h-4 w-4 ${active ? 'text-blue-600' : 'text-slate-600'}`}
+		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
+			active ? 'text-blue-600' : 'text-slate-600'
+		}`}
 	/>
 );
 
 const CorrectionIcon = ({ active }: { active?: boolean }) => (
 	<svg
 		viewBox="0 0 24 24"
-		className={`h-4 w-4 ${active ? 'text-amber-600' : 'text-slate-600'}`}
+		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
+			active ? 'text-amber-600' : 'text-slate-600'
+		}`}
 		fill="currentColor"
 	>
 		<path d="M12 2 3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6z" />
@@ -41,7 +45,7 @@ const IconButton = ({
 		type="button"
 		onClick={onClick}
 		aria-label={label}
-		className={`inline-flex h-7 items-center gap-1.5 rounded-full bg-white px-2 text-[10px] font-medium transition ${
+		className={`inline-flex h-6 sm:h-7 items-center gap-1.5 rounded-full bg-white px-1.5 sm:px-2 text-[10px] font-medium transition ${
 			active
 				? 'bg-gray-100 text-blue-700 hover:bg-gray-200'
 				: 'text-slate-700 hover:bg-gray-100'
@@ -114,7 +118,7 @@ const AssistantMessage = ({
 
 	return (
 		<div className="flex justify-start" data-message-id={message.id}>
-			<div className="w-full max-w-full rounded-xl bg-white p-2 sm:p-2.5 md:p-3">
+			<div className="w-full max-w-full rounded-xl bg-white p-0">
 				{/* Main AI text */}
 				<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
 					<p className="whitespace-pre-wrap">{message.content}</p>
@@ -127,7 +131,7 @@ const AssistantMessage = ({
 				</div>
 
 				{/* Actions row - with left and right sections */}
-				<div className="mt-1.5 sm:mt-2 flex flex-wrap items-center justify-between gap-2">
+				<div className="flex flex-wrap items-center justify-between gap-2">
 					{/* Left side: Translation, AI audio, and corrections button */}
 					<div className="flex flex-wrap items-center gap-2">
 						{translationAvailable && (
@@ -173,7 +177,7 @@ const AssistantMessage = ({
 
 				{/* Translation section (inline) */}
 				{showTranslation && message.translation && (
-					<div className="mt-3 rounded-lg border border-blue-200 bg-blue-50 p-2">
+					<div className="mt-1.5 sm:mt-2 rounded-lg border border-blue-200 bg-blue-50 p-2">
 						<p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
 							Translation
 						</p>
@@ -187,33 +191,35 @@ const AssistantMessage = ({
 				{showCorrection &&
 					previousUserMessage?.role === 'user' &&
 					previousUserMessage.correction && (
-						<div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-2">
-							<div className="flex items-center justify-between">
-								<p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
-									Corrections
-								</p>
-								<span className="text-xs text-amber-600">Korli</span>
-							</div>
-
-							{previousUserMessage.correction.correctedMessage && (
-								<div className="mt-2">
-									<p className="text-xs font-medium text-slate-600">
-										Corrected version:
-									</p>
-									<p className="mt-1 whitespace-pre-wrap text-xs font-medium leading-relaxed text-slate-900">
-										{previousUserMessage.correction.correctedMessage}
-									</p>
+						<div className="mt-1.5 sm:mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2 relative">
+							<p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+								Corrections
+							</p>
+							{previousUserMessage.correction.audioUrl && (
+								<div className="absolute top-2 right-2 sm:hidden">
+									<AudioPlayer
+										src={previousUserMessage.correction.audioUrl}
+										label="Play corrected audio"
+										tone="light"
+										size="sm"
+									/>
 								</div>
 							)}
 
+							{previousUserMessage.correction.correctedMessage && (
+								<p className="mt-1 whitespace-pre-wrap text-xs font-medium leading-relaxed text-slate-900">
+									{previousUserMessage.correction.correctedMessage}
+								</p>
+							)}
+
 							{previousUserMessage.correction.translation && (
-								<p className="mt-2 whitespace-pre-wrap text-xs leading-relaxed text-slate-700">
+								<p className="mt-0.5 whitespace-pre-wrap text-xs leading-relaxed text-slate-700">
 									{previousUserMessage.correction.translation}
 								</p>
 							)}
 
 							{previousUserMessage.correction.audioUrl && (
-								<div className="mt-3">
+								<div className="mt-2 hidden sm:block">
 									<AudioPlayer
 										src={previousUserMessage.correction.audioUrl}
 										label="Play corrected audio"

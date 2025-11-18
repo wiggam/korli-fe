@@ -113,7 +113,7 @@ export const ChatWindow = ({
 									</p>
 								</div>
 							) : (
-								<div className="flex flex-col gap-2.5 sm:gap-3 md:gap-4">
+								<div className="flex flex-col gap-1 sm:gap-2 md:gap-2">
 									{messages.map((message, index) => {
 										// For AI messages, find the previous user message to check for corrections
 										let previousUserMessage: ChatMessage | undefined;

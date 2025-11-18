@@ -44,6 +44,14 @@ export const useChat = () => {
   const messagesRef = useRef<ChatMessage[]>([]);
   const streamAbortRef = useRef<(() => void) | null>(null);
   const currentUserMessageIdRef = useRef<string | null>(null);
+  const currentAIMessageIdRef = useRef<string | null>(null);
+  const pendingAIDataRef = useRef<{ translation?: string; audioUrl?: string } | null>(null);
+  const pendingCorrectionRef = useRef<{
+    corrected?: boolean;
+    correctedMessage?: string;
+    translation?: string;
+    audioUrl?: string;
+  } | null>(null);
 
   useEffect(() => {
     messagesRef.current = messages;
@@ -58,9 +66,59 @@ export const useChat = () => {
   );
 
   const finishStream = useCallback(() => {
+    // Apply pending translation and audioUrl to AI message
+    if (currentAIMessageIdRef.current) {
+      const aiMessageId = currentAIMessageIdRef.current;
+      const pendingData = pendingAIDataRef.current;
+
+      setMessages((prev) =>
+        prev.map((message) => {
+          if (message.id !== aiMessageId || message.role !== 'ai') {
+            return message;
+          }
+
+          return {
+            ...message,
+            translation: pendingData?.translation ?? message.translation,
+            audioUrl: pendingData?.audioUrl ?? message.audioUrl,
+            isStreaming: false,
+          };
+        }),
+      );
+    }
+
+    // Apply pending correction to user message
+    if (currentUserMessageIdRef.current && pendingCorrectionRef.current) {
+      const userId = currentUserMessageIdRef.current;
+      const correctionData = pendingCorrectionRef.current;
+
+      setMessages((prev) =>
+        prev.map((message) => {
+          if (message.id !== userId || message.role !== 'user') {
+            return message;
+          }
+
+          return {
+            ...message,
+            correction: {
+              corrected: Boolean(correctionData.corrected),
+              correctedMessage: correctionData.correctedMessage ?? message.correction?.correctedMessage,
+              translation: correctionData.translation ?? message.correction?.translation,
+              audioUrl: correctionData.audioUrl ?? message.correction?.audioUrl,
+            },
+            status: 'complete',
+          };
+        }),
+      );
+    }
+
+    // Clean up
     streamAbortRef.current?.();
     streamAbortRef.current = null;
     currentUserMessageIdRef.current = null;
+    currentAIMessageIdRef.current = null;
+    pendingAIDataRef.current = null;
+    pendingCorrectionRef.current = null;
 
     setStatus((prev) =>
       prev.isStreaming ? { ...prev, isStreaming: false } : prev,
@@ -94,6 +152,9 @@ export const useChat = () => {
     streamAbortRef.current?.();
     streamAbortRef.current = null;
     currentUserMessageIdRef.current = null;
+    currentAIMessageIdRef.current = null;
+    pendingAIDataRef.current = null;
+    pendingCorrectionRef.current = null;
 
     setMessages((prev) => {
       releaseAudioFromMessages(prev);
@@ -128,6 +189,9 @@ export const useChat = () => {
   );
 
   const handleAssistantStart = useCallback((id: string) => {
+    currentAIMessageIdRef.current = id;
+    pendingAIDataRef.current = null;
+
     setMessages((prev) => {
       if (prev.some((message) => message.id === id)) {
         return prev;
@@ -140,7 +204,7 @@ export const useChat = () => {
           role: 'ai',
           content: '',
           createdAt: Date.now(),
-          translation: '',
+          translation: undefined,
           isStreaming: true,
         } as AIMessage,
       ];
@@ -168,11 +232,12 @@ export const useChat = () => {
       });
 
       if (!touched) {
+        currentAIMessageIdRef.current = id;
         next.push({
           id,
           role: 'ai',
           content: text,
-          translation: '',
+          translation: undefined,
           createdAt: Date.now(),
           isStreaming: true,
         });
@@ -198,6 +263,14 @@ export const useChat = () => {
       return;
     }
 
+    // Store translation and audioUrl to apply when "done" event is received
+    currentAIMessageIdRef.current = data.id;
+    pendingAIDataRef.current = {
+      translation: data.translation,
+      audioUrl: data.audio_url,
+    };
+
+    // Only update content if needed, but don't set translation/audioUrl yet
     setMessages((prev) => {
       const exists = prev.find((message) => message.id === data.id && message.role === 'ai');
 
@@ -208,10 +281,9 @@ export const useChat = () => {
             id: data.id,
             role: 'ai',
             content: data.ai_message ?? '',
-            translation: data.translation,
-            audioUrl: data.audio_url,
+            translation: undefined,
             createdAt: Date.now(),
-            isStreaming: false,
+            isStreaming: true,
           } as AIMessage,
         ];
       }
@@ -224,9 +296,7 @@ export const useChat = () => {
         return {
           ...message,
           content: message.content || data.ai_message || '',
-          translation: data.translation ?? message.translation,
-          audioUrl: data.audio_url ?? message.audioUrl,
-          isStreaming: false,
+          // Keep isStreaming true until "done" event
         };
       });
     });
@@ -247,18 +317,15 @@ export const useChat = () => {
         audioUrl?: string;
       };
 
-      applyToCurrentUserMessage((message) => ({
-        ...message,
-        correction: {
-          corrected: Boolean(data.corrected),
-          correctedMessage: data.corrected_message ?? data.correctedMessage ?? message.correction?.correctedMessage,
-          translation: data.translation ?? message.correction?.translation,
-          audioUrl: data.audio_url ?? data.audioUrl ?? message.correction?.audioUrl,
-        },
-        status: 'complete',
-      }));
+      // Store correction data to apply when "done" event is received
+      pendingCorrectionRef.current = {
+        corrected: data.corrected,
+        correctedMessage: data.corrected_message ?? data.correctedMessage,
+        translation: data.translation,
+        audioUrl: data.audio_url ?? data.audioUrl,
+      };
     },
-    [applyToCurrentUserMessage],
+    [],
   );
 
   const handleTranscript = useCallback(
@@ -329,6 +396,9 @@ export const useChat = () => {
       streamAbortRef.current?.();
       streamAbortRef.current = null;
       currentUserMessageIdRef.current = null;
+      currentAIMessageIdRef.current = null;
+      pendingAIDataRef.current = null;
+      pendingCorrectionRef.current = null;
 
       setActiveOverlay(null);
       setStatus({ isStarting: true, isStreaming: false });
@@ -378,6 +448,9 @@ export const useChat = () => {
 
       const userMessageId = createId();
       currentUserMessageIdRef.current = userMessageId;
+      currentAIMessageIdRef.current = null;
+      pendingAIDataRef.current = null;
+      pendingCorrectionRef.current = null;
 
       const newMessage: UserMessage = {
         id: userMessageId,
@@ -422,6 +495,9 @@ export const useChat = () => {
 
       const userMessageId = createId();
       currentUserMessageIdRef.current = userMessageId;
+      currentAIMessageIdRef.current = null;
+      pendingAIDataRef.current = null;
+      pendingCorrectionRef.current = null;
 
       const localUrl =
         typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function'
