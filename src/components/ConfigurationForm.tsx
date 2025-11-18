@@ -63,11 +63,8 @@ export const ConfigurationForm = ({
 			<form onSubmit={onSubmit} className="w-full max-w-3xl space-y-5">
 				<div className="text-center">
 					<h2 className="text-xl font-semibold text-slate-900">
-						Start Your Language Practice
+						Start your language practice
 					</h2>
-					<p className="mt-2 text-xs text-slate-600">
-						Configure your learning preferences to begin
-					</p>
 				</div>
 
 				<div className="space-y-3">
@@ -99,7 +96,7 @@ export const ConfigurationForm = ({
 
 						<div className="flex flex-col gap-1.5">
 							<label className="text-xs font-medium text-slate-700">
-								Student Level
+								Level
 							</label>
 							<Dropdown
 								value={config.studentLevel}

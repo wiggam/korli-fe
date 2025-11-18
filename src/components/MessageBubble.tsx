@@ -114,7 +114,7 @@ const AssistantMessage = ({
 
 	return (
 		<div className="flex justify-start" data-message-id={message.id}>
-			<div className="w-full max-w-full rounded-xl border border-slate-200 bg-white p-2 sm:p-2.5 md:p-3 shadow-sm">
+			<div className="w-full max-w-full rounded-xl bg-white p-2 sm:p-2.5 md:p-3">
 				{/* Main AI text */}
 				<div className="text-xs leading-relaxed text-slate-900 sm:text-sm">
 					<p className="whitespace-pre-wrap">{message.content}</p>
