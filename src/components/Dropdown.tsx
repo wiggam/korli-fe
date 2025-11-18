@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { darkModeColors } from '../utils/theme';
+
 interface DropdownProps {
 	value: string;
 	options: readonly string[] | string[];
@@ -111,14 +113,14 @@ export const Dropdown = ({
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				onKeyDown={handleKeyDown}
-				className={`h-9 w-full rounded-full border border-slate-200 bg-white px-3.5 text-left text-xs text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
+				className={`h-9 w-full rounded-full border ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} px-3.5 text-left text-xs ${darkModeColors.inputText} focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
 					capitalize ? 'capitalize' : ''
 				}`}
 			>
 				<div className="flex items-center justify-between">
 					<span className={capitalize ? 'capitalize' : ''}>{value || placeholder}</span>
 					<svg
-						className={`h-3.5 w-3.5 text-slate-400 transition-transform ${
+						className={`h-3.5 w-3.5 ${darkModeColors.textPlaceholder} transition-transform ${
 							isOpen ? 'rotate-180' : ''
 						}`}
 						fill="none"
@@ -137,10 +139,10 @@ export const Dropdown = ({
 
 			{/* Dropdown Menu */}
 			{isOpen && (
-				<div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border border-slate-200 bg-white shadow-lg">
+				<div className={`absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} shadow-lg`}>
 					{/* Search Input */}
 					{searchable && (
-						<div className="border-b border-slate-200 p-2">
+						<div className={`border-b ${darkModeColors.border} p-2`}>
 							<input
 								ref={searchInputRef}
 								type="text"
@@ -151,7 +153,7 @@ export const Dropdown = ({
 								}}
 								onKeyDown={handleKeyDown}
 								placeholder="Search..."
-								className="h-8 w-full rounded-lg border border-slate-200 px-2.5 text-xs text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
+								className={`h-8 w-full rounded-lg ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} px-2.5 text-xs ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30`}
 							/>
 						</div>
 					)}
@@ -169,17 +171,17 @@ export const Dropdown = ({
 										capitalize ? 'capitalize' : ''
 									} ${
 										option === value
-											? 'bg-blue-50 font-medium text-blue-600'
+											? `${darkModeColors.dropdownOptionSelected} font-medium text-blue-600 dark:text-blue-400`
 											: highlightedIndex === index
-											? 'bg-slate-100 text-slate-900'
-											: 'text-slate-700 hover:bg-slate-50'
+											? `${darkModeColors.dropdownOptionHover} ${darkModeColors.textPrimary}`
+											: `${darkModeColors.textSecondary}`
 									}`}
 								>
 									{option}
 								</button>
 							))
 						) : (
-							<div className="px-2.5 py-4 text-center text-xs text-slate-500">
+							<div className={`px-2.5 py-4 text-center text-xs ${darkModeColors.textMuted}`}>
 								No results found
 							</div>
 						)}

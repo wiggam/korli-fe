@@ -5,17 +5,34 @@
 :root {
 	font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system,
 		BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+	/* Base light background (similar to slate-50/100) */
 	color: #0a0d14;
-	background-color: #04070d;
+	background-color: #f8fafc;
+
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
+/* Let body control the page background in BOTH modes */
 body {
-	@apply min-h-screen bg-korli-dark text-white;
+	min-height: 100vh;
 	margin: 0;
+
+	/* Text stays dark in both modes – we're doing a "dim" theme, not full dark */
+	color: #0f172a; /* slate-900-ish */
+}
+
+/* Light mode background */
+body {
+	background-color: #f8fafc; /* light grey, like slate-50/100 */
+}
+
+/* Dark mode background – medium-light grey for cohesive appearance */
+.dark body {
+	background-color: #64748b; /* slate-500 - medium-light grey */
 }
 
 /* Limit dropdown height and style scrollbar */
@@ -37,11 +54,23 @@ select::-webkit-scrollbar-track {
 	border-radius: 4px;
 }
 
+.dark select::-webkit-scrollbar-track {
+	background: #64748b; /* slate-500 - matches body background */
+}
+
 select::-webkit-scrollbar-thumb {
 	background: #cbd5e1;
 	border-radius: 4px;
 }
 
+.dark select::-webkit-scrollbar-thumb {
+	background: #94a3b8;
+}
+
 select::-webkit-scrollbar-thumb:hover {
 	background: #94a3b8;
+}
+
+.dark select::-webkit-scrollbar-thumb:hover {
+	background: #64748b;
 }

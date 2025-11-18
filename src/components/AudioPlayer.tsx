@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { darkModeColors } from '../utils/theme';
+
 interface AudioPlayerProps {
   src?: string;
   label?: string;
@@ -103,7 +105,7 @@ export const AudioPlayer = ({
   const toneClasses =
     tone === 'dark'
       ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 focus-visible:ring-white/30'
-      : 'bg-white text-slate-700 hover:bg-gray-100 focus-visible:ring-gray-300';
+      : `border ${darkModeColors.messageAiAudioBg} ${darkModeColors.messageAiAudioBorder} ${darkModeColors.messageAiAudioText} ${darkModeColors.messageAiAudioHover} focus-visible:ring-gray-300 dark:focus-visible:ring-slate-400`;
 
   return (
     <button

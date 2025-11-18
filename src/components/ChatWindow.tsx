@@ -7,6 +7,7 @@ import type {
 	OverlayType,
 	StudentLevel,
 } from '../types/chat';
+import { darkModeColors } from '../utils/theme';
 import { ConfigurationForm } from './ConfigurationForm';
 import { MessageBubble } from './MessageBubble';
 
@@ -20,7 +21,7 @@ interface ChatWindowProps {
 	levels: StudentLevel[];
 	onConfigChange: (
 		field: keyof ChatConfig
-	) => (event: ChangeEvent<HTMLSelectElement>) => void;
+	) => (value: string) => void;
 	onStartSession: (event: FormEvent) => void;
 	onReset: () => void;
 	hasSession: boolean;
@@ -103,10 +104,10 @@ export const ChatWindow = ({
 					<div className="flex flex-1 flex-col px-2 sm:px-3 md:px-4 pt-0.5 sm:pt-1 md:pt-1.5 pb-1 sm:pb-1.5 md:pb-2 min-h-0">
 						<div
 							ref={scrollRef}
-							className="relative flex-1 w-full overflow-y-auto rounded-2xl bg-white px-2 sm:px-3 md:px-4 pt-1 sm:pt-1.5 md:pt-2 pb-2 sm:pb-3 md:pb-4"
+							className={`relative flex-1 w-full overflow-y-auto rounded-2xl ${darkModeColors.bgChatScroll} px-2 sm:px-3 md:px-4 pt-1 sm:pt-1.5 md:pt-2 pb-2 sm:pb-3 md:pb-4`}
 						>
 							{messages.length === 0 ? (
-								<div className="flex h-full flex-col items-center justify-center gap-3 text-center text-slate-500">
+								<div className={`flex h-full flex-col items-center justify-center gap-3 text-center ${darkModeColors.chatHint}`}>
 									<p className="text-lg font-semibold">Your tutor is ready</p>
 									<p className="text-sm max-w-sm">
 										Start typing or recording to begin your conversation

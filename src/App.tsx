@@ -10,6 +10,7 @@ import { Settings } from './components/Settings';
 import { LANGUAGES } from './constants/languages';
 import { useChat } from './hooks/useChat';
 import type { ChatConfig, GenderOption, StudentLevel } from './types/chat';
+import { darkModeColors } from './utils/theme';
 
 const LEVELS: StudentLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -121,11 +122,14 @@ function App() {
 		setActivePage(page);
 	};
 
-		return (
-		<div className="flex min-h-screen flex-col bg-slate-50 px-4 pt-3 sm:pt-4 pb-5 sm:pb-6">
+	return (
+		<div className="flex min-h-screen flex-col px-4 pt-3 sm:pt-4 pb-5 sm:pb-6">
 			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-2 sm:gap-3">
 				<header className="relative flex items-center">
-					<NavigationTabs activePage={activePage} onPageChange={handlePageChange} />
+					<NavigationTabs
+						activePage={activePage}
+						onPageChange={handlePageChange}
+					/>
 					<div className="absolute left-0 right-0 flex justify-center pointer-events-none">
 						<img
 							src="/korli-logo.png"
@@ -136,7 +140,7 @@ function App() {
 					<button
 						type="button"
 						onClick={handleOpenSettings}
-						className="absolute right-0 p-1.5 sm:p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 rounded-full"
+						className={`absolute right-0 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
 						aria-label="Settings"
 					>
 						<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -144,12 +148,12 @@ function App() {
 				</header>
 
 				{error && (
-					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
 						<p>{error}</p>
 						<button
 							type="button"
 							onClick={clearError}
-							className="rounded-full border border-red-300/30 px-3 py-1 text-xs uppercase tracking-wide text-red-100 transition hover:bg-red-500/20"
+							className="rounded-full border border-red-300/30 px-3 py-1 text-xs uppercase tracking-wide text-red-700 transition hover:bg-red-500/10"
 						>
 							Dismiss
 						</button>
@@ -158,7 +162,15 @@ function App() {
 
 				{activePage === 'chat' ? (
 					/* Unified chat area - configuration, messages, and input */
-					<section className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]">
+					<section
+						className={[
+							'flex flex-1 flex-col overflow-hidden rounded-3xl shadow-lg',
+							'max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]',
+							'border',
+							darkModeColors.border,
+							darkModeColors.bgSurface,
+						].join(' ')}
+					>
 						<ChatWindow
 							messages={messages}
 							activeOverlay={activeOverlay}

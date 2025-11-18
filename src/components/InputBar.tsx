@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { UserCircle2 } from 'lucide-react';
 
+import { useTheme } from '../contexts/ThemeContext';
+import { darkModeColors, getThemeButtonClasses } from '../utils/theme';
 import { AudioPlayer } from './AudioPlayer';
 
 interface InputBarProps {
@@ -18,7 +20,7 @@ const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const MicIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700"
+		className="h-4 w-4 sm:h-5 sm:w-5"
 		fill="currentColor"
 	>
 		<path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V22h-2v-2.06A8 8 0 0 1 4 12a1 1 0 0 1 2 0 6 6 0 0 0 12 0z" />
@@ -28,7 +30,7 @@ const MicIcon = () => (
 const StopIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-700"
+		className="h-3.5 w-3.5 sm:h-4 sm:w-4"
 		fill="currentColor"
 	>
 		<path d="M6 6h12v12H6z" />
@@ -48,6 +50,7 @@ export const InputBar = ({
 	onSendAudio,
 	onOpenGenderSettings,
 }: InputBarProps) => {
+	const { theme } = useTheme();
 	const [text, setText] = useState('');
 	const [recordingState, setRecordingState] = useState<RecordingState>('idle');
 	const [timer, setTimer] = useState(0);
@@ -283,9 +286,9 @@ export const InputBar = ({
 	return (
 		<div className="space-y-3 px-2 sm:px-4 py-1.5 sm:py-2">
 			{recordingState === 'preview' && previewUrl && (
-				<div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
-					<div className="flex flex-col gap-1 text-sm text-slate-700">
-						<span className="font-semibold uppercase tracking-wide text-slate-500">
+				<div className={`flex flex-col gap-3 rounded-2xl ${darkModeColors.border} ${darkModeColors.sectionBg} p-3 sm:flex-row sm:items-center sm:justify-between`}>
+					<div className={`flex flex-col gap-1 text-sm ${darkModeColors.textSecondary}`}>
+						<span className={`font-semibold uppercase tracking-wide ${darkModeColors.textMuted}`}>
 							Audio preview
 						</span>
 						<AudioPlayer
@@ -298,7 +301,7 @@ export const InputBar = ({
 					<div className="flex gap-2">
 						<button
 							type="button"
-							className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-950 transition hover:bg-emerald-400"
+							className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-950 dark:text-emerald-50 transition hover:bg-emerald-400"
 							onClick={sendAudio}
 						>
 							<SendIcon />
@@ -307,7 +310,7 @@ export const InputBar = ({
 						<button
 							type="button"
 							onClick={resetPreview}
-							className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+							className={`rounded-full ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-4 py-2 text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
 						>
 							Delete
 						</button>
@@ -315,7 +318,7 @@ export const InputBar = ({
 				</div>
 			)}
 
-	<div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-3">
+	<div className={`flex items-center gap-2 rounded-full border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}>
 		<textarea
 			ref={textareaRef}
 			value={text}
@@ -328,7 +331,7 @@ export const InputBar = ({
 				}
 			}}
 			rows={1}
-			className="flex-1 resize-none overflow-hidden bg-transparent text-xs sm:text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+			className={`flex-1 resize-none overflow-hidden bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
 				placeholder={
 					hasSession
 						? recordingState === 'recording'
@@ -344,21 +347,21 @@ export const InputBar = ({
 				type="button"
 				onClick={onOpenGenderSettings}
 					disabled={!hasSession}
-					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
+					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${
 						hasSession
-							? 'bg-white text-slate-700 hover:bg-gray-100'
+							? `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
 							: 'cursor-not-allowed opacity-50'
 					}`}
 					aria-label="Gender settings"
 				>
-					<UserCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
+					<UserCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${darkModeColors.inputIconText}`} />
 				</button>
 				<button
 					type="button"
-					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full transition ${
+					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${
 						recordingState === 'recording'
-							? 'bg-red-50 text-red-600'
-							: 'bg-white text-slate-700 hover:bg-gray-100'
+							? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400'
+							: `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
 					} ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
 					onClick={
 						recordingState === 'recording' ? stopRecording : startRecording
@@ -381,7 +384,7 @@ export const InputBar = ({
 					!text.trim() ||
 					recordingState !== 'idle'
 				}
-				className="inline-flex h-7 sm:h-9 items-center justify-center rounded-full bg-blue-500 px-3 sm:px-4 text-xs sm:text-sm font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+				className={`inline-flex h-7 sm:h-9 items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold transition ${getThemeButtonClasses(theme.color, !hasSession || disabled || !text.trim() || recordingState !== 'idle')}`}
 			>
 				<SendIcon />
 			</button>
