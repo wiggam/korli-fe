@@ -1,6 +1,7 @@
 import { useTheme } from '../contexts/ThemeContext';
-import { THEME_COLORS, THEME_MODES, type ThemeColor, type ThemeMode } from '../types/theme';
+import { THEME_COLORS, type ThemeColor, type ThemeMode } from '../types/theme';
 import { darkModeColors, getThemeColorClasses } from '../utils/theme';
+import { TwoOptionSlider } from './TwoOptionSlider';
 
 interface SettingsProps {
 	onClose: () => void;
@@ -58,23 +59,16 @@ export const Settings = ({ onClose }: SettingsProps) => {
 					<div className="space-y-2.5 sm:space-y-3 px-2.5 sm:px-3 py-2.5 sm:py-3">
 						{/* Dark Mode Toggle */}
 						<div className="space-y-1.5">
-							<label className={`text-[9px] sm:text-[10px] font-medium ${darkModeColors.textSecondary}`}>Theme Mode</label>
-							<div className="flex gap-1.5">
-								{THEME_MODES.map((mode) => (
-									<button
-										key={mode}
-										type="button"
-										onClick={() => handleModeChange(mode)}
-										className={`flex-1 rounded-full border px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-semibold transition capitalize ${
-											theme.mode === mode
-												? `${getThemeColorClasses(theme.color).border} ${getThemeColorClasses(theme.color).primary} text-white`
-												: `${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} ${darkModeColors.bgHover}`
-										}`}
-									>
-										{mode}
-									</button>
-								))}
-							</div>
+							<label className={`block text-[9px] sm:text-[10px] font-medium ${darkModeColors.textSecondary}`}>Theme Mode</label>
+							<TwoOptionSlider
+								leftOption="light"
+								rightOption="dark"
+								value={theme.mode}
+								onChange={handleModeChange}
+								leftLabel="Light"
+								rightLabel="Dark"
+								size="sm"
+							/>
 						</div>
 
 						{/* Theme Color Selector */}
