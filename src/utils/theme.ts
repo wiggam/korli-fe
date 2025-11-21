@@ -30,6 +30,7 @@ const DARK_COLORS = {
 
 	// Background colors (use full class strings with dark: prefix)
 	bgButton: 'dark:bg-[#8795A6]', // Button backgrounds
+	bgSlider: 'dark:bg-slate-500', // Slider background (for TwoOptionSlider)
 	bgHover: 'dark:hover:bg-slate-500', // Hover backgrounds
 	bgHoverDark: 'dark:hover:bg-slate-600', // Darker hover backgrounds
 	bgHoverStatic: 'dark:bg-slate-500', // Static hover background (for dropdowns)
@@ -101,6 +102,9 @@ export const darkModeColors = {
 	tabText: `text-slate-700 ${DARK_COLORS.textMuted}`,
 	tabTextActive: `text-white ${DARK_COLORS.textPrimary}`,
 	tabHover: `hover:text-slate-900 ${DARK_COLORS.textPrimary}`,
+
+	// Slider background (for TwoOptionSlider - separate from tabs to stand out on modals)
+	sliderBg: `bg-slate-100 ${DARK_COLORS.bgSlider}`,
 
 	// Message bubbles
 	messageAiBg: `bg-white ${DARK_COLORS.chatBackground}`,

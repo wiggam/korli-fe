@@ -8,6 +8,8 @@ interface TwoOptionSliderProps<T extends string> {
 	onChange: (value: T) => void;
 	leftLabel: string;
 	rightLabel: string;
+	leftIcon?: React.ReactNode;
+	rightIcon?: React.ReactNode;
 	size?: 'sm' | 'md';
 	className?: string;
 }
@@ -32,6 +34,8 @@ export const TwoOptionSlider = <T extends string>({
 	onChange,
 	leftLabel,
 	rightLabel,
+	leftIcon,
+	rightIcon,
 	size = 'md',
 	className = '',
 }: TwoOptionSliderProps<T>) => {
@@ -47,7 +51,7 @@ export const TwoOptionSlider = <T extends string>({
 
 	return (
 		<div
-			className={`relative inline-flex shrink-0 items-center rounded-full ${darkModeColors.tabBg} p-[2px] ${className}`}
+			className={`relative inline-flex shrink-0 items-center rounded-full ${darkModeColors.sliderBg} p-[2px] ${className}`}
 			role="radiogroup"
 			aria-label="Mode selector"
 		>
@@ -72,17 +76,18 @@ export const TwoOptionSlider = <T extends string>({
 					onClick={() => handleClick(leftOption)}
 					role="radio"
 					aria-checked={isLeft}
+					aria-label={leftLabel}
 					className={`relative z-10 flex items-center justify-center rounded-full ${
 						styles.buttonHeight
-					} ${styles.buttonPaddingX} ${
-						styles.buttonText
+					} ${leftIcon ? 'px-2' : styles.buttonPaddingX} ${
+						!leftIcon ? styles.buttonText : ''
 					} font-medium transition-colors duration-200 ${
 						isLeft
 							? darkModeColors.tabTextActive
 							: `${darkModeColors.tabText} ${darkModeColors.tabHover}`
 					}`}
 				>
-					{leftLabel}
+					{leftIcon ? leftIcon : leftLabel}
 				</button>
 
 				<button
@@ -90,17 +95,18 @@ export const TwoOptionSlider = <T extends string>({
 					onClick={() => handleClick(rightOption)}
 					role="radio"
 					aria-checked={!isLeft}
+					aria-label={rightLabel}
 					className={`relative z-10 flex items-center justify-center rounded-full ${
 						styles.buttonHeight
-					} ${styles.buttonPaddingX} ${
-						styles.buttonText
+					} ${rightIcon ? 'px-2' : styles.buttonPaddingX} ${
+						!rightIcon ? styles.buttonText : ''
 					} font-medium transition-colors duration-200 ${
 						!isLeft
 							? darkModeColors.tabTextActive
 							: `${darkModeColors.tabText} ${darkModeColors.tabHover}`
 					}`}
 				>
-					{rightLabel}
+					{rightIcon ? rightIcon : rightLabel}
 				</button>
 			</div>
 		</div>

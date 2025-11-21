@@ -1,3 +1,4 @@
+import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { THEME_COLORS, type ThemeColor, type ThemeMode } from '../types/theme';
 import { darkModeColors, getThemeColorClasses } from '../utils/theme';
@@ -67,6 +68,8 @@ export const Settings = ({ onClose }: SettingsProps) => {
 								onChange={handleModeChange}
 								leftLabel="Light"
 								rightLabel="Dark"
+								leftIcon={<Sun className="h-3 w-3" />}
+								rightIcon={<Moon className="h-3 w-3" />}
 								size="sm"
 							/>
 						</div>
