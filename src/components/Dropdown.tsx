@@ -28,16 +28,20 @@ export const Dropdown = ({
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
 	// Filter options based on search term
-	const filteredOptions = searchable && searchTerm
-		? options.filter((option) =>
-				option.toLowerCase().includes(searchTerm.toLowerCase())
-		  )
-		: options;
+	const filteredOptions =
+		searchable && searchTerm
+			? options.filter((option) =>
+					option.toLowerCase().includes(searchTerm.toLowerCase())
+			  )
+			: options;
 
 	// Close dropdown when clicking outside
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
 				setIsOpen(false);
 				setSearchTerm('');
 			}
@@ -99,7 +103,10 @@ export const Dropdown = ({
 				break;
 			case 'Enter':
 				e.preventDefault();
-				if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
+				if (
+					highlightedIndex >= 0 &&
+					highlightedIndex < filteredOptions.length
+				) {
 					handleSelect(filteredOptions[highlightedIndex]);
 				}
 				break;
@@ -113,16 +120,22 @@ export const Dropdown = ({
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				onKeyDown={handleKeyDown}
-				className={`h-9 w-full rounded-full border ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} px-3.5 text-left text-xs ${darkModeColors.inputText} focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
+				className={`h-9 w-full rounded-full border ${
+					darkModeColors.dropdownBorder
+				} ${darkModeColors.dropdownBg} px-3.5 text-left text-xs ${
+					darkModeColors.inputText
+				} focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
 					capitalize ? 'capitalize' : ''
 				}`}
 			>
 				<div className="flex items-center justify-between">
-					<span className={capitalize ? 'capitalize' : ''}>{value || placeholder}</span>
+					<span className={capitalize ? 'capitalize' : ''}>
+						{value || placeholder}
+					</span>
 					<svg
-						className={`h-3.5 w-3.5 ${darkModeColors.textPlaceholder} transition-transform ${
-							isOpen ? 'rotate-180' : ''
-						}`}
+						className={`h-3.5 w-3.5 ${
+							darkModeColors.textPlaceholder
+						} transition-transform ${isOpen ? 'rotate-180' : ''}`}
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -139,7 +152,9 @@ export const Dropdown = ({
 
 			{/* Dropdown Menu */}
 			{isOpen && (
-				<div className={`absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} shadow-lg`}>
+				<div
+					className={`absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} shadow-lg`}
+				>
 					{/* Search Input */}
 					{searchable && (
 						<div className={`border-b ${darkModeColors.border} p-2`}>
@@ -181,7 +196,9 @@ export const Dropdown = ({
 								</button>
 							))
 						) : (
-							<div className={`px-2.5 py-4 text-center text-xs ${darkModeColors.textMuted}`}>
+							<div
+								className={`px-2.5 py-4 text-center text-xs ${darkModeColors.textMuted}`}
+							>
 								No results found
 							</div>
 						)}
@@ -191,4 +208,3 @@ export const Dropdown = ({
 		</div>
 	);
 };
-

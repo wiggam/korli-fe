@@ -20,13 +20,13 @@ export const darkModeColors = {
 	bgBody: 'bg-slate-50 dark:bg-slate-500',
 
 	// Card / surface backgrounds
-	bgSurface: 'bg-white dark:bg-slate-400',
-	bgCard: 'bg-white dark:bg-slate-400',
-	bgModal: 'bg-white dark:bg-slate-400',
+	bgSurface: 'bg-white dark:bg-[#8795A6]',
+	bgCard: 'bg-white dark:bg-[#8795A6]',
+	bgModal: 'bg-white dark:bg-[#8795A6]',
 
 	// Chat area specific
-	bgChatArea: 'bg-white dark:bg-slate-400',
-	bgChatScroll: 'bg-white dark:bg-slate-400',
+	bgChatArea: 'bg-white dark:bg-[#8795A6]',
+	bgChatScroll: 'bg-white dark:bg-[#8795A6]',
 
 	// Hover backgrounds for subtle emphasis
 	bgHover: 'hover:bg-slate-100 dark:hover:bg-slate-500',
@@ -42,7 +42,7 @@ export const darkModeColors = {
 	textPrimary: 'text-slate-900 dark:text-white',
 	textSecondary: 'text-slate-700 dark:text-slate-100',
 	textMuted: 'text-slate-600 dark:text-slate-200',
-	textPlaceholder: 'text-slate-400 dark:text-slate-300',
+	textPlaceholder: 'text-slate-400 dark:text-slate-100',
 	// Chat hints - light text to stand out in dark mode
 	chatHint: 'text-slate-600 dark:text-white',
 
@@ -54,12 +54,13 @@ export const darkModeColors = {
 	buttonSecondaryHover: 'hover:bg-slate-100 dark:hover:bg-slate-600',
 
 	// Input fields
-	inputBg: 'bg-white dark:bg-slate-300',
+	inputBg: 'bg-white dark:bg-[#A1ACBA]',
 	inputBorder: 'border-slate-200 dark:border-slate-500',
 	inputText: 'text-slate-900 dark:text-white',
-	inputPlaceholder: 'text-slate-400 dark:text-white',
+	inputPlaceholder:
+		'placeholder:text-slate-400 dark:placeholder:text-[#F0F2F4]',
 	// Input bar icon buttons (person, mic icons)
-	inputIconBg: 'bg-white dark:bg-slate-300',
+	inputIconBg: 'bg-white dark:bg-[#A1ACBA]',
 	inputIconBorder: 'border-transparent dark:border-transparent',
 	inputIconText: 'text-slate-700 dark:text-white',
 	inputIconHover: 'hover:bg-gray-100 dark:hover:bg-slate-400',
@@ -71,16 +72,16 @@ export const darkModeColors = {
 	tabHover: 'hover:text-slate-900 dark:hover:text-white',
 
 	// Message bubbles
-	messageAiBg: 'bg-white dark:bg-slate-400',
+	messageAiBg: 'bg-white dark:bg-[#8795A6]',
 	messageAiText: 'text-slate-900 dark:text-white',
 	messageUserPill: 'dark:bg-slate-500', // Will be combined with theme color
 	messageUserText: 'dark:text-white',
 	// AI message icon buttons - borders should match chat background
-	messageAiIconBg: 'bg-white dark:bg-slate-400',
+	messageAiIconBg: 'bg-white dark:bg-[#8795A6]',
 	messageAiIconBorder: 'border-transparent dark:border-transparent',
 	messageAiIconText: 'text-slate-700 dark:text-white',
 	// AI message audio player buttons
-	messageAiAudioBg: 'bg-white dark:bg-slate-400',
+	messageAiAudioBg: 'bg-white dark:bg-[#8795A6]',
 	messageAiAudioBorder: 'border-transparent dark:border-transparent',
 	messageAiAudioText: 'text-slate-700 dark:text-white',
 	messageAiAudioHover: 'hover:bg-gray-100 dark:hover:bg-slate-500',
