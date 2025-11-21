@@ -65,7 +65,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
 										key={mode}
 										type="button"
 										onClick={() => handleModeChange(mode)}
-										className={`flex-1 rounded-full border-2 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-semibold transition capitalize ${
+										className={`flex-1 rounded-full border px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-semibold transition capitalize ${
 											theme.mode === mode
 												? `${getThemeColorClasses(theme.color).border} ${getThemeColorClasses(theme.color).primary} text-white`
 												: `${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} ${darkModeColors.bgHover}`
@@ -96,7 +96,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
 											key={color}
 											type="button"
 											onClick={() => handleColorChange(color)}
-											className={`h-5 w-5 sm:h-6 sm:w-6 rounded-full border-2 transition ${
+											className={`h-5 w-5 sm:h-6 sm:w-6 rounded-full border transition ${
 												theme.color === color
 													? `${colorClasses.border} ring-2 ${colorClasses.ring} ring-offset-1`
 													: `${darkModeColors.borderMuted} hover:border-slate-400 dark:hover:border-slate-500`
@@ -111,13 +111,13 @@ export const Settings = ({ onClose }: SettingsProps) => {
 
 					{/* Footer */}
 					<div className={`flex gap-1.5 border-t ${darkModeColors.border} px-2.5 sm:px-3 py-1.5 sm:py-2`}>
-						<button
-							type="button"
-							onClick={onClose}
-							className={`flex-1 rounded-full ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-semibold transition ${darkModeColors.bgHoverLight}`}
-						>
-							Close
-						</button>
+					<button
+						type="button"
+						onClick={onClose}
+						className={`flex-1 rounded-full border ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-semibold transition ${darkModeColors.bgHoverLight}`}
+					>
+						Close
+					</button>
 					</div>
 				</div>
 			</div>
