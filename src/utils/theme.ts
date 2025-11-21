@@ -11,94 +11,125 @@ export interface ThemeColorClasses {
 }
 
 /**
+ * Centralized dark mode color constants
+ * Change these values to quickly test different color schemes
+ *
+ * IMPORTANT: Use full Tailwind class names (e.g., 'dark:bg-slate-500') or hex values with brackets (e.g., 'dark:bg-[#8795A6]')
+ * Tailwind's JIT compiler needs to see the complete class names at build time.
+ */
+const DARK_COLORS = {
+	// Main backgrounds (use full class strings with dark: prefix)
+	chatBackground: 'dark:bg-[#8795A6]', // Main chat area, cards, modals, AI message backgrounds
+	inputBackground: 'dark:bg-[#A1ACBA]', // Input fields and input icon buttons
+
+	// Text colors (use full class strings with dark: prefix)
+	textPrimary: 'dark:text-white', // Primary text color
+	textSecondary: 'dark:text-slate-100', // Secondary text color
+	textMuted: 'dark:text-slate-200', // Muted text color
+	textPlaceholder: 'dark:placeholder:text-[#F0F2F4]', // Placeholder text color
+
+	// Background colors (use full class strings with dark: prefix)
+	bgButton: 'dark:bg-[#8795A6]', // Button backgrounds
+	bgHover: 'dark:hover:bg-slate-500', // Hover backgrounds
+	bgHoverDark: 'dark:hover:bg-slate-600', // Darker hover backgrounds
+	bgHoverStatic: 'dark:bg-slate-500', // Static hover background (for dropdowns)
+	bgHoverAudio: 'dark:hover:bg-slate-500', // Audio player hover background
+	bgSection: 'dark:bg-slate-500', // Section backgrounds
+	bgDropdown: 'dark:bg-slate-400', // Dropdown background
+
+	// Border colors (use full class strings with dark: prefix)
+	borderDefault: 'dark:border-slate-500', // Default borders
+	borderStrong: 'dark:border-slate-600', // Strong borders
+	borderHover: 'dark:hover:bg-slate-400', // Hover background
+} as const;
+
+/**
  * Dark mode color utilities - centralized color classes
  * Dark mode uses medium-light grey palette (slate-400 to slate-600 range)
  * for a cohesive, readable appearance that's not too dark or too light.
  */
 export const darkModeColors = {
 	// Body background
-	bgBody: 'bg-slate-50 dark:bg-slate-500',
+	bgBody: `bg-slate-50 ${DARK_COLORS.bgButton}`,
 
 	// Card / surface backgrounds
-	bgSurface: 'bg-white dark:bg-[#8795A6]',
-	bgCard: 'bg-white dark:bg-[#8795A6]',
-	bgModal: 'bg-white dark:bg-[#8795A6]',
+	bgSurface: `bg-white ${DARK_COLORS.chatBackground}`,
+	bgCard: `bg-white ${DARK_COLORS.chatBackground}`,
+	bgModal: `bg-white ${DARK_COLORS.chatBackground}`,
 
 	// Chat area specific
-	bgChatArea: 'bg-white dark:bg-[#8795A6]',
-	bgChatScroll: 'bg-white dark:bg-[#8795A6]',
+	bgChatArea: `bg-white ${DARK_COLORS.chatBackground}`,
+	bgChatScroll: `bg-white ${DARK_COLORS.chatBackground}`,
 
 	// Hover backgrounds for subtle emphasis
-	bgHover: 'hover:bg-slate-100 dark:hover:bg-slate-500',
-	bgHoverLight: 'hover:bg-slate-50 dark:hover:bg-slate-500',
+	bgHover: `hover:bg-slate-100 ${DARK_COLORS.bgHover}`,
+	bgHoverLight: `hover:bg-slate-50 ${DARK_COLORS.bgHover}`,
 
 	// Borders
-	border: 'border-slate-200 dark:border-slate-500',
-	borderMuted: 'border-slate-300 dark:border-slate-500',
-	borderStrong: 'border-slate-400 dark:border-slate-600',
+	border: `border-slate-200 ${DARK_COLORS.borderDefault}`,
+	borderMuted: `border-slate-300 ${DARK_COLORS.borderDefault}`,
+	borderStrong: `border-slate-400 ${DARK_COLORS.borderStrong}`,
 
 	// Text - light text for dark mode to contrast with slate-500/400 backgrounds
-	text: 'text-slate-900 dark:text-white',
-	textPrimary: 'text-slate-900 dark:text-white',
-	textSecondary: 'text-slate-700 dark:text-slate-100',
-	textMuted: 'text-slate-600 dark:text-slate-200',
-	textPlaceholder: 'text-slate-400 dark:text-slate-100',
+	text: `text-slate-900 ${DARK_COLORS.textPrimary}`,
+	textPrimary: `text-slate-900 ${DARK_COLORS.textPrimary}`,
+	textSecondary: `text-slate-700 ${DARK_COLORS.textSecondary}`,
+	textMuted: `text-slate-600 ${DARK_COLORS.textMuted}`,
+	textPlaceholder: `text-slate-400 ${DARK_COLORS.textSecondary}`,
 	// Chat hints - light text to stand out in dark mode
-	chatHint: 'text-slate-600 dark:text-white',
+	chatHint: `text-slate-600 ${DARK_COLORS.textPrimary}`,
 
 	// Buttons / interactive surfaces
-	button: 'bg-slate-100 dark:bg-slate-500 text-slate-800 dark:text-white',
-	buttonHover: 'hover:bg-slate-200 dark:hover:bg-slate-600',
-	buttonSecondary:
-		'bg-slate-50 dark:bg-slate-500 text-slate-800 dark:text-white',
-	buttonSecondaryHover: 'hover:bg-slate-100 dark:hover:bg-slate-600',
+	button: `bg-slate-100 ${DARK_COLORS.bgButton} text-slate-800 ${DARK_COLORS.textPrimary}`,
+	buttonHover: `hover:bg-slate-200 ${DARK_COLORS.bgHoverDark}`,
+	buttonSecondary: `bg-slate-50 ${DARK_COLORS.bgButton} text-slate-800 ${DARK_COLORS.textPrimary}`,
+	buttonSecondaryHover: `hover:bg-slate-100 ${DARK_COLORS.bgHoverDark}`,
 
 	// Input fields
-	inputBg: 'bg-white dark:bg-[#A1ACBA]',
-	inputBorder: 'border-slate-200 dark:border-slate-500',
-	inputText: 'text-slate-900 dark:text-white',
-	inputPlaceholder:
-		'placeholder:text-slate-400 dark:placeholder:text-[#F0F2F4]',
+	inputBg: `bg-white ${DARK_COLORS.inputBackground}`,
+	inputBorder: `border-slate-200 ${DARK_COLORS.borderDefault}`,
+	inputText: `text-slate-900 ${DARK_COLORS.textPrimary}`,
+	inputPlaceholder: `placeholder:text-slate-400 ${DARK_COLORS.textPlaceholder}`,
 	// Input bar icon buttons (person, mic icons)
-	inputIconBg: 'bg-white dark:bg-[#A1ACBA]',
+	inputIconBg: `bg-white ${DARK_COLORS.inputBackground}`,
 	inputIconBorder: 'border-transparent dark:border-transparent',
-	inputIconText: 'text-slate-700 dark:text-white',
-	inputIconHover: 'hover:bg-gray-100 dark:hover:bg-slate-400',
+	inputIconText: `text-slate-700 ${DARK_COLORS.textPrimary}`,
+	inputIconHover: `hover:bg-gray-100 ${DARK_COLORS.borderHover}`,
 
 	// Navigation tabs
-	tabBg: 'bg-slate-100 dark:bg-slate-500',
-	tabText: 'text-slate-700 dark:text-slate-200',
-	tabTextActive: 'text-white dark:text-white',
-	tabHover: 'hover:text-slate-900 dark:hover:text-white',
+	tabBg: `bg-slate-100 ${DARK_COLORS.bgButton}`,
+	tabText: `text-slate-700 ${DARK_COLORS.textMuted}`,
+	tabTextActive: `text-white ${DARK_COLORS.textPrimary}`,
+	tabHover: `hover:text-slate-900 ${DARK_COLORS.textPrimary}`,
 
 	// Message bubbles
-	messageAiBg: 'bg-white dark:bg-[#8795A6]',
-	messageAiText: 'text-slate-900 dark:text-white',
-	messageUserPill: 'dark:bg-slate-500', // Will be combined with theme color
-	messageUserText: 'dark:text-white',
+	messageAiBg: `bg-white ${DARK_COLORS.chatBackground}`,
+	messageAiText: `text-slate-900 ${DARK_COLORS.textPrimary}`,
+	messageUserPill: DARK_COLORS.bgButton, // Will be combined with theme color
+	messageUserText: DARK_COLORS.textPrimary,
 	// AI message icon buttons - borders should match chat background
-	messageAiIconBg: 'bg-white dark:bg-[#8795A6]',
+	messageAiIconBg: `bg-white ${DARK_COLORS.chatBackground}`,
 	messageAiIconBorder: 'border-transparent dark:border-transparent',
-	messageAiIconText: 'text-slate-700 dark:text-white',
+	messageAiIconText: `text-slate-700 ${DARK_COLORS.textPrimary}`,
 	// AI message audio player buttons
-	messageAiAudioBg: 'bg-white dark:bg-[#8795A6]',
+	messageAiAudioBg: `bg-white ${DARK_COLORS.chatBackground}`,
 	messageAiAudioBorder: 'border-transparent dark:border-transparent',
-	messageAiAudioText: 'text-slate-700 dark:text-white',
-	messageAiAudioHover: 'hover:bg-gray-100 dark:hover:bg-slate-500',
+	messageAiAudioText: `text-slate-700 ${DARK_COLORS.textPrimary}`,
+	messageAiAudioHover: `hover:bg-gray-100 ${DARK_COLORS.bgHoverAudio}`,
 
 	// Icon buttons
-	iconButton: 'bg-white dark:bg-slate-500 text-slate-700 dark:text-white',
-	iconButtonHover: 'hover:bg-gray-100 dark:hover:bg-slate-600',
+	iconButton: `bg-white ${DARK_COLORS.bgButton} text-slate-700 ${DARK_COLORS.textPrimary}`,
+	iconButtonHover: `hover:bg-gray-100 ${DARK_COLORS.bgHoverDark}`,
 
 	// Dropdown
-	dropdownBg: 'bg-white dark:bg-slate-400',
-	dropdownBorder: 'border-slate-200 dark:border-slate-500',
-	dropdownOptionHover: 'bg-slate-100 dark:bg-slate-500',
+	dropdownBg: `bg-white ${DARK_COLORS.bgDropdown}`,
+	dropdownBorder: `border-slate-200 ${DARK_COLORS.borderDefault}`,
+	dropdownOptionHover: `bg-slate-100 ${DARK_COLORS.bgHoverStatic}`,
 	dropdownOptionSelected: 'bg-blue-50 dark:bg-blue-900/30',
 
 	// Special sections (translation, correction boxes)
-	sectionBg: 'bg-slate-50 dark:bg-slate-500',
-	sectionBorder: 'border-slate-200 dark:border-slate-600',
+	sectionBg: `bg-slate-50 ${DARK_COLORS.bgSection}`,
+	sectionBorder: `border-slate-200 ${DARK_COLORS.borderStrong}`,
 } as const;
 
 export const getThemeColorClasses = (color: ThemeColor): ThemeColorClasses => {
