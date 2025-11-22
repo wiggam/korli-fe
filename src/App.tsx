@@ -114,35 +114,41 @@ function App() {
 
 	return (
 		<div className="flex min-h-screen flex-col">
-			<header
-				className={`fixed top-0 left-0 right-0 z-50 px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 bg-transparent`}
+			{/* Navigation Tabs - Fixed on the left, outside header */}
+			<div className="fixed top-4 left-4 z-50">
+				<NavigationTabs
+					activePage={activePage}
+					onPageChange={handlePageChange}
+				/>
+			</div>
+
+			{/* Settings Button - Fixed on the right, outside header */}
+			<button
+				type="button"
+				onClick={handleOpenSettings}
+				className={`fixed top-4 right-4 z-50 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
+				aria-label="Settings"
 			>
-				<div className="mx-auto max-w-5xl">
-					<div className="relative flex items-center">
-						<NavigationTabs
-							activePage={activePage}
-							onPageChange={handlePageChange}
-						/>
-						{activePage === 'chat' && (
-							<div className="absolute left-0 right-0 flex justify-center pointer-events-none">
-								<img
-									src="/korli-logo.png"
-									alt="Korli - AI Language Coach"
-									className="h-6 w-auto sm:h-8 pointer-events-auto"
-								/>
-							</div>
-						)}
-						<button
-							type="button"
-							onClick={handleOpenSettings}
-							className={`absolute right-0 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
-							aria-label="Settings"
-						>
-							<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-						</button>
+				<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+			</button>
+
+			{/* Header - Only for logo on chat page */}
+			{activePage === 'chat' && (
+				<header
+					className={`fixed top-0 left-0 right-0 z-40 px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 bg-transparent`}
+				>
+					<div className="mx-auto max-w-5xl">
+						<div className="flex items-center justify-center">
+							<img
+								src="/korli-logo.png"
+								alt="Korli - AI Language Coach"
+								className="h-6 w-auto sm:h-8"
+							/>
+						</div>
 					</div>
-				</div>
-			</header>
+				</header>
+			)}
+
 			<main
 				className={`mx-auto flex w-full ${
 					activePage === 'info' ? '' : 'max-w-5xl'
