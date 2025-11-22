@@ -19,8 +19,10 @@ export interface ThemeColorClasses {
  */
 const DARK_COLORS = {
 	// Main backgrounds (use full class strings with dark: prefix)
+	pageBackground: 'dark:bg-slate-500', // Page background
 	chatBackground: 'dark:bg-[#8795A6]', // Main chat area, cards, modals, AI message backgrounds
 	inputBackground: 'dark:bg-[#A1ACBA]', // Input fields and input icon buttons
+	infoPageAlt: 'dark:bg-[#768A9D]', // Alternate background for info page sections
 
 	// Text colors (use full class strings with dark: prefix)
 	textPrimary: 'dark:text-white', // Primary text color
@@ -134,6 +136,10 @@ export const darkModeColors = {
 	// Special sections (translation, correction boxes)
 	sectionBg: `bg-slate-50 ${DARK_COLORS.bgSection}`,
 	sectionBorder: `border-slate-200 ${DARK_COLORS.borderStrong}`,
+
+	// Info page sections
+	infoPageSection1: `bg-white ${DARK_COLORS.bgButton}`, // Primary section background (white in light, matches dark mode background)
+	infoPageSection2: `bg-slate-50 ${DARK_COLORS.pageBackground}`, // Alternate section background (slate-50 in light, matches dark mode background)
 } as const;
 
 export const getThemeColorClasses = (color: ThemeColor): ThemeColorClasses => {

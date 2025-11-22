@@ -113,30 +113,41 @@ function App() {
 	};
 
 	return (
-		<div className="flex min-h-screen flex-col px-4 pt-3 sm:pt-4 pb-5 sm:pb-6">
-			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-2 sm:gap-3">
-				<header className="relative flex items-center">
-					<NavigationTabs
-						activePage={activePage}
-						onPageChange={handlePageChange}
-					/>
-					<div className="absolute left-0 right-0 flex justify-center pointer-events-none">
-						<img
-							src="/korli-logo.png"
-							alt="Korli - AI Language Coach"
-							className="h-6 w-auto sm:h-8 pointer-events-auto"
+		<div className="flex min-h-screen flex-col">
+			<header
+				className={`fixed top-0 left-0 right-0 z-50 px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 bg-transparent`}
+			>
+				<div className="mx-auto max-w-5xl">
+					<div className="relative flex items-center">
+						<NavigationTabs
+							activePage={activePage}
+							onPageChange={handlePageChange}
 						/>
+						{activePage === 'chat' && (
+							<div className="absolute left-0 right-0 flex justify-center pointer-events-none">
+								<img
+									src="/korli-logo.png"
+									alt="Korli - AI Language Coach"
+									className="h-6 w-auto sm:h-8 pointer-events-auto"
+								/>
+							</div>
+						)}
+						<button
+							type="button"
+							onClick={handleOpenSettings}
+							className={`absolute right-0 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
+							aria-label="Settings"
+						>
+							<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+						</button>
 					</div>
-					<button
-						type="button"
-						onClick={handleOpenSettings}
-						className={`absolute right-0 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
-						aria-label="Settings"
-					>
-						<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-					</button>
-				</header>
-
+				</div>
+			</header>
+			<main
+				className={`mx-auto flex w-full ${
+					activePage === 'info' ? '' : 'max-w-5xl'
+				} flex-1 flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 pb-5 sm:pb-6`}
+			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
 						<p>{error}</p>
