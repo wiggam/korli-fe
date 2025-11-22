@@ -35,17 +35,17 @@ export const Settings = ({ onClose }: SettingsProps) => {
 		<>
 			{/* Backdrop */}
 			<div
-				className="fixed inset-0 z-40 bg-black/30"
+				className="fixed inset-0 z-[60] bg-black/30"
 				onClick={onClose}
 				aria-hidden="true"
 			/>
 
 			{/* Modal */}
-			<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-				<div className={`w-full max-w-[240px] sm:max-w-[280px] rounded-xl ${darkModeColors.border} ${darkModeColors.bgModal} shadow-xl`}>
+			<div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+				<div className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${darkModeColors.border} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}>
 					{/* Header */}
-					<div className={`flex items-center justify-between border-b ${darkModeColors.border} px-2.5 sm:px-3 py-1.5 sm:py-2`}>
-						<h2 className={`text-xs sm:text-sm font-semibold ${darkModeColors.textPrimary}`}>Settings</h2>
+					<div className={`flex items-center justify-between border-b ${darkModeColors.border} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}>
+						<h2 className={`text-xs sm:text-sm md:text-base font-semibold ${darkModeColors.textPrimary}`}>Settings</h2>
 						<button
 							type="button"
 							onClick={onClose}
@@ -57,10 +57,10 @@ export const Settings = ({ onClose }: SettingsProps) => {
 					</div>
 
 					{/* Content */}
-					<div className="space-y-2.5 sm:space-y-3 px-2.5 sm:px-3 py-2.5 sm:py-3">
+					<div className="space-y-2.5 sm:space-y-3 md:space-y-4 px-2.5 sm:px-3 md:px-4 py-2.5 sm:py-3 md:py-4">
 						{/* Dark Mode Toggle */}
-						<div className="space-y-1.5">
-							<label className={`block text-[9px] sm:text-[10px] font-medium ${darkModeColors.textSecondary}`}>Theme Mode</label>
+						<div className="space-y-1.5 md:space-y-2">
+							<label className={`block text-[9px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}>Theme Mode</label>
 							<TwoOptionSlider
 								leftOption="light"
 								rightOption="dark"
@@ -68,16 +68,16 @@ export const Settings = ({ onClose }: SettingsProps) => {
 								onChange={handleModeChange}
 								leftLabel="Light"
 								rightLabel="Dark"
-								leftIcon={<Sun className="h-4 w-4" />}
-								rightIcon={<Moon className="h-4 w-4" />}
+								leftIcon={<Sun className="h-4 w-4 md:h-5 md:w-5" />}
+								rightIcon={<Moon className="h-4 w-4 md:h-5 md:w-5" />}
 								size="sm"
 							/>
 						</div>
 
 						{/* Theme Color Selector */}
-						<div className="space-y-1.5">
-							<label className={`text-[9px] sm:text-[10px] font-medium ${darkModeColors.textSecondary}`}>Theme Color</label>
-							<div className="flex items-center gap-1.5">
+						<div className="space-y-1.5 md:space-y-2">
+							<label className={`text-[9px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}>Theme Color</label>
+							<div className="flex items-center gap-1.5 md:gap-2">
 								{THEME_COLORS.map((color) => {
 									const colorClasses = getThemeColorClasses(color);
 									const colorMap: Record<ThemeColor, string> = {
@@ -93,7 +93,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
 											key={color}
 											type="button"
 											onClick={() => handleColorChange(color)}
-											className={`h-5 w-5 sm:h-6 sm:w-6 rounded-full border transition ${
+											className={`h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 rounded-full border transition ${
 												theme.color === color
 													? `${colorClasses.border} ring-2 ${colorClasses.ring} ring-offset-1`
 													: `${darkModeColors.borderMuted} hover:border-slate-400 dark:hover:border-slate-500`
@@ -107,11 +107,11 @@ export const Settings = ({ onClose }: SettingsProps) => {
 					</div>
 
 					{/* Footer */}
-					<div className={`flex gap-1.5 border-t ${darkModeColors.border} px-2.5 sm:px-3 py-1.5 sm:py-2`}>
+					<div className={`flex gap-1.5 md:gap-2 border-t ${darkModeColors.border} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}>
 					<button
 						type="button"
 						onClick={onClose}
-						className={`flex-1 rounded-full border ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-[10px] font-semibold transition ${darkModeColors.bgHoverLight}`}
+						className={`flex-1 rounded-full border ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
 					>
 						Close
 					</button>

@@ -16,14 +16,14 @@ interface TwoOptionSliderProps<T extends string> {
 
 const sizeStyles = {
 	sm: {
-		buttonHeight: 'h-6',
-		buttonPaddingX: 'px-2.5',
-		buttonText: 'text-[10px]',
+		buttonHeight: 'h-6 md:h-8',
+		buttonPaddingX: 'px-2.5 md:px-3.5',
+		buttonText: 'text-[10px] md:text-sm',
 	},
 	md: {
-		buttonHeight: 'h-7 sm:h-8',
-		buttonPaddingX: 'px-3',
-		buttonText: 'text-[11px] sm:text-xs',
+		buttonHeight: 'h-7 sm:h-8 md:h-10',
+		buttonPaddingX: 'px-3 md:px-4',
+		buttonText: 'text-[11px] sm:text-xs md:text-sm',
 	},
 } as const;
 
@@ -51,7 +51,7 @@ export const TwoOptionSlider = <T extends string>({
 
 	return (
 		<div
-			className={`relative inline-flex shrink-0 items-center rounded-full ${darkModeColors.sliderBg} p-[2px] ${className}`}
+			className={`relative flex shrink-0 items-center rounded-full ${darkModeColors.sliderBg} p-[2px] ${className}`}
 			role="radiogroup"
 			aria-label="Mode selector"
 		>

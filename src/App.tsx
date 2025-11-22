@@ -165,7 +165,8 @@ function App() {
 					/* Unified chat area - configuration, messages, and input */
 					<section
 						className={[
-							'flex flex-1 flex-col overflow-hidden rounded-3xl shadow-lg',
+							'flex flex-1 flex-col overflow-hidden rounded-3xl',
+							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)]',
 							'max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]',
 							'border',
 							darkModeColors.border,
