@@ -30,7 +30,7 @@ const DARK_COLORS = {
 
 	// Background colors (use full class strings with dark: prefix)
 	bgButton: 'dark:bg-[#8795A6]', // Button backgrounds
-	bgSlider: 'dark:bg-slate-500', // Slider background (for TwoOptionSlider)
+	bgSlider: 'dark:bg-[#697F96]', // Slider background (for TwoOptionSlider)
 	bgHover: 'dark:hover:bg-slate-500', // Hover backgrounds
 	bgHoverDark: 'dark:hover:bg-slate-600', // Darker hover backgrounds
 	bgHoverStatic: 'dark:bg-slate-500', // Static hover background (for dropdowns)
@@ -139,58 +139,58 @@ export const darkModeColors = {
 export const getThemeColorClasses = (color: ThemeColor): ThemeColorClasses => {
 	const colorMap: Record<ThemeColor, ThemeColorClasses> = {
 		yellow: {
-			primary: 'bg-yellow-500',
-			hover: 'hover:bg-yellow-400',
-			lightBg: 'bg-yellow-100',
+			primary: 'bg-yellow-400',
+			hover: 'hover:bg-yellow-300',
+			lightBg: 'bg-yellow-50',
 			darkText: 'text-yellow-900',
-			border: 'border-yellow-500',
-			ring: 'ring-yellow-400',
-			darkPrimary: 'dark:bg-yellow-500',
+			border: 'border-yellow-400',
+			ring: 'ring-yellow-300',
+			darkPrimary: 'dark:bg-yellow-400',
 		},
 		green: {
-			primary: 'bg-green-500',
-			hover: 'hover:bg-green-400',
-			lightBg: 'bg-green-100',
+			primary: 'bg-green-400',
+			hover: 'hover:bg-green-300',
+			lightBg: 'bg-green-50',
 			darkText: 'text-green-900',
-			border: 'border-green-500',
-			ring: 'ring-green-400',
-			darkPrimary: 'dark:bg-green-500',
+			border: 'border-green-400',
+			ring: 'ring-green-300',
+			darkPrimary: 'dark:bg-green-400',
 		},
 		blue: {
-			primary: 'bg-blue-500',
-			hover: 'hover:bg-blue-400',
-			lightBg: 'bg-blue-100',
+			primary: 'bg-blue-400',
+			hover: 'hover:bg-blue-300',
+			lightBg: 'bg-blue-50',
 			darkText: 'text-blue-900',
-			border: 'border-blue-500',
-			ring: 'ring-blue-400',
-			darkPrimary: 'dark:bg-blue-500',
+			border: 'border-blue-400',
+			ring: 'ring-blue-300',
+			darkPrimary: 'dark:bg-blue-400',
 		},
 		pink: {
-			primary: 'bg-pink-500',
-			hover: 'hover:bg-pink-400',
-			lightBg: 'bg-pink-100',
+			primary: 'bg-pink-400',
+			hover: 'hover:bg-pink-300',
+			lightBg: 'bg-pink-50',
 			darkText: 'text-pink-900',
-			border: 'border-pink-500',
-			ring: 'ring-pink-400',
-			darkPrimary: 'dark:bg-pink-500',
+			border: 'border-pink-400',
+			ring: 'ring-pink-300',
+			darkPrimary: 'dark:bg-pink-400',
 		},
 		purple: {
-			primary: 'bg-purple-500',
-			hover: 'hover:bg-purple-400',
-			lightBg: 'bg-purple-100',
+			primary: 'bg-purple-400',
+			hover: 'hover:bg-purple-300',
+			lightBg: 'bg-purple-50',
 			darkText: 'text-purple-900',
-			border: 'border-purple-500',
-			ring: 'ring-purple-400',
-			darkPrimary: 'dark:bg-purple-500',
+			border: 'border-purple-400',
+			ring: 'ring-purple-300',
+			darkPrimary: 'dark:bg-purple-400',
 		},
 		orange: {
-			primary: 'bg-orange-500',
-			hover: 'hover:bg-orange-400',
-			lightBg: 'bg-orange-100',
+			primary: 'bg-orange-400',
+			hover: 'hover:bg-orange-300',
+			lightBg: 'bg-orange-50',
 			darkText: 'text-orange-900',
-			border: 'border-orange-500',
-			ring: 'ring-orange-400',
-			darkPrimary: 'dark:bg-orange-500',
+			border: 'border-orange-400',
+			ring: 'ring-orange-300',
+			darkPrimary: 'dark:bg-orange-400',
 		},
 	};
 

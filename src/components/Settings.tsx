@@ -68,8 +68,8 @@ export const Settings = ({ onClose }: SettingsProps) => {
 								onChange={handleModeChange}
 								leftLabel="Light"
 								rightLabel="Dark"
-								leftIcon={<Sun className="h-3 w-3" />}
-								rightIcon={<Moon className="h-3 w-3" />}
+								leftIcon={<Sun className="h-4 w-4" />}
+								rightIcon={<Moon className="h-4 w-4" />}
 								size="sm"
 							/>
 						</div>
