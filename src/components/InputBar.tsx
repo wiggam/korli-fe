@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { UserCircle2 } from 'lucide-react';
+import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js';
+import WaveSurfer from 'wavesurfer.js';
 
 import { useTheme } from '../contexts/ThemeContext';
 import { darkModeColors, getThemeButtonClasses } from '../utils/theme';
@@ -16,6 +18,14 @@ interface InputBarProps {
 type RecordingState = 'idle' | 'recording' | 'preview';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
+const WAVEFORM_COLORS: Record<string, string> = {
+	yellow: '#facc15',
+	green: '#22c55e',
+	blue: '#38bdf8',
+	pink: '#ec4899',
+	purple: '#a855f7',
+	orange: '#fb923c',
+};
 
 const MicIcon = () => (
 	<svg
@@ -43,6 +53,48 @@ const SendIcon = () => (
 	</svg>
 );
 
+const CheckIcon = () => (
+	<svg
+		viewBox="0 0 24 24"
+		className="h-4 w-4 sm:h-5 sm:w-5"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	>
+		<path d="M20 6L9 17l-5-5" />
+	</svg>
+);
+
+const XIcon = () => (
+	<svg
+		viewBox="0 0 24 24"
+		className="h-4 w-4 sm:h-5 sm:w-5"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	>
+		<path d="M18 6L6 18M6 6l12 12" />
+	</svg>
+);
+
+const TrashIcon = () => (
+	<svg
+		viewBox="0 0 24 24"
+		className="h-4 w-4 sm:h-5 sm:w-5"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	>
+		<path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+	</svg>
+);
+
 export const InputBar = ({
 	disabled,
 	hasSession,
@@ -51,6 +103,7 @@ export const InputBar = ({
 	onOpenGenderSettings,
 }: InputBarProps) => {
 	const { theme } = useTheme();
+	const accentColor = WAVEFORM_COLORS[theme.color] ?? '#22c55e';
 	const [text, setText] = useState('');
 	const [recordingState, setRecordingState] = useState<RecordingState>('idle');
 	const [timer, setTimer] = useState(0);
@@ -66,6 +119,9 @@ export const InputBar = ({
 	const sizeExceededRef = useRef(false);
 	const previewUrlRef = useRef<string | null>(null);
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+	const liveWaveformRef = useRef<HTMLDivElement | null>(null);
+	const liveWaveSurferRef = useRef<WaveSurfer | null>(null);
+	const recordPluginRef = useRef<InstanceType<typeof RecordPlugin> | null>(null);
 
 	const clearTimer = () => {
 		if (timerRef.current) {
@@ -90,15 +146,76 @@ export const InputBar = ({
 		setRecordingError(null);
 	}, [previewUrl]);
 
-	const stopRecording = useCallback(() => {
-		mediaRecorderRef.current?.stop();
-		mediaRecorderRef.current = null;
+	const stopRecording = useCallback((shouldAccept: boolean) => {
+		if (!mediaRecorderRef.current) return;
+		
+		// Store whether we should accept or cancel
+		const acceptRecording = shouldAccept;
+		
+		mediaRecorderRef.current.onstop = () => {
+			clearTimer();
+			cleanupStream();
+			setTimer(0);
+
+			if (sizeExceededRef.current) {
+				chunksRef.current = [];
+				sizeExceededRef.current = false;
+				setRecordingState('idle');
+				mediaRecorderRef.current = null;
+				return;
+			}
+
+			if (chunksRef.current.length === 0) {
+				setRecordingState('idle');
+				mediaRecorderRef.current = null;
+				return;
+			}
+
+			if (!acceptRecording) {
+				// Cancel recording - discard chunks
+				chunksRef.current = [];
+				setRecordingState('idle');
+				mediaRecorderRef.current = null;
+				return;
+			}
+
+			// Accept recording - create preview
+			const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+			chunksRef.current = [];
+
+			if (blob.size === 0) {
+				setRecordingState('idle');
+				mediaRecorderRef.current = null;
+				return;
+			}
+
+			if (previewUrlRef.current) {
+				URL.revokeObjectURL(previewUrlRef.current);
+			}
+
+			const url = URL.createObjectURL(blob);
+			setPreviewBlob(blob);
+			setPreviewUrl(url);
+			previewUrlRef.current = url;
+			setRecordingState('preview');
+			mediaRecorderRef.current = null;
+		};
+
+		mediaRecorderRef.current.stop();
 	}, []);
+
+	const acceptRecording = useCallback(() => {
+		stopRecording(true);
+	}, [stopRecording]);
+
+	const cancelRecording = useCallback(() => {
+		stopRecording(false);
+	}, [stopRecording]);
 
 	const autoResizeTextarea = useCallback(() => {
 		const textarea = textareaRef.current;
 		if (!textarea) return;
-		
+
 		// Reset height to auto to get the correct scrollHeight
 		textarea.style.height = 'auto';
 		// Set height based on scrollHeight, with a max of ~5 lines (120px)
@@ -110,6 +227,13 @@ export const InputBar = ({
 		// Small delay to allow state to update before resizing
 		setTimeout(autoResizeTextarea, 0);
 	};
+
+	const destroyLiveWaveform = useCallback(() => {
+		recordPluginRef.current?.destroy();
+		recordPluginRef.current = null;
+		liveWaveSurferRef.current?.destroy();
+		liveWaveSurferRef.current = null;
+	}, []);
 
 	const startRecording = async () => {
 		if (disabled || !hasSession) {
@@ -153,7 +277,7 @@ export const InputBar = ({
 				if (recordedSizeRef.current > MAX_AUDIO_BYTES) {
 					sizeExceededRef.current = true;
 					setRecordingError('Recording stopped: 10MB audio limit reached.');
-					stopRecording();
+					stopRecording(false);
 					return;
 				}
 
@@ -163,43 +287,7 @@ export const InputBar = ({
 			mediaRecorder.onerror = (event) => {
 				console.error(event.error);
 				setRecordingError('Microphone error occurred.');
-				stopRecording();
-			};
-
-			mediaRecorder.onstop = () => {
-				clearTimer();
-				cleanupStream();
-				setTimer(0);
-
-				if (sizeExceededRef.current) {
-					chunksRef.current = [];
-					sizeExceededRef.current = false;
-					setRecordingState('idle');
-					return;
-				}
-
-				if (chunksRef.current.length === 0) {
-					setRecordingState('idle');
-					return;
-				}
-
-				const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
-				chunksRef.current = [];
-
-				if (blob.size === 0) {
-					setRecordingState('idle');
-					return;
-				}
-
-				if (previewUrl) {
-					URL.revokeObjectURL(previewUrl);
-				}
-
-				const url = URL.createObjectURL(blob);
-				setPreviewBlob(blob);
-				setPreviewUrl(url);
-				previewUrlRef.current = url;
-				setRecordingState('preview');
+				stopRecording(false);
 			};
 
 			mediaRecorderRef.current = mediaRecorder;
@@ -221,16 +309,66 @@ export const InputBar = ({
 		previewUrlRef.current = previewUrl;
 	}, [previewUrl]);
 
+	useEffect(() => {
+		if (recordingState !== 'recording') {
+			destroyLiveWaveform();
+			return;
+		}
+
+		if (!mediaStreamRef.current || !liveWaveformRef.current) {
+			return;
+		}
+
+		const recordPlugin = RecordPlugin.create({
+			renderRecordedAudio: false,
+			scrollingWaveform: true,
+			scrollingWaveformWindow: 1,
+			continuousWaveform: true,
+			continuousWaveformDuration: 1.5,
+			mediaRecorderTimeslice: 20,
+		});
+
+		const waveSurfer = WaveSurfer.create({
+			container: liveWaveformRef.current,
+			height: 40,
+			waveColor: accentColor,
+			progressColor: accentColor,
+			cursorWidth: 0,
+			barWidth: 2,
+			barGap: 2,
+			barRadius: 4,
+			barAlign: 'center',
+			interact: false,
+			normalize: false,
+			normalizeTo: 0.5,
+			minPxPerSec: 300,
+			autoScroll: true,
+			autoCenter: false,
+			fillParent: true,
+			hideScrollbar: true,
+			plugins: [recordPlugin],
+		});
+
+		recordPlugin.renderMicStream(mediaStreamRef.current);
+		liveWaveSurferRef.current = waveSurfer;
+		recordPluginRef.current = recordPlugin;
+
+		return () => {
+			destroyLiveWaveform();
+		};
+	}, [accentColor, destroyLiveWaveform, recordingState]);
+
 	useEffect(
 		() => () => {
 			clearTimer();
 			cleanupStream();
 			mediaRecorderRef.current?.stop();
+			destroyLiveWaveform();
 			if (previewUrlRef.current) {
 				URL.revokeObjectURL(previewUrlRef.current);
 			}
 		},
-		[]
+		[destroyLiveWaveform]
 	);
 
 	useEffect(() => {
@@ -243,6 +381,12 @@ export const InputBar = ({
 	}, [text]);
 
 	const sendText = async () => {
+		// If in preview state, send audio instead
+		if (recordingState === 'preview') {
+			await sendAudio();
+			return;
+		}
+
 		const value = text.trim();
 		if (!value || disabled || recordingState !== 'idle') {
 			return;
@@ -282,125 +426,123 @@ export const InputBar = ({
 	const formattedTimer = new Date(timer * 1000).toISOString().substring(14, 19);
 	const textDisabled = disabled || recordingState !== 'idle';
 	const micDisabled = disabled || recordingState === 'preview';
+	const canSend = recordingState === 'preview' || (recordingState === 'idle' && text.trim());
 
 	return (
 		<div className="space-y-3 px-2 sm:px-4 py-1.5 sm:py-2">
-			{recordingState === 'preview' && previewUrl && (
-				<div className={`flex flex-col gap-3 rounded-2xl ${darkModeColors.border} ${darkModeColors.sectionBg} p-3 sm:flex-row sm:items-center sm:justify-between`}>
-					<div className={`flex flex-col gap-1 text-sm ${darkModeColors.textSecondary}`}>
-						<span className={`font-semibold uppercase tracking-wide ${darkModeColors.textMuted}`}>
-							Audio preview
-						</span>
-						<AudioPlayer
-							src={previewUrl}
-							label="Play recording"
-							tone="light"
-							size="sm"
+			<div className={`flex items-center gap-2 rounded-full border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}>
+				{recordingState === 'recording' ? (
+					<div className="flex-1 h-10 overflow-hidden">
+						<div ref={liveWaveformRef} className="h-full w-full" />
+					</div>
+				) : (
+					<div className="flex-1 flex items-center gap-2">
+						{recordingState === 'preview' && previewUrl && (
+							<>
+								<AudioPlayer
+									src={previewUrl}
+									label="Play recording"
+									tone="light"
+									size="sm"
+								/>
+								<button
+									type="button"
+									onClick={resetPreview}
+									className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`}
+									aria-label="Delete recording"
+								>
+									<TrashIcon />
+								</button>
+							</>
+						)}
+						<textarea
+							ref={textareaRef}
+							value={text}
+							disabled={textDisabled}
+							onChange={handleTextChange}
+							onKeyDown={(event) => {
+								if (event.key === 'Enter' && !event.shiftKey) {
+									event.preventDefault();
+									void sendText();
+								}
+							}}
+							rows={1}
+							className={`flex-1 resize-none overflow-hidden bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+							placeholder={
+								hasSession
+									? 'Type your message'
+									: 'Start the session to begin chatting'
+							}
+							style={{ minHeight: '24px', paddingTop: '2px', paddingBottom: '2px' }}
 						/>
 					</div>
-					<div className="flex gap-2">
-						<button
-							type="button"
-							className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-950 dark:text-emerald-50 transition hover:bg-emerald-400"
-							onClick={sendAudio}
-						>
-							<SendIcon />
-							Send audio
-						</button>
-						<button
-							type="button"
-							onClick={resetPreview}
-							className={`rounded-full ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-4 py-2 text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
-						>
-							Delete
-						</button>
-					</div>
+				)}
+
+				<div className="flex items-center gap-0 sm:gap-0.5">
+					{recordingState === 'recording' ? (
+						<div className="flex items-center gap-1">
+							<button
+								type="button"
+								onClick={cancelRecording}
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${darkModeColors.recordingCancelBg} ${darkModeColors.recordingCancelBorder} ${darkModeColors.recordingCancelText} ${darkModeColors.recordingCancelHover}`}
+								aria-label="Cancel recording"
+							>
+								<XIcon />
+							</button>
+							<button
+								type="button"
+								onClick={acceptRecording}
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${darkModeColors.recordingAcceptBg} ${darkModeColors.recordingAcceptBorder} ${darkModeColors.recordingAcceptText} ${darkModeColors.recordingAcceptHover}`}
+								aria-label="Accept recording"
+							>
+								<CheckIcon />
+							</button>
+						</div>
+					) : (
+						<>
+							<button
+								type="button"
+								onClick={onOpenGenderSettings}
+								disabled={!hasSession}
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${
+									hasSession
+										? `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
+										: 'cursor-not-allowed opacity-50'
+								}`}
+								aria-label="Gender settings"
+							>
+								<UserCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${darkModeColors.inputIconText}`} />
+							</button>
+							<button
+								type="button"
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
+								onClick={startRecording}
+								disabled={micDisabled}
+								aria-label="Start recording"
+							>
+								<MicIcon />
+							</button>
+							<div className="w-1 sm:w-1.5" />
+							<button
+								type="button"
+								onClick={sendText}
+								disabled={
+									!hasSession ||
+									disabled ||
+									!canSend
+								}
+								className={`inline-flex h-7 sm:h-9 items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold transition ${getThemeButtonClasses(theme.color, !hasSession || disabled || !canSend)}`}
+							>
+								<SendIcon />
+							</button>
+						</>
+					)}
 				</div>
+			</div>
+
+			{recordingError && (
+				<p className="text-xs sm:text-sm text-red-600">{recordingError}</p>
 			)}
-
-	<div className={`flex items-center gap-2 rounded-full border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}>
-		<textarea
-			ref={textareaRef}
-			value={text}
-			disabled={textDisabled}
-			onChange={handleTextChange}
-			onKeyDown={(event) => {
-				if (event.key === 'Enter' && !event.shiftKey) {
-					event.preventDefault();
-					void sendText();
-				}
-			}}
-			rows={1}
-			className={`flex-1 resize-none overflow-hidden bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
-				placeholder={
-					hasSession
-						? recordingState === 'recording'
-							? 'Recording in progress…'
-							: 'Type your message'
-						: 'Start the session to begin chatting'
-				}
-				style={{ minHeight: '24px', paddingTop: '2px', paddingBottom: '2px' }}
-		/>
-
-		<div className="flex items-center gap-0 sm:gap-0.5">
-			<button
-				type="button"
-				onClick={onOpenGenderSettings}
-					disabled={!hasSession}
-					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${
-						hasSession
-							? `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
-							: 'cursor-not-allowed opacity-50'
-					}`}
-					aria-label="Gender settings"
-				>
-					<UserCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${darkModeColors.inputIconText}`} />
-				</button>
-				<button
-					type="button"
-					className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${
-						recordingState === 'recording'
-							? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400'
-							: `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
-					} ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
-					onClick={
-						recordingState === 'recording' ? stopRecording : startRecording
-					}
-					disabled={micDisabled}
-					aria-label={
-						recordingState === 'recording'
-							? 'Stop recording'
-							: 'Start recording'
-					}
-				>
-					{recordingState === 'recording' ? <StopIcon /> : <MicIcon />}
-				</button>
-			<button
-				type="button"
-				onClick={sendText}
-				disabled={
-					!hasSession ||
-					disabled ||
-					!text.trim() ||
-					recordingState !== 'idle'
-				}
-				className={`inline-flex h-7 sm:h-9 items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold transition ${getThemeButtonClasses(theme.color, !hasSession || disabled || !text.trim() || recordingState !== 'idle')}`}
-			>
-				<SendIcon />
-			</button>
-			</div>
-			</div>
-
-		{recordingState === 'recording' && (
-			<div className="flex items-center gap-2 text-xs sm:text-sm text-red-600">
-				<span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
-				Recording… {formattedTimer}
-			</div>
-		)}
-
-		{recordingError && (
-			<p className="text-xs sm:text-sm text-red-600">{recordingError}</p>
-		)}
 		</div>
 	);
 };
