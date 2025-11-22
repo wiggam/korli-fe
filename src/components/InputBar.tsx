@@ -5,27 +5,19 @@ import WaveSurfer from 'wavesurfer.js';
 
 import { useTheme } from '../contexts/ThemeContext';
 import { darkModeColors, getThemeButtonClasses } from '../utils/theme';
-import { AudioPlayer } from './AudioPlayer';
+import { transcribeAudio } from '../lib/api';
 
 interface InputBarProps {
 	disabled: boolean;
 	hasSession: boolean;
 	onSendText: (message: string) => Promise<void>;
-	onSendAudio: (file: Blob) => Promise<void>;
+	foreignLanguage: string;
 	onOpenGenderSettings: () => void;
 }
 
 type RecordingState = 'idle' | 'recording' | 'preview';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
-const WAVEFORM_COLORS: Record<string, string> = {
-	yellow: '#facc15',
-	green: '#22c55e',
-	blue: '#38bdf8',
-	pink: '#ec4899',
-	purple: '#a855f7',
-	orange: '#fb923c',
-};
 
 const MicIcon = () => (
 	<svg
@@ -37,18 +29,12 @@ const MicIcon = () => (
 	</svg>
 );
 
-const StopIcon = () => (
+const SendIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
 		className="h-3.5 w-3.5 sm:h-4 sm:w-4"
 		fill="currentColor"
 	>
-		<path d="M6 6h12v12H6z" />
-	</svg>
-);
-
-const SendIcon = () => (
-	<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="currentColor">
 		<path d="M3.4 20.4 21 12 3.4 3.6l.05 6.9L15 12l-11.55 1.5z" />
 	</svg>
 );
@@ -81,39 +67,33 @@ const XIcon = () => (
 	</svg>
 );
 
-const TrashIcon = () => (
-	<svg
-		viewBox="0 0 24 24"
-		className="h-4 w-4 sm:h-5 sm:w-5"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="2"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-	>
-		<path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-	</svg>
-);
-
 export const InputBar = ({
 	disabled,
 	hasSession,
 	onSendText,
-	onSendAudio,
+	foreignLanguage,
 	onOpenGenderSettings,
 }: InputBarProps) => {
 	const { theme } = useTheme();
-	const accentColor = WAVEFORM_COLORS[theme.color] ?? '#22c55e';
+
+	// Get waveform color to match icon colors (slate-700 in light mode, white in dark mode)
+	const waveformColor = theme.mode === 'dark' ? '#ffffff' : '#475569';
 	const [text, setText] = useState('');
 	const [recordingState, setRecordingState] = useState<RecordingState>('idle');
-	const [timer, setTimer] = useState(0);
 	const [recordingError, setRecordingError] = useState<string | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [previewBlob, setPreviewBlob] = useState<Blob | null>(null);
+	const [isTranscribing, setIsTranscribing] = useState(false);
+	const [transcribedAudioBlob, setTranscribedAudioBlob] = useState<Blob | null>(
+		null
+	);
+	const transcribedAudioUrlRef = useRef<string | null>(null);
+	const transcribedAudioRef = useRef<HTMLAudioElement | null>(null);
+	const [isPlayingTranscribedAudio, setIsPlayingTranscribedAudio] =
+		useState(false);
 
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 	const mediaStreamRef = useRef<MediaStream | null>(null);
-	const timerRef = useRef<number | null>(null);
 	const chunksRef = useRef<Blob[]>([]);
 	const recordedSizeRef = useRef(0);
 	const sizeExceededRef = useRef(false);
@@ -121,92 +101,148 @@ export const InputBar = ({
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 	const liveWaveformRef = useRef<HTMLDivElement | null>(null);
 	const liveWaveSurferRef = useRef<WaveSurfer | null>(null);
-	const recordPluginRef = useRef<InstanceType<typeof RecordPlugin> | null>(null);
-
-	const clearTimer = () => {
-		if (timerRef.current) {
-			window.clearInterval(timerRef.current);
-			timerRef.current = null;
-		}
-	};
+	const recordPluginRef = useRef<InstanceType<typeof RecordPlugin> | null>(
+		null
+	);
+	const shouldTranscribeRef = useRef(false);
 
 	const cleanupStream = () => {
 		mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
 		mediaStreamRef.current = null;
 	};
 
-	const resetPreview = useCallback(() => {
-		if (previewUrl) {
-			URL.revokeObjectURL(previewUrl);
-		}
-		setPreviewUrl(null);
-		previewUrlRef.current = null;
-		setPreviewBlob(null);
-		setRecordingState('idle');
-		setRecordingError(null);
-	}, [previewUrl]);
-
-	const stopRecording = useCallback((shouldAccept: boolean) => {
-		if (!mediaRecorderRef.current) return;
-		
-		// Store whether we should accept or cancel
-		const acceptRecording = shouldAccept;
-		
-		mediaRecorderRef.current.onstop = () => {
-			clearTimer();
-			cleanupStream();
-			setTimer(0);
-
-			if (sizeExceededRef.current) {
-				chunksRef.current = [];
-				sizeExceededRef.current = false;
-				setRecordingState('idle');
-				mediaRecorderRef.current = null;
-				return;
-			}
-
-			if (chunksRef.current.length === 0) {
-				setRecordingState('idle');
-				mediaRecorderRef.current = null;
-				return;
-			}
-
-			if (!acceptRecording) {
-				// Cancel recording - discard chunks
-				chunksRef.current = [];
-				setRecordingState('idle');
-				mediaRecorderRef.current = null;
-				return;
-			}
-
-			// Accept recording - create preview
-			const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
-			chunksRef.current = [];
-
-			if (blob.size === 0) {
-				setRecordingState('idle');
-				mediaRecorderRef.current = null;
-				return;
-			}
-
-			if (previewUrlRef.current) {
-				URL.revokeObjectURL(previewUrlRef.current);
-			}
-
-			const url = URL.createObjectURL(blob);
-			setPreviewBlob(blob);
-			setPreviewUrl(url);
-			previewUrlRef.current = url;
-			setRecordingState('preview');
-			mediaRecorderRef.current = null;
-		};
-
-		mediaRecorderRef.current.stop();
+	const destroyLiveWaveform = useCallback(() => {
+		recordPluginRef.current?.destroy();
+		recordPluginRef.current = null;
+		liveWaveSurferRef.current?.destroy();
+		liveWaveSurferRef.current = null;
 	}, []);
 
+	const stopRecording = useCallback(
+		(shouldAccept: boolean) => {
+			if (!mediaRecorderRef.current) return;
+
+			// Stop the waveform immediately
+			destroyLiveWaveform();
+
+			// Store whether we should accept or cancel
+			const acceptRecording = shouldAccept;
+
+			mediaRecorderRef.current.onstop = () => {
+				cleanupStream();
+
+				if (sizeExceededRef.current) {
+					chunksRef.current = [];
+					sizeExceededRef.current = false;
+					setRecordingState('idle');
+					mediaRecorderRef.current = null;
+					return;
+				}
+
+				if (chunksRef.current.length === 0) {
+					setRecordingState('idle');
+					mediaRecorderRef.current = null;
+					return;
+				}
+
+				if (!acceptRecording) {
+					// Cancel recording - discard chunks
+					chunksRef.current = [];
+					setRecordingState('idle');
+					mediaRecorderRef.current = null;
+					return;
+				}
+
+				// Accept recording - create blob but keep recording state
+				const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+				chunksRef.current = [];
+
+				if (blob.size === 0) {
+					setRecordingState('idle');
+					mediaRecorderRef.current = null;
+					return;
+				}
+
+				// Store blob for transcription, but keep recording state
+				setPreviewBlob(blob);
+				mediaRecorderRef.current = null;
+			};
+
+			mediaRecorderRef.current.stop();
+		},
+		[destroyLiveWaveform]
+	);
+
+	const transcribeAndInsert = useCallback(
+		async (blob: Blob) => {
+			const textarea = textareaRef.current;
+			let startPos = 0;
+
+			if (textarea) {
+				startPos = textarea.selectionStart;
+			}
+
+			setIsTranscribing(true);
+			setRecordingError(null);
+
+			try {
+				// Transcribe the audio
+				const transcribedText = await transcribeAudio(blob, foreignLanguage);
+
+				if (!transcribedText) {
+					throw new Error('No transcription received');
+				}
+
+				// Store the audio blob for playback
+				setTranscribedAudioBlob(blob);
+
+				// Insert transcribed text at cursor position
+				if (textarea) {
+					const end = textarea.selectionEnd;
+					const newText =
+						text.substring(0, startPos) + transcribedText + text.substring(end);
+					setText(newText);
+
+					// Set cursor position after inserted text
+					setTimeout(() => {
+						const newCursorPos = startPos + transcribedText.length;
+						textarea.setSelectionRange(newCursorPos, newCursorPos);
+						textarea.focus();
+						autoResizeTextarea();
+					}, 0);
+				} else {
+					// If textarea is not available, just append to text
+					setText((prev) => prev + transcribedText);
+				}
+
+				// Clean up preview state but keep the URL for playback
+				setPreviewUrl(null);
+				previewUrlRef.current = null;
+				setPreviewBlob(null);
+				setRecordingState('idle');
+				shouldTranscribeRef.current = false;
+			} catch (err) {
+				setRecordingError(
+					err instanceof Error ? err.message : 'Unable to transcribe audio.'
+				);
+				shouldTranscribeRef.current = false;
+				// On error, still switch to idle state
+				setRecordingState('idle');
+				setPreviewBlob(null);
+			} finally {
+				setIsTranscribing(false);
+			}
+		},
+		[foreignLanguage, text]
+	);
+
 	const acceptRecording = useCallback(() => {
-		stopRecording(true);
-	}, [stopRecording]);
+		// If we're still recording, stop and transcribe
+		if (recordingState === 'recording') {
+			shouldTranscribeRef.current = true;
+			stopRecording(true);
+		}
+	}, [stopRecording, recordingState]);
 
 	const cancelRecording = useCallback(() => {
 		stopRecording(false);
@@ -228,18 +264,23 @@ export const InputBar = ({
 		setTimeout(autoResizeTextarea, 0);
 	};
 
-	const destroyLiveWaveform = useCallback(() => {
-		recordPluginRef.current?.destroy();
-		recordPluginRef.current = null;
-		liveWaveSurferRef.current?.destroy();
-		liveWaveSurferRef.current = null;
-	}, []);
-
 	const startRecording = async () => {
 		if (disabled || !hasSession) {
 			setRecordingError('Start the tutor session before recording.');
 			return;
 		}
+
+		// Clean up previous transcribed audio when starting a new recording
+		if (transcribedAudioUrlRef.current) {
+			URL.revokeObjectURL(transcribedAudioUrlRef.current);
+			transcribedAudioUrlRef.current = null;
+		}
+		setTranscribedAudioBlob(null);
+		if (transcribedAudioRef.current) {
+			transcribedAudioRef.current.pause();
+			transcribedAudioRef.current = null;
+		}
+		setIsPlayingTranscribedAudio(false);
 
 		if (
 			typeof MediaRecorder === 'undefined' ||
@@ -259,14 +300,9 @@ export const InputBar = ({
 
 			setRecordingError(null);
 			setRecordingState('recording');
-			setTimer(0);
 			sizeExceededRef.current = false;
 			recordedSizeRef.current = 0;
 			chunksRef.current = [];
-
-			timerRef.current = window.setInterval(() => {
-				setTimer((prev) => prev + 1);
-			}, 1000);
 
 			mediaRecorder.ondataavailable = (event) => {
 				if (!event.data || event.data.size === 0) {
@@ -309,6 +345,18 @@ export const InputBar = ({
 		previewUrlRef.current = previewUrl;
 	}, [previewUrl]);
 
+	// Transcribe when preview blob is ready and transcription is requested
+	useEffect(() => {
+		if (
+			shouldTranscribeRef.current &&
+			previewBlob &&
+			recordingState === 'recording' &&
+			!isTranscribing
+		) {
+			void transcribeAndInsert(previewBlob);
+		}
+	}, [previewBlob, recordingState, transcribeAndInsert, isTranscribing]);
+
 	useEffect(() => {
 		if (recordingState !== 'recording') {
 			destroyLiveWaveform();
@@ -322,28 +370,27 @@ export const InputBar = ({
 		const recordPlugin = RecordPlugin.create({
 			renderRecordedAudio: false,
 			scrollingWaveform: true,
-			scrollingWaveformWindow: 1,
+			scrollingWaveformWindow: 0.5,
 			continuousWaveform: true,
-			continuousWaveformDuration: 1.5,
+			continuousWaveformDuration: 0.5,
 			mediaRecorderTimeslice: 20,
 		});
 
 		const waveSurfer = WaveSurfer.create({
 			container: liveWaveformRef.current,
-			height: 40,
-			waveColor: accentColor,
-			progressColor: accentColor,
+			height: 26,
+			waveColor: waveformColor,
+			progressColor: waveformColor,
 			cursorWidth: 0,
-			barWidth: 2,
+			barHeight: 1.7,
+			barWidth: 4,
 			barGap: 2,
 			barRadius: 4,
-			barAlign: 'center',
 			interact: false,
-			normalize: false,
-			normalizeTo: 0.5,
 			minPxPerSec: 300,
+			normalize: false,
 			autoScroll: true,
-			autoCenter: false,
+			autoCenter: true,
 			fillParent: true,
 			hideScrollbar: true,
 			plugins: [recordPlugin],
@@ -356,11 +403,10 @@ export const InputBar = ({
 		return () => {
 			destroyLiveWaveform();
 		};
-	}, [accentColor, destroyLiveWaveform, recordingState]);
+	}, [waveformColor, destroyLiveWaveform, recordingState]);
 
 	useEffect(
 		() => () => {
-			clearTimer();
 			cleanupStream();
 			mediaRecorderRef.current?.stop();
 			destroyLiveWaveform();
@@ -381,12 +427,6 @@ export const InputBar = ({
 	}, [text]);
 
 	const sendText = async () => {
-		// If in preview state, send audio instead
-		if (recordingState === 'preview') {
-			await sendAudio();
-			return;
-		}
-
 		const value = text.trim();
 		if (!value || disabled || recordingState !== 'idle') {
 			return;
@@ -395,6 +435,17 @@ export const InputBar = ({
 		try {
 			await onSendText(value);
 			setText('');
+			// Reset transcribed audio when sending
+			if (transcribedAudioUrlRef.current) {
+				URL.revokeObjectURL(transcribedAudioUrlRef.current);
+				transcribedAudioUrlRef.current = null;
+			}
+			setTranscribedAudioBlob(null);
+			if (transcribedAudioRef.current) {
+				transcribedAudioRef.current.pause();
+				transcribedAudioRef.current = null;
+			}
+			setIsPlayingTranscribedAudio(false);
 		} catch (err) {
 			setRecordingError(
 				err instanceof Error ? err.message : 'Unable to send message.'
@@ -402,59 +453,122 @@ export const InputBar = ({
 		}
 	};
 
-	const sendAudio = async () => {
-		if (!previewBlob || !previewUrl) {
-			return;
-		}
+	const textDisabled = disabled || recordingState !== 'idle' || isTranscribing;
+	const micDisabled =
+		disabled || recordingState === 'preview' || isTranscribing;
+	const canSend = recordingState === 'idle' && text.trim() && !isTranscribing;
 
-		try {
-			await onSendAudio(previewBlob);
-			if (previewUrl) {
-				URL.revokeObjectURL(previewUrl);
+	// Create URL from blob when blob is available
+	useEffect(() => {
+		if (transcribedAudioBlob) {
+			// Clean up previous URL if it exists
+			if (transcribedAudioUrlRef.current) {
+				URL.revokeObjectURL(transcribedAudioUrlRef.current);
 			}
-			setPreviewBlob(null);
-			setPreviewUrl(null);
-			previewUrlRef.current = null;
-			setRecordingState('idle');
-		} catch (err) {
-			setRecordingError(
-				err instanceof Error ? err.message : 'Unable to send audio.'
-			);
+			// Create new URL from blob
+			transcribedAudioUrlRef.current =
+				URL.createObjectURL(transcribedAudioBlob);
+			// Initialize audio element
+			if (transcribedAudioUrlRef.current) {
+				transcribedAudioRef.current = new Audio(transcribedAudioUrlRef.current);
+			}
+		} else {
+			// Clean up when blob is cleared
+			if (transcribedAudioUrlRef.current) {
+				URL.revokeObjectURL(transcribedAudioUrlRef.current);
+				transcribedAudioUrlRef.current = null;
+			}
+			if (transcribedAudioRef.current) {
+				transcribedAudioRef.current.pause();
+				transcribedAudioRef.current = null;
+			}
+			setIsPlayingTranscribedAudio(false);
 		}
-	};
 
-	const formattedTimer = new Date(timer * 1000).toISOString().substring(14, 19);
-	const textDisabled = disabled || recordingState !== 'idle';
-	const micDisabled = disabled || recordingState === 'preview';
-	const canSend = recordingState === 'preview' || (recordingState === 'idle' && text.trim());
+		return () => {
+			// Cleanup on unmount
+			if (transcribedAudioUrlRef.current) {
+				URL.revokeObjectURL(transcribedAudioUrlRef.current);
+			}
+		};
+	}, [transcribedAudioBlob]);
+
+	// Handle transcribed audio playback events
+	useEffect(() => {
+		const audio = transcribedAudioRef.current;
+		if (!audio) return;
+
+		const handlePlay = () => setIsPlayingTranscribedAudio(true);
+		const handlePause = () => setIsPlayingTranscribedAudio(false);
+		const handleEnded = () => setIsPlayingTranscribedAudio(false);
+
+		audio.addEventListener('play', handlePlay);
+		audio.addEventListener('pause', handlePause);
+		audio.addEventListener('ended', handleEnded);
+
+		return () => {
+			audio.removeEventListener('play', handlePlay);
+			audio.removeEventListener('pause', handlePause);
+			audio.removeEventListener('ended', handleEnded);
+		};
+	}, [transcribedAudioBlob]);
+
+	const toggleTranscribedAudio = useCallback(async () => {
+		const audio = transcribedAudioRef.current;
+		if (!audio || !transcribedAudioBlob) return;
+
+		if (audio.paused) {
+			try {
+				await audio.play();
+			} catch (err) {
+				console.error('Error playing audio:', err);
+			}
+		} else {
+			audio.pause();
+		}
+	}, [transcribedAudioBlob]);
 
 	return (
 		<div className="space-y-3 px-2 sm:px-4 py-1.5 sm:py-2">
-			<div className={`flex items-center gap-2 rounded-full border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}>
+			{transcribedAudioBlob && (
+				<div className="flex items-center justify-center">
+					<button
+						type="button"
+						onClick={toggleTranscribedAudio}
+						className={`flex items-center gap-1.5 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm transition`}
+						aria-label={
+							isPlayingTranscribedAudio
+								? 'Pause transcribed audio'
+								: 'Play transcribed audio'
+						}
+					>
+						<svg
+							viewBox="0 0 24 24"
+							className="h-3.5 w-3.5 sm:h-4 sm:w-4"
+							fill="currentColor"
+						>
+							{isPlayingTranscribedAudio ? (
+								<path d="M8.25 5.25h2.25v13.5H8.25zm5.25 0h2.25v13.5H13.5z" />
+							) : (
+								<path d="M7 4.5v15l11-7.5z" />
+							)}
+						</svg>
+						<span className="font-medium">Transcribed audio</span>
+					</button>
+				</div>
+			)}
+			<div
+				className={`flex items-center gap-2 rounded-full border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
+			>
 				{recordingState === 'recording' ? (
-					<div className="flex-1 h-10 overflow-hidden">
+					<div
+						className="flex-1 overflow-hidden flex items-center"
+						style={{ minHeight: '24px' }}
+					>
 						<div ref={liveWaveformRef} className="h-full w-full" />
 					</div>
 				) : (
 					<div className="flex-1 flex items-center gap-2">
-						{recordingState === 'preview' && previewUrl && (
-							<>
-								<AudioPlayer
-									src={previewUrl}
-									label="Play recording"
-									tone="light"
-									size="sm"
-								/>
-								<button
-									type="button"
-									onClick={resetPreview}
-									className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`}
-									aria-label="Delete recording"
-								>
-									<TrashIcon />
-								</button>
-							</>
-						)}
 						<textarea
 							ref={textareaRef}
 							value={text}
@@ -473,7 +587,11 @@ export const InputBar = ({
 									? 'Type your message'
 									: 'Start the session to begin chatting'
 							}
-							style={{ minHeight: '24px', paddingTop: '2px', paddingBottom: '2px' }}
+							style={{
+								minHeight: '24px',
+								paddingTop: '2px',
+								paddingBottom: '2px',
+							}}
 						/>
 					</div>
 				)}
@@ -484,19 +602,34 @@ export const InputBar = ({
 							<button
 								type="button"
 								onClick={cancelRecording}
-								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${darkModeColors.recordingCancelBg} ${darkModeColors.recordingCancelBorder} ${darkModeColors.recordingCancelText} ${darkModeColors.recordingCancelHover}`}
+								disabled={isTranscribing}
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${
+									darkModeColors.inputIconBorder
+								} ${darkModeColors.inputIconBg} ${
+									darkModeColors.inputIconText
+								} ${
+									darkModeColors.inputIconHover
+								} hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 ${
+									isTranscribing ? 'cursor-not-allowed opacity-50' : ''
+								}`}
 								aria-label="Cancel recording"
 							>
 								<XIcon />
 							</button>
-							<button
-								type="button"
-								onClick={acceptRecording}
-								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${darkModeColors.recordingAcceptBg} ${darkModeColors.recordingAcceptBorder} ${darkModeColors.recordingAcceptText} ${darkModeColors.recordingAcceptHover}`}
-								aria-label="Accept recording"
-							>
-								<CheckIcon />
-							</button>
+							{isTranscribing ? (
+								<div className="flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center">
+									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+								</div>
+							) : (
+								<button
+									type="button"
+									onClick={acceptRecording}
+									className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400`}
+									aria-label="Accept recording"
+								>
+									<CheckIcon />
+								</button>
+							)}
 						</div>
 					) : (
 						<>
@@ -504,34 +637,49 @@ export const InputBar = ({
 								type="button"
 								onClick={onOpenGenderSettings}
 								disabled={!hasSession}
-								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${
+									darkModeColors.inputIconBorder
+								} transition ${
 									hasSession
 										? `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
 										: 'cursor-not-allowed opacity-50'
 								}`}
 								aria-label="Gender settings"
 							>
-								<UserCircle2 className={`h-4 w-4 sm:h-5 sm:w-5 ${darkModeColors.inputIconText}`} />
+								<UserCircle2
+									className={`h-4 w-4 sm:h-5 sm:w-5 ${darkModeColors.inputIconText}`}
+								/>
 							</button>
-							<button
-								type="button"
-								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${darkModeColors.inputIconBorder} transition ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} ${micDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
-								onClick={startRecording}
-								disabled={micDisabled}
-								aria-label="Start recording"
-							>
-								<MicIcon />
-							</button>
+							{isTranscribing ? (
+								<div className="flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center">
+									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+								</div>
+							) : (
+								<button
+									type="button"
+									className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${
+										darkModeColors.inputIconBorder
+									} transition ${darkModeColors.inputIconBg} ${
+										darkModeColors.inputIconText
+									} ${darkModeColors.inputIconHover} ${
+										micDisabled ? 'cursor-not-allowed opacity-50' : ''
+									}`}
+									onClick={startRecording}
+									disabled={micDisabled}
+									aria-label="Start recording"
+								>
+									<MicIcon />
+								</button>
+							)}
 							<div className="w-1 sm:w-1.5" />
 							<button
 								type="button"
 								onClick={sendText}
-								disabled={
-									!hasSession ||
-									disabled ||
-									!canSend
-								}
-								className={`inline-flex h-7 sm:h-9 items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold transition ${getThemeButtonClasses(theme.color, !hasSession || disabled || !canSend)}`}
+								disabled={!hasSession || disabled || !canSend}
+								className={`inline-flex h-7 sm:h-9 items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold transition ${getThemeButtonClasses(
+									theme.color,
+									!hasSession || disabled || !canSend
+								)}`}
 							>
 								<SendIcon />
 							</button>

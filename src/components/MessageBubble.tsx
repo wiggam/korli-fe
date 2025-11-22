@@ -103,15 +103,6 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 						</span>
 					)}
 				</div>
-
-				{message.userAudio?.localUrl && (
-					<AudioPlayer
-						src={message.userAudio.localUrl}
-						label="Play original recording"
-						tone="light"
-						size="sm"
-					/>
-				)}
 			</div>
 		</div>
 	);

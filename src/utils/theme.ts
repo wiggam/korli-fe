@@ -134,16 +134,6 @@ export const darkModeColors = {
 	// Special sections (translation, correction boxes)
 	sectionBg: `bg-slate-50 ${DARK_COLORS.bgSection}`,
 	sectionBorder: `border-slate-200 ${DARK_COLORS.borderStrong}`,
-
-	// Recording control buttons (X cancel, Check accept)
-	recordingCancelBg: 'bg-red-50 dark:bg-red-600/40',
-	recordingCancelBorder: 'border-red-200 dark:border-red-500',
-	recordingCancelText: 'text-red-600 dark:text-red-200',
-	recordingCancelHover: 'hover:bg-red-100 dark:hover:bg-red-600/60',
-	recordingAcceptBg: 'bg-green-50 dark:bg-green-600/40',
-	recordingAcceptBorder: 'border-green-200 dark:border-green-500',
-	recordingAcceptText: 'text-green-600 dark:text-green-200',
-	recordingAcceptHover: 'hover:bg-green-100 dark:hover:bg-green-600/60',
 } as const;
 
 export const getThemeColorClasses = (color: ThemeColor): ThemeColorClasses => {

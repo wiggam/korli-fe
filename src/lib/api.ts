@@ -205,5 +205,32 @@ export const voiceChatSSE = (payload: VoiceChatPayload, callbacks: SSECallbacks)
   );
 };
 
+export interface TranscribeAudioResponse {
+  text: string;
+  language_code: string;
+}
+
+export const transcribeAudio = async (
+  audioFile: Blob,
+  foreignLanguage: string,
+): Promise<string> => {
+  const formData = new FormData();
+  formData.append('audio_file', audioFile, 'message.webm');
+  formData.append('foreign_language', foreignLanguage);
+
+  const response = await fetch(toUrl('/api/transcribe'), {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(message || 'Transcription failed');
+  }
+
+  const data = (await response.json()) as TranscribeAudioResponse;
+  return data.text;
+};
+
 export type { SSECallbacks };
 

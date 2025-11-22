@@ -40,7 +40,6 @@ function App() {
 		error,
 		startConversation,
 		sendTextMessage,
-		sendAudioMessage,
 		toggleOverlay,
 		resetChat,
 		clearError,
@@ -106,15 +105,6 @@ function App() {
 			setGenderChanged(false);
 		} else {
 			await sendTextMessage(message);
-		}
-	};
-
-	const handleSendAudio = async (audioFile: Blob) => {
-		if (genderChanged) {
-			await sendAudioMessage(audioFile, tutorGender, studentGender);
-			setGenderChanged(false);
-		} else {
-			await sendAudioMessage(audioFile);
 		}
 	};
 
@@ -191,7 +181,7 @@ function App() {
 								disabled={!hasSession || isStreaming}
 								hasSession={hasSession}
 								onSendText={handleSendText}
-								onSendAudio={handleSendAudio}
+								foreignLanguage={form.foreignLanguage}
 								onOpenGenderSettings={handleOpenGenderSettings}
 							/>
 						)}

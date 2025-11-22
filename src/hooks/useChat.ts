@@ -483,59 +483,6 @@ export const useChat = () => {
     [config, handleStreamComplete, handleStreamError, handleStreamEvent, status.isStreaming, threadId],
   );
 
-  const sendAudioMessage = useCallback(
-    async (audioFile: Blob, tutorGender?: GenderOption, studentGender?: GenderOption) => {
-      if (!threadId || !config) {
-        throw new Error('Start the session before sending audio.');
-      }
-
-      if (status.isStreaming) {
-        return;
-      }
-
-      const userMessageId = createId();
-      currentUserMessageIdRef.current = userMessageId;
-      currentAIMessageIdRef.current = null;
-      pendingAIDataRef.current = null;
-      pendingCorrectionRef.current = null;
-
-      const localUrl =
-        typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function'
-          ? URL.createObjectURL(audioFile)
-          : undefined;
-
-      const userMessage: UserMessage = {
-        id: userMessageId,
-        role: 'user',
-        type: 'audio',
-        content: 'Transcribing your audio…',
-        createdAt: Date.now(),
-        status: 'transcribing',
-        userAudio: localUrl ? { localUrl } : undefined,
-      };
-
-      setMessages((prev) => [...prev, userMessage]);
-      setActiveOverlay(null);
-      setStatus((prev) => ({ ...prev, isStreaming: true }));
-
-      streamAbortRef.current = voiceChatSSE(
-        {
-          threadId,
-          audioFile,
-          foreignLanguage: config.foreignLanguage,
-          tutorGender,
-          studentGender,
-        },
-        {
-          onEvent: handleStreamEvent,
-          onError: handleStreamError,
-          onComplete: handleStreamComplete,
-        },
-      );
-    },
-    [config, handleStreamComplete, handleStreamError, handleStreamEvent, status.isStreaming, threadId],
-  );
-
   const clearError = useCallback(() => setError(null), []);
 
   return {
@@ -548,7 +495,6 @@ export const useChat = () => {
     error,
     startConversation,
     sendTextMessage,
-    sendAudioMessage,
     toggleOverlay,
     resetChat,
     clearError,
