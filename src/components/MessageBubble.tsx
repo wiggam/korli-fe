@@ -96,9 +96,7 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 						<span
 							className={`mt-2 inline-flex items-center gap-2 text-xs ${themeClasses.darkText} dark:opacity-80`}
 						>
-							<span
-								className={`h-2 w-2 animate-ping rounded-full ${themeClasses.primary}`}
-							/>
+							<span className="h-2 w-2 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />
 							Transcribing audio…
 						</span>
 					)}

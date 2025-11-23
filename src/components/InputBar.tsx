@@ -618,7 +618,7 @@ export const InputBar = ({
 							</button>
 							{isTranscribing ? (
 								<div className="flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center">
-									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />
 								</div>
 							) : (
 								<button
@@ -652,7 +652,7 @@ export const InputBar = ({
 							</button>
 							{isTranscribing ? (
 								<div className="flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center">
-									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />
 								</div>
 							) : (
 								<button
