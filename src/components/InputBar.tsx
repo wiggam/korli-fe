@@ -254,8 +254,9 @@ export const InputBar = ({
 
 		// Reset height to auto to get the correct scrollHeight
 		textarea.style.height = 'auto';
-		// Set height based on scrollHeight, with a max of ~5 lines (120px)
-		textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+		// Set height based on scrollHeight, with a max of ~10 lines (240px)
+		// Allow it to expand to show more content
+		textarea.style.height = `${Math.min(textarea.scrollHeight, 240)}px`;
 	}, []);
 
 	const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -581,7 +582,7 @@ export const InputBar = ({
 								}
 							}}
 							rows={1}
-							className={`flex-1 resize-none overflow-hidden bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+							className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
 							placeholder={
 								hasSession
 									? 'Type your message'
@@ -589,6 +590,7 @@ export const InputBar = ({
 							}
 							style={{
 								minHeight: '24px',
+								maxHeight: '240px',
 								paddingTop: '2px',
 								paddingBottom: '2px',
 							}}

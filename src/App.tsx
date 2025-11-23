@@ -115,7 +115,7 @@ function App() {
 	};
 
 	return (
-		<div className="flex min-h-screen flex-col">
+		<div className={`flex flex-col ${activePage === 'chat' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
 			{/* Navigation Tabs - Fixed on the left, outside header */}
 			<div className="fixed top-4 left-4 z-50">
 				<NavigationTabs
@@ -154,7 +154,7 @@ function App() {
 			<main
 				className={`mx-auto flex w-full ${
 					activePage === 'info' ? '' : 'max-w-5xl'
-				} flex-1 flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 pb-5 sm:pb-6`}
+				} ${activePage === 'chat' ? 'h-full overflow-hidden' : 'flex-1'} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 pb-5 sm:pb-6`}
 			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
@@ -173,9 +173,8 @@ function App() {
 					/* Unified chat area - configuration, messages, and input */
 					<section
 						className={[
-							'flex flex-1 flex-col overflow-hidden rounded-3xl',
+							'flex flex-1 flex-col overflow-hidden rounded-3xl h-full',
 							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)]',
-							'max-h-[calc(100vh-2.75rem)] sm:max-h-[calc(100vh-3.5rem)]',
 							'border',
 							darkModeColors.border,
 							darkModeColors.bgSurface,
