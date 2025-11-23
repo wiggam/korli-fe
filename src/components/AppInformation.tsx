@@ -1,4 +1,4 @@
-import { Languages, UserCircle2, Mail, Linkedin } from 'lucide-react';
+import { Languages, UserCircle2, Mail, Linkedin, Settings } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { darkModeColors, getThemeColorClasses } from '../utils/theme';
 import { LANGUAGES } from '../constants/languages';
@@ -302,16 +302,9 @@ export const AppInformation = () => {
 						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
-									<svg
-										viewBox="0 0 24 24"
+									<Settings
 										className={`h-8 w-8 ${darkModeColors.textPrimary}`}
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-									>
-										<circle cx="12" cy="12" r="3" />
-										<path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24" />
-									</svg>
+									/>
 								</div>
 								<h3 className={`text-2xl font-bold ${darkModeColors.textPrimary}`}>
 									Theme & Mode
