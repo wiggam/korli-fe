@@ -5,7 +5,7 @@ import { LANGUAGES } from '../constants/languages';
 import { THEME_COLORS } from '../types/theme';
 
 export const AppInformation = () => {
-	const { theme } = useTheme();
+	const { theme, setColor, setMode } = useTheme();
 	const languageCount = LANGUAGES.length;
 
 	// Icon components that are theme-aware
@@ -112,7 +112,7 @@ export const AppInformation = () => {
 						</div>
 
 						{/* Adaptive Learning */}
-						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
+						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<svg
@@ -165,7 +165,7 @@ export const AppInformation = () => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
 						{/* Translation Feature */}
-						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
+						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
 							<div className="flex items-center gap-3">
 								<div className={`p-2 rounded-lg ${darkModeColors.bgHover}`}>
 									<TranslationIcon />
@@ -190,7 +190,7 @@ export const AppInformation = () => {
 						</div>
 
 						{/* Audio Feature */}
-						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
+						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
 							<div className="flex items-center gap-3">
 								<div className={`p-2 rounded-lg ${darkModeColors.bgHover}`}>
 									<AudioIcon />
@@ -214,7 +214,7 @@ export const AppInformation = () => {
 						</div>
 
 						{/* Corrections Feature */}
-						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
+						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
 							<div className="flex items-center gap-3">
 								<div className={`p-2 rounded-lg ${darkModeColors.bgHover}`}>
 									<CorrectionIcon />
@@ -299,7 +299,7 @@ export const AppInformation = () => {
 					</div>
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 						{/* Theme Customization */}
-						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
+						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<Settings
@@ -322,14 +322,17 @@ export const AppInformation = () => {
 										{THEME_COLORS.map((color) => {
 											const colorClasses = getThemeColorClasses(color);
 											return (
-												<div
+												<button
 													key={color}
+													type="button"
+													onClick={() => setColor(color)}
 													className={`w-12 h-12 rounded-full ${colorClasses.primary} border-2 ${
 														theme.color === color
 															? 'border-slate-900 dark:border-white ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-800'
-															: 'border-transparent'
-													} transition-all cursor-pointer`}
+															: 'border-transparent hover:ring-2 hover:ring-offset-2 hover:ring-offset-white dark:hover:ring-offset-slate-800 hover:ring-slate-300 dark:hover:ring-slate-500'
+													} transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2`}
 													title={color.charAt(0).toUpperCase() + color.slice(1)}
+													aria-label={`Select ${color} theme`}
 												/>
 											);
 										})}
@@ -340,34 +343,40 @@ export const AppInformation = () => {
 										Mode
 									</p>
 									<div className="flex gap-3">
-										<div
-											className={`flex-1 px-4 py-3 rounded-lg border ${
+										<button
+											type="button"
+											onClick={() => setMode('light')}
+											className={`flex-1 px-4 py-3 rounded-lg border transition ${
 												theme.mode === 'light'
 													? `${darkModeColors.borderStrong} ${darkModeColors.bgHover}`
-													: `${darkModeColors.border} ${darkModeColors.bgSurface}`
-											} text-center text-sm font-medium ${darkModeColors.textPrimary}`}
+													: `${darkModeColors.border} ${darkModeColors.bgSurface} hover:${darkModeColors.bgHover}`
+											} text-center text-sm font-medium ${darkModeColors.textPrimary} focus:outline-none focus:ring-2 focus:ring-offset-2`}
+											aria-label="Switch to light mode"
 										>
 											☀️ Light
-										</div>
-										<div
-											className={`flex-1 px-4 py-3 rounded-lg border ${
+										</button>
+										<button
+											type="button"
+											onClick={() => setMode('dark')}
+											className={`flex-1 px-4 py-3 rounded-lg border transition ${
 												theme.mode === 'dark'
 													? `${darkModeColors.borderStrong} ${darkModeColors.bgHover}`
-													: `${darkModeColors.border} ${darkModeColors.bgSurface}`
-											} text-center text-sm font-medium ${darkModeColors.textPrimary}`}
+													: `${darkModeColors.border} ${darkModeColors.bgSurface} hover:${darkModeColors.bgHover}`
+											} text-center text-sm font-medium ${darkModeColors.textPrimary} focus:outline-none focus:ring-2 focus:ring-offset-2`}
+											aria-label="Switch to dark mode"
 										>
 											🌙 Dark
-										</div>
+										</button>
 									</div>
 								</div>
 							</div>
 							<p className={`text-xs ${darkModeColors.textMuted} italic pt-2`}>
-								Change in Settings (gear icon in top right)
+								Click the colors and mode buttons above to change your theme
 							</p>
 						</div>
 
 						{/* Gender Settings */}
-						<div className={`rounded-2xl border ${darkModeColors.border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
+						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<PersonaIcon />

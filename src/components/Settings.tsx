@@ -42,7 +42,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
 
 			{/* Modal */}
 			<div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
-				<div className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${darkModeColors.border} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}>
+				<div className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}>
 					{/* Header */}
 					<div className={`flex items-center justify-between border-b ${darkModeColors.border} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}>
 						<h2 className={`text-xs sm:text-sm md:text-base font-semibold ${darkModeColors.textPrimary}`}>Settings</h2>

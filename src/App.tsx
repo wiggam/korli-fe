@@ -11,7 +11,7 @@ import { LANGUAGES } from './constants/languages';
 import { useTheme } from './contexts/ThemeContext';
 import { useChat } from './hooks/useChat';
 import type { ChatConfig, GenderOption, StudentLevel } from './types/chat';
-import { darkModeColors } from './utils/theme';
+import { darkModeColors, getThemeColorClasses } from './utils/theme';
 
 const LEVELS: StudentLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -176,7 +176,7 @@ function App() {
 							'flex flex-1 flex-col overflow-hidden rounded-3xl h-full',
 							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)]',
 							'border',
-							darkModeColors.border,
+							getThemeColorClasses(theme.color).border,
 							darkModeColors.bgSurface,
 						].join(' ')}
 					>

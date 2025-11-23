@@ -4,6 +4,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import {
 	darkModeColors,
 	getThemeButtonClasses,
+	getThemeColorClasses,
 } from '../utils/theme';
 import type { GenderOption } from '../types/chat';
 import { TwoOptionSlider } from './TwoOptionSlider';
@@ -57,7 +58,7 @@ export const GenderSettings = ({
 			{/* Modal */}
 			<div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
 				<div
-					className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${darkModeColors.border} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}
+					className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}
 				>
 					{/* Header */}
 					<div
