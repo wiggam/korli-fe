@@ -162,31 +162,42 @@ const AssistantMessage = ({
 				<div className="flex flex-wrap items-center justify-between gap-2 mt-1">
 					{/* Left side: Translation, AI audio, and corrections button */}
 					<div className="flex flex-wrap items-center gap-2">
-						{translationAvailable && (
-							<IconButton
-								label="Translate"
-								active={showTranslation}
-								onClick={onToggleTranslation}
-								icon={<TranslationIcon active={showTranslation} />}
-							/>
-						)}
+						{message.iconsLoading ? (
+							<div className="flex items-center gap-1.5 rounded-full px-1.5 sm:px-2 py-1">
+								<div className="h-3 w-3 sm:h-3.5 sm:w-3.5 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />
+								<span className="hidden sm:inline text-[10px] font-medium text-slate-500 dark:text-slate-300">
+									Loading...
+								</span>
+							</div>
+						) : (
+							<>
+								{translationAvailable && (
+									<IconButton
+										label="Translate"
+										active={showTranslation}
+										onClick={onToggleTranslation}
+										icon={<TranslationIcon active={showTranslation} />}
+									/>
+								)}
 
-						{message.audioUrl && (
-							<AudioPlayer
-								src={message.audioUrl}
-								label="Play audio"
-								tone="light"
-								size="sm"
-							/>
-						)}
+								{message.audioUrl && (
+									<AudioPlayer
+										src={message.audioUrl}
+										label="Play audio"
+										tone="light"
+										size="sm"
+									/>
+								)}
 
-						{correctionAvailable && (
-							<IconButton
-								label="Correction"
-								active={showCorrection}
-								onClick={onToggleCorrection}
-								icon={<CorrectionIcon active={showCorrection} />}
-							/>
+								{correctionAvailable && (
+									<IconButton
+										label="Correction"
+										active={showCorrection}
+										onClick={onToggleCorrection}
+										icon={<CorrectionIcon active={showCorrection} />}
+									/>
+								)}
+							</>
 						)}
 					</div>
 

@@ -82,6 +82,7 @@ export const useChat = () => {
             translation: pendingData?.translation ?? message.translation,
             audioUrl: pendingData?.audioUrl ?? message.audioUrl,
             isStreaming: false,
+            iconsLoading: false,
           };
         }),
       );
@@ -206,6 +207,7 @@ export const useChat = () => {
           createdAt: Date.now(),
           translation: undefined,
           isStreaming: true,
+          iconsLoading: true,
         } as AIMessage,
       ];
     });
@@ -240,6 +242,7 @@ export const useChat = () => {
           translation: undefined,
           createdAt: Date.now(),
           isStreaming: true,
+          iconsLoading: true,
         });
       }
 
@@ -284,6 +287,7 @@ export const useChat = () => {
             translation: undefined,
             createdAt: Date.now(),
             isStreaming: true,
+            iconsLoading: true,
           } as AIMessage,
         ];
       }

@@ -35,6 +35,7 @@ export interface AIMessage extends BaseMessage {
   translation?: string;
   audioUrl?: string;
   isStreaming?: boolean;
+  iconsLoading?: boolean;
 }
 
 export interface UserMessage extends BaseMessage {
