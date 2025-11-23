@@ -13,6 +13,7 @@ interface DropdownProps {
 	capitalize?: boolean;
 	getDisplayText?: (option: string) => string;
 	themeColor?: ThemeColor;
+	getFlagPath?: (option: string) => string | null;
 }
 
 export const Dropdown = ({
@@ -25,6 +26,7 @@ export const Dropdown = ({
 	capitalize = false,
 	getDisplayText,
 	themeColor,
+	getFlagPath,
 }: DropdownProps) => {
 	const getDisplay = (option: string) => {
 		return getDisplayText ? getDisplayText(option) : option;
@@ -176,12 +178,21 @@ export const Dropdown = ({
 					darkModeColors.inputText
 				} ${getFocusClasses()} ${capitalize ? 'capitalize' : ''}`}
 			>
-				<div className="flex items-center justify-between">
-					<span className={capitalize ? 'capitalize' : ''}>
-						{value ? getDisplay(value) : placeholder}
-					</span>
+				<div className="flex items-center justify-between gap-2">
+					<div className="flex items-center gap-2 min-w-0 flex-1">
+						{value && getFlagPath && getFlagPath(value) && (
+							<img
+								src={getFlagPath(value)!}
+								alt={`${value} flag`}
+								className="h-4 w-6 flex-shrink-0 object-cover"
+							/>
+						)}
+						<span className={`truncate ${capitalize ? 'capitalize' : ''}`}>
+							{value ? getDisplay(value) : placeholder}
+						</span>
+					</div>
 					<svg
-						className={`h-3.5 w-3.5 ${
+						className={`h-3.5 w-3.5 flex-shrink-0 ${
 							darkModeColors.textPlaceholder
 						} transition-transform ${isOpen ? 'rotate-180' : ''}`}
 						fill="none"
@@ -234,7 +245,7 @@ export const Dropdown = ({
 									type="button"
 									onClick={() => handleSelect(option)}
 									onMouseEnter={() => setHighlightedIndex(index)}
-									className={`w-full rounded-lg px-2.5 py-1.5 text-left text-xs transition ${
+									className={`w-full rounded-lg px-2.5 py-1.5 text-left text-xs transition flex items-center gap-2 ${
 										capitalize ? 'capitalize' : ''
 									} ${
 										option === value
@@ -244,7 +255,14 @@ export const Dropdown = ({
 											: `${darkModeColors.textSecondary}`
 									}`}
 								>
-									{getDisplay(option)}
+									{getFlagPath && getFlagPath(option) && (
+										<img
+											src={getFlagPath(option)!}
+											alt={`${option} flag`}
+											className="h-4 w-6 flex-shrink-0 object-cover"
+										/>
+									)}
+									<span>{getDisplay(option)}</span>
 								</button>
 							))
 						) : (

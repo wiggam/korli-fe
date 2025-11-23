@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react';
 
 import { useTheme } from '../contexts/ThemeContext';
+import { LANGUAGE_TO_FLAG } from '../constants/languages';
 import { darkModeColors, getThemeButtonClasses } from '../utils/theme';
 import { Dropdown } from './Dropdown';
 import { LevelSlider } from './LevelSlider';
@@ -41,6 +42,13 @@ export const ConfigurationForm = ({
 			orange: 'ring-orange-400/20 shadow-orange-400/10',
 		};
 		return colorMap[theme.color] || 'ring-blue-400/20 shadow-blue-400/10';
+	};
+
+	// Get flag path for a given language
+	const getFlagPath = (language: string): string | null => {
+		const countryCode = LANGUAGE_TO_FLAG[language];
+		if (!countryCode) return null;
+		return `/flags/l/${countryCode}.svg`;
 	};
 
 	if (hasSession) {
@@ -95,7 +103,7 @@ export const ConfigurationForm = ({
 					<div className="grid gap-3 sm:grid-cols-2">
 						<div className="flex flex-col gap-3">
 							<label
-								className={`text-sm sm:text-base font-medium ${darkModeColors.textSecondary}`}
+								className={`text-sm sm:text-base font-medium text-center ${darkModeColors.textSecondary}`}
 							>
 								Foreign Language
 							</label>
@@ -105,12 +113,13 @@ export const ConfigurationForm = ({
 								onChange={onChange('foreignLanguage')}
 								searchable={true}
 								themeColor={theme.color}
+								getFlagPath={getFlagPath}
 							/>
 						</div>
 
 						<div className="flex flex-col gap-3">
 							<label
-								className={`text-sm sm:text-base font-medium ${darkModeColors.textSecondary}`}
+								className={`text-sm sm:text-base font-medium text-center ${darkModeColors.textSecondary}`}
 							>
 								Native Language
 							</label>
@@ -120,6 +129,7 @@ export const ConfigurationForm = ({
 								onChange={onChange('nativeLanguage')}
 								searchable={true}
 								themeColor={theme.color}
+								getFlagPath={getFlagPath}
 							/>
 						</div>
 					</div>
@@ -145,7 +155,7 @@ export const ConfigurationForm = ({
 						disabled={isStarting}
 						className={`h-10 rounded-full px-10 text-sm font-semibold transition ${themeButtonClasses} ring-8 shadow-2xl ${getGlowClasses()}`}
 					>
-						{isStarting ? 'Starting…' : 'Start Chat'}
+						{isStarting ? 'Starting…' : "Let's Chat"}
 					</button>
 				</div>
 			</form>
