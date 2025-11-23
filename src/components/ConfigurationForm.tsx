@@ -34,14 +34,21 @@ export const ConfigurationForm = ({
 	// Get theme-specific glow classes for Start Chat button
 	const getGlowClasses = () => {
 		const colorMap: Record<string, string> = {
-			yellow: 'ring-yellow-400/20 shadow-yellow-400/10',
-			green: 'ring-green-400/20 shadow-green-400/10',
-			blue: 'ring-blue-400/20 shadow-blue-400/10',
-			pink: 'ring-pink-400/20 shadow-pink-400/10',
-			purple: 'ring-purple-400/20 shadow-purple-400/10',
-			orange: 'ring-orange-400/20 shadow-orange-400/10',
+			yellow:
+				'ring-yellow-400/20 shadow-yellow-400/10 dark:ring-yellow-400/40 dark:shadow-yellow-400/30',
+			green:
+				'ring-green-400/20 shadow-green-400/10 dark:ring-green-400/40 dark:shadow-green-400/30',
+			blue: 'ring-blue-400/20 shadow-blue-400/10 dark:ring-blue-400/40 dark:shadow-blue-400/30',
+			pink: 'ring-pink-400/20 shadow-pink-400/10 dark:ring-pink-400/40 dark:shadow-pink-400/30',
+			purple:
+				'ring-purple-400/20 shadow-purple-400/10 dark:ring-purple-400/40 dark:shadow-purple-400/30',
+			orange:
+				'ring-orange-400/20 shadow-orange-400/10 dark:ring-orange-400/40 dark:shadow-orange-400/30',
 		};
-		return colorMap[theme.color] || 'ring-blue-400/20 shadow-blue-400/10';
+		return (
+			colorMap[theme.color] ||
+			'ring-blue-400/20 shadow-blue-400/10 dark:ring-blue-400/40 dark:shadow-blue-400/30'
+		);
 	};
 
 	// Get flag path for a given language

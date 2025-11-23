@@ -4,7 +4,7 @@ import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js';
 import WaveSurfer from 'wavesurfer.js';
 
 import { useTheme } from '../contexts/ThemeContext';
-import { darkModeColors, getThemeButtonClasses } from '../utils/theme';
+import { darkModeColors, getThemeButtonClasses, getThemeColorClasses } from '../utils/theme';
 import { transcribeAudio } from '../lib/api';
 
 interface InputBarProps {
@@ -559,7 +559,7 @@ export const InputBar = ({
 				</div>
 			)}
 			<div
-				className={`flex items-center gap-2 rounded-3xl border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
+				className={`flex items-center gap-2 rounded-3xl border ${hasSession ? getThemeColorClasses(theme.color).border : darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
 			>
 				{recordingState === 'recording' ? (
 					<div

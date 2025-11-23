@@ -184,8 +184,10 @@ function App() {
 					<section
 						className={[
 							'flex flex-1 flex-col overflow-hidden rounded-3xl h-full',
-							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)] border',
-							getThemeColorClasses(theme.color).border,
+							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)]',
+							hasSession
+								? darkModeColors.border
+								: `border ${getThemeColorClasses(theme.color).border}`,
 							darkModeColors.bgSurface,
 						].join(' ')}
 					>
