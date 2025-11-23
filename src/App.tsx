@@ -115,24 +115,28 @@ function App() {
 	};
 
 	return (
-		<div className={`flex flex-col ${activePage === 'chat' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
+		<div
+			className={`flex flex-col ${
+				activePage === 'chat' ? 'h-screen overflow-hidden' : 'min-h-screen'
+			}`}
+		>
 			{/* Navigation Tabs - Fixed on the left, outside header */}
 			<div className="fixed top-4 left-4 z-50">
-						<NavigationTabs
-							activePage={activePage}
-							onPageChange={handlePageChange}
-								/>
-							</div>
+				<NavigationTabs
+					activePage={activePage}
+					onPageChange={handlePageChange}
+				/>
+			</div>
 
 			{/* Settings Button - Fixed on the right, outside header */}
-						<button
-							type="button"
-							onClick={handleOpenSettings}
+			<button
+				type="button"
+				onClick={handleOpenSettings}
 				className={`fixed top-4 right-4 z-50 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
-							aria-label="Settings"
-						>
-							<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-						</button>
+				aria-label="Settings"
+			>
+				<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+			</button>
 
 			{/* Header - Only for logo on chat page */}
 			{activePage === 'chat' && (
@@ -142,19 +146,25 @@ function App() {
 					<div className="mx-auto max-w-5xl">
 						<div className="flex items-center justify-center">
 							<img
-								src={theme.mode === 'dark' ? '/korli-logo-white.png' : '/korli-logo.png'}
+								src={
+									theme.mode === 'dark'
+										? '/korli-logo-white.png'
+										: '/korli-logo.png'
+								}
 								alt="Korli - AI Language Coach"
 								className="h-6 w-auto sm:h-8"
 							/>
+						</div>
 					</div>
-				</div>
-			</header>
+				</header>
 			)}
 
 			<main
 				className={`mx-auto flex w-full ${
 					activePage === 'info' ? '' : 'max-w-5xl'
-				} ${activePage === 'chat' ? 'h-full overflow-hidden' : 'flex-1'} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 pb-5 sm:pb-6`}
+				} ${
+					activePage === 'chat' ? 'h-full overflow-hidden' : 'flex-1'
+				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 pb-5 sm:pb-6`}
 			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
@@ -174,8 +184,7 @@ function App() {
 					<section
 						className={[
 							'flex flex-1 flex-col overflow-hidden rounded-3xl h-full',
-							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)]',
-							'border',
+							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)] border',
 							getThemeColorClasses(theme.color).border,
 							darkModeColors.bgSurface,
 						].join(' ')}
