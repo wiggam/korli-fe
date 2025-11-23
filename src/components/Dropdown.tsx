@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { darkModeColors } from '../utils/theme';
+import { darkModeColors, getThemeColorClasses } from '../utils/theme';
+import type { ThemeColor } from '../types/theme';
 
 interface DropdownProps {
 	value: string;
@@ -10,6 +11,8 @@ interface DropdownProps {
 	placeholder?: string;
 	className?: string;
 	capitalize?: boolean;
+	getDisplayText?: (option: string) => string;
+	themeColor?: ThemeColor;
 }
 
 export const Dropdown = ({
@@ -20,7 +23,54 @@ export const Dropdown = ({
 	placeholder = 'Select...',
 	className = '',
 	capitalize = false,
+	getDisplayText,
+	themeColor,
 }: DropdownProps) => {
+	const getDisplay = (option: string) => {
+		return getDisplayText ? getDisplayText(option) : option;
+	};
+
+	const themeClasses = themeColor ? getThemeColorClasses(themeColor) : null;
+
+	// Get focus border and ring classes based on theme color, fallback to blue
+	const getFocusClasses = () => {
+		if (themeClasses) {
+			return `focus:${themeClasses.border} focus:outline-none focus:ring-2 focus:${themeClasses.ring}/30`;
+		}
+		return 'focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30';
+	};
+
+	// Get selected option text color based on theme color, fallback to blue
+	const getSelectedTextClasses = () => {
+		if (themeColor) {
+			const colorMap: Record<ThemeColor, string> = {
+				yellow: 'text-yellow-600 dark:text-yellow-400',
+				green: 'text-green-600 dark:text-green-400',
+				blue: 'text-blue-600 dark:text-blue-400',
+				pink: 'text-pink-600 dark:text-pink-400',
+				purple: 'text-purple-600 dark:text-purple-400',
+				orange: 'text-orange-600 dark:text-orange-400',
+			};
+			return colorMap[themeColor];
+		}
+		return 'text-blue-600 dark:text-blue-400';
+	};
+
+	// Get selected option background color based on theme color, fallback to blue
+	const getSelectedBgClasses = () => {
+		if (themeColor) {
+			const colorMap: Record<ThemeColor, string> = {
+				yellow: 'bg-yellow-50 dark:bg-yellow-900/30',
+				green: 'bg-green-50 dark:bg-green-900/30',
+				blue: 'bg-blue-50 dark:bg-blue-900/30',
+				pink: 'bg-pink-50 dark:bg-pink-900/30',
+				purple: 'bg-purple-50 dark:bg-purple-900/30',
+				orange: 'bg-orange-50 dark:bg-orange-900/30',
+			};
+			return colorMap[themeColor];
+		}
+		return darkModeColors.dropdownOptionSelected; // Fallback to blue
+	};
 	const [isOpen, setIsOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -120,17 +170,15 @@ export const Dropdown = ({
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				onKeyDown={handleKeyDown}
-				className={`h-9 w-full rounded-full border ${
-					darkModeColors.dropdownBorder
-				} ${darkModeColors.dropdownBg} px-3.5 text-left text-xs ${
+				className={`h-9 w-full rounded-full border border-slate-200 dark:border-white ${
+					darkModeColors.dropdownBg
+				} px-3.5 text-left text-xs ${
 					darkModeColors.inputText
-				} focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 ${
-					capitalize ? 'capitalize' : ''
-				}`}
+				} ${getFocusClasses()} ${capitalize ? 'capitalize' : ''}`}
 			>
 				<div className="flex items-center justify-between">
 					<span className={capitalize ? 'capitalize' : ''}>
-						{value || placeholder}
+						{value ? getDisplay(value) : placeholder}
 					</span>
 					<svg
 						className={`h-3.5 w-3.5 ${
@@ -153,11 +201,11 @@ export const Dropdown = ({
 			{/* Dropdown Menu */}
 			{isOpen && (
 				<div
-					className={`absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} shadow-lg`}
+					className={`absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border border-slate-200 dark:border-white ${darkModeColors.dropdownBg} shadow-lg`}
 				>
 					{/* Search Input */}
 					{searchable && (
-						<div className={`border-b ${darkModeColors.border} p-2`}>
+						<div className={`border-b border-slate-200 dark:border-white p-2`}>
 							<input
 								ref={searchInputRef}
 								type="text"
@@ -168,7 +216,11 @@ export const Dropdown = ({
 								}}
 								onKeyDown={handleKeyDown}
 								placeholder="Search..."
-								className={`h-8 w-full rounded-lg ${darkModeColors.dropdownBorder} ${darkModeColors.dropdownBg} px-2.5 text-xs ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30`}
+								className={`h-8 w-full rounded-lg border-slate-200 dark:border-white ${
+									darkModeColors.dropdownBg
+								} px-2.5 text-xs ${darkModeColors.inputText} ${
+									darkModeColors.inputPlaceholder
+								} ${getFocusClasses()}`}
 							/>
 						</div>
 					)}
@@ -186,13 +238,13 @@ export const Dropdown = ({
 										capitalize ? 'capitalize' : ''
 									} ${
 										option === value
-											? `${darkModeColors.dropdownOptionSelected} font-medium text-blue-600 dark:text-blue-400`
+											? `${getSelectedBgClasses()} font-medium ${getSelectedTextClasses()}`
 											: highlightedIndex === index
 											? `${darkModeColors.dropdownOptionHover} ${darkModeColors.textPrimary}`
 											: `${darkModeColors.textSecondary}`
 									}`}
 								>
-									{option}
+									{getDisplay(option)}
 								</button>
 							))
 						) : (

@@ -29,6 +29,20 @@ export const ConfigurationForm = ({
 	const { theme } = useTheme();
 	const themeButtonClasses = getThemeButtonClasses(theme.color, isStarting);
 
+	// Helper function to add labels to level options for display
+	const getLevelDisplayText = (level: string) => {
+		switch (level) {
+			case 'A1':
+				return 'A1 (Beginner)';
+			case 'B1':
+				return 'B1 (Intermediate)';
+			case 'C1':
+				return 'C1 (Advanced)';
+			default:
+				return level;
+		}
+	};
+
 	if (hasSession) {
 		// Text display mode - show current config as text with restart button
 		return (
@@ -84,6 +98,7 @@ export const ConfigurationForm = ({
 								options={languages}
 								onChange={onChange('foreignLanguage')}
 								searchable={true}
+								themeColor={theme.color}
 							/>
 						</div>
 
@@ -96,6 +111,7 @@ export const ConfigurationForm = ({
 								options={languages}
 								onChange={onChange('nativeLanguage')}
 								searchable={true}
+								themeColor={theme.color}
 							/>
 						</div>
 
@@ -108,6 +124,8 @@ export const ConfigurationForm = ({
 								options={levels}
 								onChange={onChange('studentLevel')}
 								searchable={false}
+								getDisplayText={getLevelDisplayText}
+								themeColor={theme.color}
 							/>
 						</div>
 					</div>

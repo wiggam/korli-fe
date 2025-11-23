@@ -69,7 +69,7 @@ export const AppInformation = () => {
 					<div className="text-center space-y-3">
 						<div className="flex justify-center mb-2">
 							<img
-								src="/korli-logo.png"
+								src={theme.mode === 'dark' ? '/korli-logo-white.png' : '/korli-logo.png'}
 								alt="Korli - AI Language Coach"
 								className="h-12 w-auto sm:h-16 md:h-20"
 							/>

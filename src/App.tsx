@@ -8,6 +8,7 @@ import { InputBar } from './components/InputBar';
 import { NavigationTabs } from './components/NavigationTabs';
 import { Settings } from './components/Settings';
 import { LANGUAGES } from './constants/languages';
+import { useTheme } from './contexts/ThemeContext';
 import { useChat } from './hooks/useChat';
 import type { ChatConfig, GenderOption, StudentLevel } from './types/chat';
 import { darkModeColors } from './utils/theme';
@@ -16,13 +17,14 @@ const LEVELS: StudentLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 const initialConfig: ChatConfig = {
 	nativeLanguage: 'English',
-	foreignLanguage: 'Spanish',
+	foreignLanguage: 'Russian',
 	studentLevel: 'A2',
 	tutorGender: 'female',
 	studentGender: 'female',
 };
 
 function App() {
+	const { theme } = useTheme();
 	const [form, setForm] = useState<ChatConfig>(initialConfig);
 	const [tutorGender, setTutorGender] = useState<GenderOption>('female');
 	const [studentGender, setStudentGender] = useState<GenderOption>('female');
@@ -140,7 +142,7 @@ function App() {
 					<div className="mx-auto max-w-5xl">
 						<div className="flex items-center justify-center">
 							<img
-								src="/korli-logo.png"
+								src={theme.mode === 'dark' ? '/korli-logo-white.png' : '/korli-logo.png'}
 								alt="Korli - AI Language Coach"
 								className="h-6 w-auto sm:h-8"
 							/>
