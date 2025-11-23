@@ -118,21 +118,21 @@ function App() {
 		<div className={`flex flex-col ${activePage === 'chat' ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
 			{/* Navigation Tabs - Fixed on the left, outside header */}
 			<div className="fixed top-4 left-4 z-50">
-				<NavigationTabs
-					activePage={activePage}
-					onPageChange={handlePageChange}
-				/>
-			</div>
+						<NavigationTabs
+							activePage={activePage}
+							onPageChange={handlePageChange}
+								/>
+							</div>
 
 			{/* Settings Button - Fixed on the right, outside header */}
-			<button
-				type="button"
-				onClick={handleOpenSettings}
+						<button
+							type="button"
+							onClick={handleOpenSettings}
 				className={`fixed top-4 right-4 z-50 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
-				aria-label="Settings"
-			>
-				<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-			</button>
+							aria-label="Settings"
+						>
+							<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+						</button>
 
 			{/* Header - Only for logo on chat page */}
 			{activePage === 'chat' && (
@@ -146,9 +146,9 @@ function App() {
 								alt="Korli - AI Language Coach"
 								className="h-6 w-auto sm:h-8"
 							/>
-						</div>
 					</div>
-				</header>
+				</div>
+			</header>
 			)}
 
 			<main

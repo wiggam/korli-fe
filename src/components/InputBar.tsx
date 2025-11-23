@@ -559,7 +559,7 @@ export const InputBar = ({
 				</div>
 			)}
 			<div
-				className={`flex items-center gap-2 rounded-full border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
+				className={`flex items-center gap-2 rounded-3xl border ${darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
 			>
 				{recordingState === 'recording' ? (
 					<div
@@ -569,36 +569,34 @@ export const InputBar = ({
 						<div ref={liveWaveformRef} className="h-full w-full" />
 					</div>
 				) : (
-					<div className="flex-1 flex items-center gap-2">
-						<textarea
-							ref={textareaRef}
-							value={text}
-							disabled={textDisabled}
-							onChange={handleTextChange}
-							onKeyDown={(event) => {
-								if (event.key === 'Enter' && !event.shiftKey) {
-									event.preventDefault();
-									void sendText();
-								}
-							}}
-							rows={1}
-							className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
-							placeholder={
-								hasSession
-									? 'Type your message'
-									: 'Start the session to begin chatting'
+					<textarea
+						ref={textareaRef}
+						value={text}
+						disabled={textDisabled}
+						onChange={handleTextChange}
+						onKeyDown={(event) => {
+							if (event.key === 'Enter' && !event.shiftKey) {
+								event.preventDefault();
+								void sendText();
 							}
-							style={{
-								minHeight: '24px',
-								maxHeight: '240px',
-								paddingTop: '2px',
-								paddingBottom: '2px',
-							}}
-						/>
-					</div>
+						}}
+						rows={1}
+						className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+						placeholder={
+							hasSession
+								? 'Type your message'
+								: 'Start the session to begin chatting'
+						}
+						style={{
+							minHeight: '24px',
+							maxHeight: '240px',
+							paddingTop: '2px',
+							paddingBottom: '2px',
+						}}
+					/>
 				)}
 
-				<div className="flex items-center gap-0 sm:gap-0.5">
+				<div className="flex items-center gap-0 sm:gap-0.5 flex-shrink-0">
 					{recordingState === 'recording' ? (
 						<div className="flex items-center gap-1">
 							<button
