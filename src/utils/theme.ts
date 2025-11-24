@@ -11,6 +11,15 @@ export interface ThemeColorClasses {
 }
 
 /**
+ * Page background colors for light and dark mode
+ * These are used as CSS custom properties and can be updated dynamically
+ */
+export const PAGE_BACKGROUND_COLORS = {
+	light: '#f8fafc', // slate-50 - light grey
+	dark: '#262626', // dark grey (matches DARK_COLORS.pageBackground)
+} as const;
+
+/**
  * Centralized dark mode color constants
  * Change these values to quickly test different color schemes
  *
@@ -19,9 +28,9 @@ export interface ThemeColorClasses {
  */
 const DARK_COLORS = {
 	// Main backgrounds (use full class strings with dark: prefix)
-	pageBackground: 'dark:bg-slate-500', // Page background
-	chatBackground: 'dark:bg-[#8795A6]', // Main chat area, cards, modals, AI message backgrounds
-	inputBackground: 'dark:bg-[#A1ACBA]', // Input fields and input icon buttons
+	pageBackground: 'dark:bg-[#262626]', // Page background
+	chatBackground: 'dark:bg-[#3B3B3B]', // Main chat area, #525252  cards, modals, AI message backgrounds
+	inputBackground: 'dark:bg-[#4A4A4A]', // Input fields and input icon buttons
 	infoPageAlt: 'dark:bg-[#768A9D]', // Alternate background for info page sections
 
 	// Text colors (use full class strings with dark: prefix)
@@ -31,19 +40,22 @@ const DARK_COLORS = {
 	textPlaceholder: 'dark:placeholder:text-[#F0F2F4]', // Placeholder text color
 
 	// Background colors (use full class strings with dark: prefix)
-	bgButton: 'dark:bg-[#8795A6]', // Button backgrounds
-	bgSlider: 'dark:bg-[#697F96]', // Slider background (for TwoOptionSlider)
-	bgHover: 'dark:hover:bg-slate-500', // Hover backgrounds
+	bgButton: 'dark:bg-[#4A4A4A]', // Button backgrounds
+	bgResetButton: 'dark:bg-[#4A4A4A]', // Reset button background
+	bgSlider: 'dark:bg-[#525252]', // Slider background (for TwoOptionSlider)
+	bgHover: 'dark:bg-[#4A4A4A]', // Hover backgrounds
 	bgHoverDark: 'dark:hover:bg-slate-600', // Darker hover backgrounds
 	bgHoverStatic: 'dark:bg-slate-500', // Static hover background (for dropdowns)
-	bgHoverAudio: 'dark:hover:bg-slate-500', // Audio player hover background
+	bgHoverAudio: 'dark:hover:bg-[#2F2F2F]', // Audio player hover background (darker than chat background)
+	bgHoverChatButtons: 'dark:hover:bg-[#2F2F2F]', // Hover for buttons on chat background (translate, corrections, etc.)
 	bgSection: 'dark:bg-slate-500', // Section backgrounds
-	bgDropdown: 'dark:bg-slate-400', // Dropdown background
+	bgDropdown: 'dark:bg-[#525252]', // Dropdown background
 
 	// Border colors (use full class strings with dark: prefix)
 	borderDefault: 'dark:border-slate-500', // Default borders
 	borderStrong: 'dark:border-slate-600', // Strong borders
 	borderHover: 'dark:hover:bg-slate-400', // Hover background
+	borderChatSeparator: 'dark:border-[#262626]', // Border that matches chat background (like border-slate-200 matches white in light mode)
 } as const;
 
 /**
@@ -67,11 +79,13 @@ export const darkModeColors = {
 	// Hover backgrounds for subtle emphasis
 	bgHover: `hover:bg-slate-100 ${DARK_COLORS.bgHover}`,
 	bgHoverLight: `hover:bg-slate-50 ${DARK_COLORS.bgHover}`,
+	bgHoverChatButtons: `hover:bg-gray-100 ${DARK_COLORS.bgHoverChatButtons}`, // Darker hover for buttons on chat background
 
 	// Borders
 	border: `border-slate-200 ${DARK_COLORS.borderDefault}`,
 	borderMuted: `border-slate-300 ${DARK_COLORS.borderDefault}`,
 	borderStrong: `border-slate-400 ${DARK_COLORS.borderStrong}`,
+	borderChatSeparator: `border-slate-200 ${DARK_COLORS.borderChatSeparator}`,
 
 	// Text - light text for dark mode to contrast with slate-500/400 backgrounds
 	text: `text-slate-900 ${DARK_COLORS.textPrimary}`,
@@ -85,6 +99,9 @@ export const darkModeColors = {
 	// Buttons / interactive surfaces
 	button: `bg-slate-100 ${DARK_COLORS.bgButton} text-slate-800 ${DARK_COLORS.textPrimary}`,
 	buttonHover: `hover:bg-slate-200 ${DARK_COLORS.bgHoverDark}`,
+	// Reset button - separate from other buttons
+	resetButton: `bg-slate-100 ${DARK_COLORS.bgResetButton} text-slate-800 ${DARK_COLORS.textPrimary}`,
+	resetButtonHover: `hover:bg-slate-200 ${DARK_COLORS.bgHoverDark}`,
 	buttonSecondary: `bg-slate-50 ${DARK_COLORS.bgButton} text-slate-800 ${DARK_COLORS.textPrimary}`,
 	buttonSecondaryHover: `hover:bg-slate-100 ${DARK_COLORS.bgHoverDark}`,
 
@@ -94,10 +111,10 @@ export const darkModeColors = {
 	inputText: `text-slate-900 ${DARK_COLORS.textPrimary}`,
 	inputPlaceholder: `placeholder:text-slate-400 ${DARK_COLORS.textPlaceholder}`,
 	// Input bar icon buttons (person, mic icons)
-	inputIconBg: `bg-white ${DARK_COLORS.inputBackground}`,
+	inputIconBg: `bg-white ${DARK_COLORS.bgHoverDark}`, // Persona and mic icons match chat background
 	inputIconBorder: 'border-transparent dark:border-transparent',
 	inputIconText: `text-slate-700 ${DARK_COLORS.textPrimary}`,
-	inputIconHover: `hover:bg-gray-100 ${DARK_COLORS.borderHover}`,
+	inputIconHover: `hover:bg-gray-100 ${DARK_COLORS.inputBackground}`,
 
 	// Navigation tabs
 	tabBg: `bg-slate-100 ${DARK_COLORS.bgButton}`,
@@ -121,7 +138,7 @@ export const darkModeColors = {
 	messageAiAudioBg: `bg-white ${DARK_COLORS.chatBackground}`,
 	messageAiAudioBorder: 'border-transparent dark:border-transparent',
 	messageAiAudioText: `text-slate-700 ${DARK_COLORS.textPrimary}`,
-	messageAiAudioHover: `hover:bg-gray-100 ${DARK_COLORS.bgHoverAudio}`,
+	messageAiAudioHover: `hover:bg-gray-100 ${DARK_COLORS.bgHoverChatButtons}`, // Darker hover for play audio
 
 	// Icon buttons
 	iconButton: `bg-white ${DARK_COLORS.bgButton} text-slate-700 ${DARK_COLORS.textPrimary}`,

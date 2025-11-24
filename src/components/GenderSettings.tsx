@@ -28,7 +28,6 @@ const CloseIcon = () => (
 	</svg>
 );
 
-
 export const GenderSettings = ({
 	tutorGender,
 	studentGender,
@@ -58,11 +57,13 @@ export const GenderSettings = ({
 			{/* Modal */}
 			<div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
 				<div
-					className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}
+					className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${
+						getThemeColorClasses(theme.color).border
+					} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}
 				>
 					{/* Header */}
 					<div
-						className={`flex items-center justify-between border-b ${darkModeColors.border} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
+						className={`flex items-center justify-between border-b ${darkModeColors.borderChatSeparator} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
 					>
 						<h2
 							className={`text-xs sm:text-sm md:text-base font-semibold ${darkModeColors.textPrimary}`}
@@ -126,12 +127,12 @@ export const GenderSettings = ({
 
 					{/* Footer */}
 					<div
-						className={`flex gap-1.5 md:gap-2 border-t ${darkModeColors.border} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
+						className={`flex gap-1.5 md:gap-2 border-t ${darkModeColors.borderChatSeparator} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
 					>
 						<button
 							type="button"
 							onClick={onClose}
-							className={`flex-1 rounded-full border ${darkModeColors.borderMuted} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
+							className={`flex-1 rounded-full border ${darkModeColors.borderChatSeparator} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
 						>
 							Cancel
 						</button>

@@ -64,17 +64,25 @@ export const AppInformation = () => {
 	return (
 		<div className="w-full">
 			{/* Hero Section */}
-			<section className={`w-full py-6 sm:py-8 md:py-10 ${darkModeColors.infoPageSection1} rounded-t-3xl`}>
+			<section
+				className={`w-full py-6 sm:py-8 md:py-10 ${darkModeColors.infoPageSection1} rounded-t-3xl`}
+			>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="text-center space-y-3">
 						<div className="flex justify-center mb-2">
 							<img
-								src={theme.mode === 'dark' ? '/korli-logo-white.png' : '/korli-logo.png'}
+								src={
+									theme.mode === 'dark'
+										? '/korli-logo-white.png'
+										: '/korli-logo.png'
+								}
 								alt="Korli - AI Language Coach"
 								className="h-12 w-auto sm:h-16 md:h-20"
 							/>
 						</div>
-						<p className={`text-lg sm:text-xl md:text-2xl ${darkModeColors.textSecondary} max-w-3xl mx-auto`}>
+						<p
+							className={`text-lg sm:text-xl md:text-2xl ${darkModeColors.textSecondary} max-w-3xl mx-auto`}
+						>
 							Learn languages through conversation at your level
 						</p>
 					</div>
@@ -82,7 +90,9 @@ export const AppInformation = () => {
 			</section>
 
 			{/* Section 1: Language Support & Adaptive Learning */}
-			<section className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection2}`}>
+			<section
+				className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection2}`}
+			>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 						{/* Language Support */}
@@ -101,18 +111,28 @@ export const AppInformation = () => {
 									</svg>
 								</div>
 								<div>
-									<h2 className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}>
+									<h2
+										className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}
+									>
 										{languageCount}+ Languages
 									</h2>
 								</div>
 							</div>
-							<p className={`text-base sm:text-lg leading-relaxed ${darkModeColors.textSecondary}`}>
-								Practice with {languageCount} languages including Spanish, French, German, Japanese, Chinese, Arabic, and many more. Korli supports a wide range of languages to help you learn.
+							<p
+								className={`text-base sm:text-lg leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Practice with {languageCount} languages including Spanish,
+								French, German, Japanese, Chinese, Arabic, and many more. Korli
+								supports a wide range of languages to help you learn.
 							</p>
 						</div>
 
 						{/* Adaptive Learning */}
-						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
+						<div
+							className={`rounded-2xl border ${
+								getThemeColorClasses(theme.color).border
+							} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}
+						>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<svg
@@ -126,12 +146,18 @@ export const AppInformation = () => {
 										<path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
 									</svg>
 								</div>
-								<h2 className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}>
+								<h2
+									className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Learn at Your Level
 								</h2>
 							</div>
-							<p className={`text-base sm:text-lg leading-relaxed ${darkModeColors.textSecondary}`}>
-								Korli adapts to your proficiency level (A1-C2). The AI tutor adjusts vocabulary, grammar complexity, and conversation style to match your current abilities.
+							<p
+								className={`text-base sm:text-lg leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Korli adapts to your proficiency level (A1-C2). The AI tutor
+								adjusts vocabulary, grammar complexity, and conversation style
+								to match your current abilities.
 							</p>
 							<div className="flex items-center gap-2">
 								{['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level, idx) => (
@@ -139,8 +165,12 @@ export const AppInformation = () => {
 										key={level}
 										className={`flex-1 text-center py-2 rounded-md text-sm font-semibold border ${
 											idx === 1
-												? `${getThemeColorClasses(theme.color).primary} text-white ${getThemeColorClasses(theme.color).border}`
-												: `${darkModeColors.bgHover} ${darkModeColors.textSecondary} ${darkModeColors.border}`
+												? `${
+														getThemeColorClasses(theme.color).primary
+												  } text-white ${
+														getThemeColorClasses(theme.color).border
+												  }`
+												: `${darkModeColors.bgHover} ${darkModeColors.textSecondary} ${darkModeColors.borderChatSeparator}`
 										}`}
 									>
 										{level}
@@ -153,29 +183,47 @@ export const AppInformation = () => {
 			</section>
 
 			{/* Section 2: Core Features (Translation, Audio, Corrections) */}
-			<section className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection1}`}>
+			<section
+				className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection1}`}
+			>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-12">
-						<h2 className={`text-3xl sm:text-4xl font-bold ${darkModeColors.textPrimary} mb-4`}>
+						<h2
+							className={`text-3xl sm:text-4xl font-bold ${darkModeColors.textPrimary} mb-4`}
+						>
 							Powerful Learning Features
 						</h2>
-						<p className={`text-lg ${darkModeColors.textSecondary} max-w-2xl mx-auto`}>
+						<p
+							className={`text-lg ${darkModeColors.textSecondary} max-w-2xl mx-auto`}
+						>
 							Everything you need to master a new language
 						</p>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
 						{/* Translation Feature */}
-						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
+						<div
+							className={`rounded-2xl border ${
+								getThemeColorClasses(theme.color).border
+							} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${
+								darkModeColors.bgHover
+							} transition-shadow hover:shadow-lg`}
+						>
 							<div className="flex items-center gap-3">
 								<div className={`p-2 rounded-lg ${darkModeColors.bgHover}`}>
 									<TranslationIcon />
 								</div>
-								<h3 className={`text-xl font-bold ${darkModeColors.textPrimary}`}>
+								<h3
+									className={`text-xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Instant Translations
 								</h3>
 							</div>
-							<p className={`text-sm sm:text-base leading-relaxed ${darkModeColors.textSecondary}`}>
-								Every AI message can be translated to your native language. Click the translation icon on any message to see the translation.
+							<p
+								className={`text-sm sm:text-base leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Every AI message can be translated to your native language.
+								Click the translation icon on any message to see the
+								translation.
 							</p>
 							<div className="pt-2">
 								<img
@@ -190,19 +238,32 @@ export const AppInformation = () => {
 						</div>
 
 						{/* Audio Feature */}
-						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
+						<div
+							className={`rounded-2xl border ${
+								getThemeColorClasses(theme.color).border
+							} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${
+								darkModeColors.bgHover
+							} transition-shadow hover:shadow-lg`}
+						>
 							<div className="flex items-center gap-3">
 								<div className={`p-2 rounded-lg ${darkModeColors.bgHover}`}>
 									<AudioIcon />
 								</div>
-								<h3 className={`text-xl font-bold ${darkModeColors.textPrimary}`}>
+								<h3
+									className={`text-xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Audio Playback
 								</h3>
 							</div>
-							<p className={`text-sm sm:text-base leading-relaxed ${darkModeColors.textSecondary}`}>
-								Every AI message includes audio playback. Click the audio button to hear pronunciations and practice your listening skills.
+							<p
+								className={`text-sm sm:text-base leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Every AI message includes audio playback. Click the audio button
+								to hear pronunciations and practice your listening skills.
 							</p>
-							<div className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border ${darkModeColors.messageAiIconBorder} ${darkModeColors.messageAiIconBg} ${darkModeColors.messageAiIconText}`}>
+							<div
+								className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border ${darkModeColors.messageAiIconBorder} ${darkModeColors.messageAiIconBg} ${darkModeColors.messageAiIconText}`}
+							>
 								<AudioIcon />
 								<span className="text-xs sm:text-sm font-medium">
 									Play audio
@@ -214,17 +275,29 @@ export const AppInformation = () => {
 						</div>
 
 						{/* Corrections Feature */}
-						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${darkModeColors.bgHover} transition-shadow hover:shadow-lg`}>
+						<div
+							className={`rounded-2xl border ${
+								getThemeColorClasses(theme.color).border
+							} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-4 ${
+								darkModeColors.bgHover
+							} transition-shadow hover:shadow-lg`}
+						>
 							<div className="flex items-center gap-3">
 								<div className={`p-2 rounded-lg ${darkModeColors.bgHover}`}>
 									<CorrectionIcon />
 								</div>
-								<h3 className={`text-xl font-bold ${darkModeColors.textPrimary}`}>
+								<h3
+									className={`text-xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Smart Corrections
 								</h3>
 							</div>
-							<p className={`text-sm sm:text-base leading-relaxed ${darkModeColors.textSecondary}`}>
-								Get instant grammar corrections with explanations. See the corrected version and hear it pronounced. If your message is correct, you'll hear it back under the AI response.
+							<p
+								className={`text-sm sm:text-base leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Get instant grammar corrections with explanations. See the
+								corrected version and hear it pronounced. If your message is
+								correct, you'll hear it back under the AI response.
 							</p>
 							<div className="pt-2">
 								<img
@@ -242,7 +315,9 @@ export const AppInformation = () => {
 			</section>
 
 			{/* Section 3: Voice Recording */}
-			<section className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection2}`}>
+			<section
+				className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection2}`}
+			>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 						<div className="space-y-6">
@@ -250,22 +325,31 @@ export const AppInformation = () => {
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<MicIcon />
 								</div>
-								<h2 className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}>
+								<h2
+									className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Voice Messages
 								</h2>
 							</div>
-							<p className={`text-base sm:text-lg leading-relaxed ${darkModeColors.textSecondary}`}>
-								Record audio messages that get automatically transcribed to text. Watch the waveform as you speak, then accept or cancel. After transcription, listen back with the "Transcribed audio" button above the input.
+							<p
+								className={`text-base sm:text-lg leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Record audio messages that get automatically transcribed to
+								text. Watch the waveform as you speak, then accept or cancel.
+								After transcription, listen back with the "Transcribed audio"
+								button above the input.
 							</p>
 							<div className="flex items-center gap-3 pt-4">
-								<div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg}`}>
+								<div
+									className={`flex items-center gap-2 px-4 py-2 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg}`}
+								>
 									<MicIcon />
 									<span className="text-sm">Record</span>
 								</div>
-								<span className={`text-sm ${darkModeColors.textMuted}`}>
-									→
-								</span>
-								<div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg}`}>
+								<span className={`text-sm ${darkModeColors.textMuted}`}>→</span>
+								<div
+									className={`flex items-center gap-2 px-4 py-2 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg}`}
+								>
 									<SendIcon />
 									<span className="text-sm">Send</span>
 								</div>
@@ -287,35 +371,52 @@ export const AppInformation = () => {
 			</section>
 
 			{/* Section 4: Customization (Theme & Gender) */}
-			<section className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection1} rounded-b-3xl`}>
+			<section
+				className={`w-full py-12 sm:py-16 md:py-20 ${darkModeColors.infoPageSection1} rounded-b-3xl`}
+			>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-12">
-						<h2 className={`text-3xl sm:text-4xl font-bold ${darkModeColors.textPrimary} mb-4`}>
+						<h2
+							className={`text-3xl sm:text-4xl font-bold ${darkModeColors.textPrimary} mb-4`}
+						>
 							Customize Your Experience
 						</h2>
-						<p className={`text-lg ${darkModeColors.textSecondary} max-w-2xl mx-auto`}>
+						<p
+							className={`text-lg ${darkModeColors.textSecondary} max-w-2xl mx-auto`}
+						>
 							Make Korli work the way you want
 						</p>
 					</div>
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 						{/* Theme Customization */}
-						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
+						<div
+							className={`rounded-2xl border ${
+								getThemeColorClasses(theme.color).border
+							} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}
+						>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<Settings
 										className={`h-8 w-8 ${darkModeColors.textPrimary}`}
 									/>
 								</div>
-								<h3 className={`text-2xl font-bold ${darkModeColors.textPrimary}`}>
+								<h3
+									className={`text-2xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Theme & Mode
 								</h3>
 							</div>
-							<p className={`text-base leading-relaxed ${darkModeColors.textSecondary}`}>
-								Choose from 6 vibrant theme colors and switch between light and dark mode to match your preference.
+							<p
+								className={`text-base leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Choose from 6 vibrant theme colors and switch between light and
+								dark mode to match your preference.
 							</p>
 							<div className="space-y-4">
 								<div>
-									<p className={`text-sm font-semibold mb-3 ${darkModeColors.textSecondary}`}>
+									<p
+										className={`text-sm font-semibold mb-3 ${darkModeColors.textSecondary}`}
+									>
 										Theme Colors
 									</p>
 									<div className="flex flex-wrap gap-3">
@@ -326,7 +427,9 @@ export const AppInformation = () => {
 													key={color}
 													type="button"
 													onClick={() => setColor(color)}
-													className={`w-12 h-12 rounded-full ${colorClasses.primary} border-2 ${
+													className={`w-12 h-12 rounded-full ${
+														colorClasses.primary
+													} border-2 ${
 														theme.color === color
 															? 'border-slate-900 dark:border-white ring-2 ring-offset-2 ring-offset-white dark:ring-offset-slate-800'
 															: 'border-transparent hover:ring-2 hover:ring-offset-2 hover:ring-offset-white dark:hover:ring-offset-slate-800 hover:ring-slate-300 dark:hover:ring-slate-500'
@@ -339,7 +442,9 @@ export const AppInformation = () => {
 									</div>
 								</div>
 								<div>
-									<p className={`text-sm font-semibold mb-3 ${darkModeColors.textSecondary}`}>
+									<p
+										className={`text-sm font-semibold mb-3 ${darkModeColors.textSecondary}`}
+									>
 										Mode
 									</p>
 									<div className="flex gap-3">
@@ -348,9 +453,11 @@ export const AppInformation = () => {
 											onClick={() => setMode('light')}
 											className={`flex-1 px-4 py-3 rounded-lg border transition ${
 												theme.mode === 'light'
-													? `${darkModeColors.borderStrong} ${darkModeColors.bgHover}`
-													: `${darkModeColors.border} ${darkModeColors.bgSurface} hover:${darkModeColors.bgHover}`
-											} text-center text-sm font-medium ${darkModeColors.textPrimary} focus:outline-none focus:ring-2 focus:ring-offset-2`}
+													? `${darkModeColors.borderChatSeparator} ${darkModeColors.bgHover}`
+													: `${darkModeColors.borderChatSeparator} ${darkModeColors.bgSurface} hover:${darkModeColors.bgHover}`
+											} text-center text-sm font-medium ${
+												darkModeColors.textPrimary
+											} focus:outline-none focus:ring-2 focus:ring-offset-2`}
 											aria-label="Switch to light mode"
 										>
 											☀️ Light
@@ -360,9 +467,11 @@ export const AppInformation = () => {
 											onClick={() => setMode('dark')}
 											className={`flex-1 px-4 py-3 rounded-lg border transition ${
 												theme.mode === 'dark'
-													? `${darkModeColors.borderStrong} ${darkModeColors.bgHover}`
-													: `${darkModeColors.border} ${darkModeColors.bgSurface} hover:${darkModeColors.bgHover}`
-											} text-center text-sm font-medium ${darkModeColors.textPrimary} focus:outline-none focus:ring-2 focus:ring-offset-2`}
+													? `${darkModeColors.borderChatSeparator} ${darkModeColors.bgHover}`
+													: `${darkModeColors.borderChatSeparator} ${darkModeColors.bgSurface} hover:${darkModeColors.bgHover}`
+											} text-center text-sm font-medium ${
+												darkModeColors.textPrimary
+											} focus:outline-none focus:ring-2 focus:ring-offset-2`}
 											aria-label="Switch to dark mode"
 										>
 											🌙 Dark
@@ -376,23 +485,33 @@ export const AppInformation = () => {
 						</div>
 
 						{/* Gender Settings */}
-						<div className={`rounded-2xl border ${getThemeColorClasses(theme.color).border} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}>
+						<div
+							className={`rounded-2xl border ${
+								getThemeColorClasses(theme.color).border
+							} ${darkModeColors.bgSurface} p-6 sm:p-8 space-y-6`}
+						>
 							<div className="flex items-center gap-4">
 								<div className={`p-3 rounded-xl ${darkModeColors.bgHover}`}>
 									<PersonaIcon />
 								</div>
-								<h3 className={`text-2xl font-bold ${darkModeColors.textPrimary}`}>
+								<h3
+									className={`text-2xl font-bold ${darkModeColors.textPrimary}`}
+								>
 									Personalize Voices
 								</h3>
 							</div>
-							<p className={`text-base leading-relaxed ${darkModeColors.textSecondary}`}>
-								Choose the gender of both the AI tutor and yourself for more personalized conversations. This affects the voice used in audio playback.
+							<p
+								className={`text-base leading-relaxed ${darkModeColors.textSecondary}`}
+							>
+								Choose the gender of both the AI tutor and yourself for more
+								personalized conversations. This affects the voice used in audio
+								playback.
 							</p>
-							<div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText}`}>
+							<div
+								className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText}`}
+							>
 								<PersonaIcon />
-								<span className="text-sm font-medium">
-									Persona
-								</span>
+								<span className="text-sm font-medium">Persona</span>
 							</div>
 							<p className={`text-xs ${darkModeColors.textMuted} italic`}>
 								Click the persona icon in the message bar to change
@@ -403,10 +522,14 @@ export const AppInformation = () => {
 			</section>
 
 			{/* Footer Section */}
-			<footer className={`w-full py-8 sm:py-10 ${darkModeColors.infoPageSection2} border-t ${darkModeColors.border} rounded-b-3xl`}>
+			<footer
+				className={`w-full py-8 sm:py-10 ${darkModeColors.infoPageSection2} border-t ${darkModeColors.borderChatSeparator} rounded-b-3xl`}
+			>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="flex items-center justify-center gap-6 flex-wrap text-center">
-						<span className={`text-base font-medium ${darkModeColors.textPrimary}`}>
+						<span
+							className={`text-base font-medium ${darkModeColors.textPrimary}`}
+						>
 							George Wiggam
 						</span>
 						<a
@@ -415,7 +538,9 @@ export const AppInformation = () => {
 							aria-label="Email George Wiggam"
 						>
 							<Mail className="h-5 w-5" />
-							<span className="text-sm sm:text-base">georgewiggam8@gmail.com</span>
+							<span className="text-sm sm:text-base">
+								georgewiggam8@gmail.com
+							</span>
 						</a>
 						<a
 							href="https://www.linkedin.com/in/george-wiggam/"

@@ -62,7 +62,7 @@ export const ConfigurationForm = ({
 		// Text display mode - show current config as text with restart button
 		return (
 			<div
-				className={`border-b ${darkModeColors.border} px-2.5 sm:px-3 py-1.5 sm:py-2.5`}
+				className={`border-b ${darkModeColors.borderChatSeparator} px-2.5 sm:px-3 py-1.5 sm:py-2.5`}
 			>
 				<div className="flex items-center justify-between">
 					<div
@@ -86,7 +86,7 @@ export const ConfigurationForm = ({
 					<button
 						type="button"
 						onClick={onReset}
-						className={`h-6 sm:h-8 rounded-full ${darkModeColors.button} px-2.5 sm:px-4 text-[9px] sm:text-xs font-semibold transition ${darkModeColors.buttonHover}`}
+						className={`h-6 sm:h-8 rounded-full ${darkModeColors.resetButton} px-2.5 sm:px-4 text-[9px] sm:text-xs font-semibold transition ${darkModeColors.resetButtonHover}`}
 					>
 						Reset
 					</button>

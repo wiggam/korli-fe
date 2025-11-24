@@ -14,7 +14,9 @@
 
 	/* Base light background (similar to slate-50/100) */
 	color: #0a0d14;
-	background-color: #f8fafc;
+
+	/* CSS custom property for page background - defaults to light mode */
+	--page-background: #f8fafc;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -29,16 +31,9 @@ body {
 
 	/* Text stays dark in both modes – we're doing a "dim" theme, not full dark */
 	color: #0f172a; /* slate-900-ish */
-}
 
-/* Light mode background */
-body {
-	background-color: #f8fafc; /* light grey, like slate-50/100 */
-}
-
-/* Dark mode background – medium-light grey for cohesive appearance */
-.dark body {
-	background-color: #64748b; /* slate-500 - medium-light grey */
+	/* Use CSS custom property for background - updated dynamically by theme */
+	background-color: var(--page-background);
 }
 
 /* Limit dropdown height and style scrollbar */

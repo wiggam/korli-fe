@@ -172,7 +172,7 @@ export const Dropdown = ({
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				onKeyDown={handleKeyDown}
-				className={`h-9 w-full rounded-full border border-slate-200 dark:border-white ${
+				className={`h-9 w-full rounded-full border border-slate-200 dark:border-0 ${
 					darkModeColors.dropdownBg
 				} px-3.5 text-left text-xs ${
 					darkModeColors.inputText

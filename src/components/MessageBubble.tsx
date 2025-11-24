@@ -67,8 +67,8 @@ const IconButton = ({
 				darkModeColors.messageAiIconBorder
 			} px-1.5 sm:px-2 text-[10px] font-medium transition ${
 				active
-					? `${darkModeColors.bgHover} ${activeColorClasses} ${darkModeColors.buttonHover}`
-					: `${darkModeColors.messageAiIconText} ${darkModeColors.bgHover}`
+					? `${darkModeColors.bgHover} ${activeColorClasses} ${darkModeColors.bgHoverChatButtons}`
+					: `${darkModeColors.messageAiIconText} ${darkModeColors.bgHoverChatButtons}`
 			}`}
 		>
 			{icon}
