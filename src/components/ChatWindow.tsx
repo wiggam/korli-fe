@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FormEvent, useEffect, useRef } from 'react';
+import { type FormEvent, useEffect, useRef } from 'react';
 
 import type {
 	ChatConfig,
@@ -15,7 +15,6 @@ interface ChatWindowProps {
 	messages: ChatMessage[];
 	activeOverlay: OverlayState | null;
 	onToggleOverlay: (messageId: string, type: OverlayType) => void;
-	isStreaming: boolean;
 	config: ChatConfig;
 	languages: string[];
 	levels: StudentLevel[];
@@ -30,7 +29,6 @@ export const ChatWindow = ({
 	messages,
 	activeOverlay,
 	onToggleOverlay,
-	isStreaming,
 	config,
 	languages,
 	levels,

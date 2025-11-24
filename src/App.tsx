@@ -195,7 +195,6 @@ function App() {
 							messages={messages}
 							activeOverlay={activeOverlay}
 							onToggleOverlay={toggleOverlay}
-							isStreaming={isStreaming}
 							config={form}
 							languages={sortedLanguages}
 							levels={LEVELS}

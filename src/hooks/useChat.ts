@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { continueTextChatSSE, startTextChat, voiceChatSSE } from '../lib/api';
+import { continueTextChatSSE, startTextChat } from '../lib/api';
 import type {
   AIMessage,
   ChatConfig,
