@@ -193,7 +193,8 @@ function App() {
 							darkModeColors.bgSurface,
 						].join(' ')}
 						style={{
-							paddingBottom: 'max(env(safe-area-inset-bottom), 0px)',
+							paddingBottom:
+								'max(calc(env(safe-area-inset-bottom) + 1rem), 1rem)',
 						}}
 					>
 						<ChatWindow
