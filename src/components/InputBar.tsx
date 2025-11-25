@@ -581,7 +581,7 @@ export const InputBar = ({
 							}
 						}}
 						rows={1}
-						className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+						className={`flex-1 resize-none overflow-y-auto bg-transparent text-base sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
 						placeholder={
 							hasSession
 								? 'Type your message'
