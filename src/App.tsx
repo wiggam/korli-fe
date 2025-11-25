@@ -194,7 +194,7 @@ function App() {
 						].join(' ')}
 						style={{
 							paddingBottom:
-								'max(calc(env(safe-area-inset-bottom) + 1rem), 1rem)',
+								'max(calc(env(safe-area-inset-bottom) + 0.5rem), 0.5rem)',
 						}}
 					>
 						<ChatWindow
