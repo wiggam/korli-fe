@@ -117,7 +117,9 @@ function App() {
 	return (
 		<div
 			className={`flex flex-col ${
-				activePage === 'chat' ? 'h-screen h-[100dvh] overflow-hidden fixed inset-0' : 'min-h-screen min-h-[100dvh]'
+				activePage === 'chat'
+					? 'h-screen h-[100dvh] overflow-hidden fixed inset-0'
+					: 'min-h-screen min-h-[100dvh]'
 			}`}
 		>
 			{/* Navigation Tabs - Fixed on the left, outside header */}
@@ -190,6 +192,9 @@ function App() {
 								: `border ${getThemeColorClasses(theme.color).border}`,
 							darkModeColors.bgSurface,
 						].join(' ')}
+						style={{
+							paddingBottom: 'max(env(safe-area-inset-bottom), 0px)',
+						}}
 					>
 						<ChatWindow
 							messages={messages}

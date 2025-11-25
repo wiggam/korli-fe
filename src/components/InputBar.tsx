@@ -534,7 +534,12 @@ export const InputBar = ({
 	}, [transcribedAudioBlob]);
 
 	return (
-		<div className="space-y-3 px-2 sm:px-4 py-1.5 sm:py-2">
+		<div
+			className="space-y-3 px-2 sm:px-4 py-1.5 sm:py-2"
+			style={{
+				paddingBottom: `max(calc(env(safe-area-inset-bottom) + 0.5rem), 0.5rem)`,
+			}}
+		>
 			{transcribedAudioBlob && (
 				<div className="flex items-center justify-center">
 					<button

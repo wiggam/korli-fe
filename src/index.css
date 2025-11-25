@@ -11,7 +11,7 @@
 		/* Use dynamic viewport height for mobile */
 		height: 100dvh;
 	}
-	
+
 	body {
 		/* Prevent scrolling on body */
 		overflow: hidden;
@@ -22,7 +22,7 @@
 		/* Prevent text selection causing scroll issues */
 		-webkit-overflow-scrolling: touch;
 	}
-	
+
 	#root {
 		height: 100%;
 		height: 100dvh;
