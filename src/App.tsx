@@ -149,31 +149,20 @@ function App() {
 					: 'min-h-screen min-h-[100dvh]'
 			}`}
 		>
-			{/* Navigation Tabs - Fixed on the left, outside header */}
-			<div className="fixed top-4 left-4 z-50">
-				<NavigationTabs
-					activePage={activePage}
-					onPageChange={handlePageChange}
-				/>
-			</div>
+			{/* Unified Header - Navigation, Logo, Settings */}
+			<header className="fixed top-0 left-0 right-0 z-40 bg-transparent px-4 pt-2 sm:pt-3 pb-2 sm:pb-3">
+				<div className="mx-auto relative flex max-w-5xl items-center">
+					{/* Left: Page slider (chat / info) */}
+					<div className="flex-shrink-0 w-[90px] sm:w-[110px]">
+						<NavigationTabs
+							activePage={activePage}
+							onPageChange={handlePageChange}
+						/>
+					</div>
 
-			{/* Settings Button - Fixed on the right, outside header */}
-			<button
-				type="button"
-				onClick={handleOpenSettings}
-				className={`fixed top-4 right-4 z-50 p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
-				aria-label="Settings"
-			>
-				<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-			</button>
-
-			{/* Header - Only for logo on chat page */}
-			{activePage === 'chat' && (
-				<header
-					className={`fixed top-0 left-0 right-0 z-40 px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 bg-transparent pointer-events-none`}
-				>
-					<div className="mx-auto max-w-5xl">
-						<div className="flex items-center justify-center pointer-events-auto">
+					{/* Center: Logo - absolutely positioned for perfect centering (only on chat page) */}
+					{activePage === 'chat' && (
+						<div className="absolute left-1/2 -translate-x-1/2">
 							<img
 								src={
 									theme.mode === 'dark'
@@ -184,18 +173,32 @@ function App() {
 								className="h-6 w-auto sm:h-8"
 							/>
 						</div>
+					)}
+
+					{/* Right: Settings button */}
+					<div className="flex-shrink-0 ml-auto w-[90px] sm:w-[110px] flex justify-end">
+						<button
+							type="button"
+							onClick={handleOpenSettings}
+							className={`p-1.5 sm:p-2 ${darkModeColors.textPlaceholder} transition ${darkModeColors.bgHover} hover:text-slate-600 dark:hover:text-white rounded-full`}
+							aria-label="Settings"
+						>
+							<SettingsIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+						</button>
 					</div>
-				</header>
-			)}
+				</div>
+			</header>
 
 			<main
 				className={`mx-auto flex w-full ${
 					activePage === 'info' ? '' : 'max-w-5xl'
 				} ${
-					activePage === 'chat' ? 'h-full overflow-hidden' : 'flex-1'
+					activePage === 'chat'
+						? 'h-full md:h-[calc(100%-1.5rem)] overflow-hidden'
+						: 'flex-1'
 				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 ${
 					activePage === 'info' ? 'pb-5 sm:pb-6' : ''
-				} ${activePage === 'chat' ? 'chat-container-mobile' : ''}`}
+				} ${activePage === 'chat' ? 'chat-container-mobile pb-0 md:pb-6' : ''}`}
 			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
