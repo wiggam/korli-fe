@@ -18,7 +18,7 @@ interface MessageBubbleProps {
 
 const TranslationIcon = ({ active }: { active?: boolean }) => (
 	<Languages
-		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
+		className={`h-4 w-4 sm:h-4 sm:w-4 ${
 			active
 				? 'text-blue-600 dark:text-blue-200'
 				: darkModeColors.messageAiIconText
@@ -29,7 +29,7 @@ const TranslationIcon = ({ active }: { active?: boolean }) => (
 const CorrectionIcon = ({ active }: { active?: boolean }) => (
 	<svg
 		viewBox="0 0 24 24"
-		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
+		className={`h-4 w-4 sm:h-4 sm:w-4 ${
 			active
 				? 'text-amber-600 dark:text-amber-200'
 				: darkModeColors.messageAiIconText
@@ -61,11 +61,11 @@ const IconButton = ({
 			type="button"
 			onClick={onClick}
 			aria-label={label}
-			className={`inline-flex h-6 sm:h-7 items-center gap-1.5 rounded-full ${
+			className={`inline-flex h-7 sm:h-7 items-center gap-1.5 rounded-full ${
 				darkModeColors.messageAiIconBg
 			} ${
 				darkModeColors.messageAiIconBorder
-			} px-1.5 sm:px-2 text-[10px] font-medium transition ${
+			} px-2 sm:px-2 text-[11.5px] font-medium transition ${
 				active
 					? `${darkModeColors.bgHover} ${activeColorClasses} ${darkModeColors.bgHoverChatButtons}`
 					: `${darkModeColors.messageAiIconText} ${darkModeColors.bgHoverChatButtons}`
@@ -89,7 +89,7 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 		<div className="flex justify-end" data-message-id={message.id}>
 			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
 				<div
-					className={`rounded-3xl ${pillClasses} px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs leading-relaxed sm:text-sm`}
+					className={`rounded-3xl ${pillClasses} px-2.5 sm:px-3 py-1.5 sm:py-2 text-[13.8px] leading-relaxed sm:text-sm`}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.status === 'transcribing' && (
@@ -143,7 +143,7 @@ const AssistantMessage = ({
 			>
 				{/* Main AI text */}
 				<div
-					className={`text-xs leading-relaxed ${darkModeColors.messageAiText} sm:text-sm`}
+					className={`text-[13.8px] leading-relaxed ${darkModeColors.messageAiText} sm:text-sm`}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.isStreaming && !message.content && (
@@ -221,7 +221,7 @@ const AssistantMessage = ({
 							Translation
 						</p>
 						<p
-							className={`mt-1 whitespace-pre-wrap text-xs leading-relaxed ${darkModeColors.messageAiText}`}
+							className={`mt-1 whitespace-pre-wrap text-[13.8px] leading-relaxed ${darkModeColors.messageAiText}`}
 						>
 							{message.translation}
 						</p>
@@ -249,7 +249,7 @@ const AssistantMessage = ({
 
 							{previousUserMessage.correction.correctedMessage && (
 								<p
-									className={`mt-1 whitespace-pre-wrap text-xs font-medium leading-relaxed ${darkModeColors.messageAiText}`}
+									className={`mt-1 whitespace-pre-wrap text-[13.8px] font-medium leading-relaxed ${darkModeColors.messageAiText}`}
 								>
 									{previousUserMessage.correction.correctedMessage}
 								</p>
@@ -257,7 +257,7 @@ const AssistantMessage = ({
 
 							{previousUserMessage.correction.translation && (
 								<p
-									className={`mt-0.5 whitespace-pre-wrap text-xs leading-relaxed ${darkModeColors.messageAiText}`}
+									className={`mt-0.5 whitespace-pre-wrap text-[13.8px] leading-relaxed ${darkModeColors.messageAiText}`}
 								>
 									{previousUserMessage.correction.translation}
 								</p>

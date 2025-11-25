@@ -19,7 +19,7 @@ interface GenderSettingsProps {
 const CloseIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-5 w-5"
+		className="h-[26px] w-[26px] sm:h-5 sm:w-5"
 		fill="none"
 		stroke="currentColor"
 		strokeWidth="2"
@@ -57,16 +57,16 @@ export const GenderSettings = ({
 			{/* Modal */}
 			<div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
 				<div
-					className={`w-full max-w-[240px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${
+					className={`w-full max-w-[312px] sm:max-w-[280px] md:max-w-[400px] rounded-xl ${
 						getThemeColorClasses(theme.color).border
 					} ${darkModeColors.bgModal} shadow-xl pointer-events-auto`}
 				>
 					{/* Header */}
 					<div
-						className={`flex items-center justify-between border-b ${darkModeColors.borderChatSeparator} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
+						className={`flex items-center justify-between border-b ${darkModeColors.borderChatSeparator} px-3.5 sm:px-3 md:px-4 py-2 sm:py-2 md:py-3`}
 					>
 						<h2
-							className={`text-xs sm:text-sm md:text-base font-semibold ${darkModeColors.textPrimary}`}
+							className={`text-sm sm:text-sm md:text-base font-semibold ${darkModeColors.textPrimary}`}
 						>
 							Gender Settings
 						</h2>
@@ -81,11 +81,11 @@ export const GenderSettings = ({
 					</div>
 
 					{/* Content */}
-					<div className="space-y-2.5 sm:space-y-3 md:space-y-4 px-2.5 sm:px-3 md:px-4 py-2.5 sm:py-3 md:py-4">
+					<div className="space-y-2.5 sm:space-y-3 md:space-y-4 px-3.5 sm:px-3 md:px-4 py-2.5 sm:py-3 md:py-4">
 						{/* Tutor Gender */}
 						<div className="space-y-1.5 md:space-y-2">
 							<label
-								className={`text-[9px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}
+								className={`text-[11.7px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}
 							>
 								Tutor Gender
 							</label>
@@ -106,7 +106,7 @@ export const GenderSettings = ({
 						{/* Student Gender */}
 						<div className="space-y-1.5 md:space-y-2">
 							<label
-								className={`text-[9px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}
+								className={`text-[11.7px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}
 							>
 								Student Gender
 							</label>
@@ -127,19 +127,19 @@ export const GenderSettings = ({
 
 					{/* Footer */}
 					<div
-						className={`flex gap-1.5 md:gap-2 border-t ${darkModeColors.borderChatSeparator} px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
+						className={`flex gap-1.5 md:gap-2 border-t ${darkModeColors.borderChatSeparator} px-3.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3`}
 					>
 						<button
 							type="button"
 							onClick={onClose}
-							className={`flex-1 rounded-full border ${darkModeColors.borderChatSeparator} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
+							className={`flex-1 rounded-full border ${darkModeColors.borderChatSeparator} ${darkModeColors.bgSurface} ${darkModeColors.textSecondary} px-3.5 sm:px-3 md:px-4 py-1.5 sm:py-1.5 md:py-2 text-[11.7px] sm:text-[10px] md:text-sm font-semibold transition ${darkModeColors.bgHoverLight}`}
 						>
 							Cancel
 						</button>
 						<button
 							type="button"
 							onClick={handleApply}
-							className={`flex-1 rounded-full px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[9px] sm:text-[10px] md:text-sm font-semibold text-white transition ${getThemeButtonClasses(
+							className={`flex-1 rounded-full px-3.5 sm:px-3 md:px-4 py-1.5 sm:py-1.5 md:py-2 text-[11.7px] sm:text-[10px] md:text-sm font-semibold text-white transition ${getThemeButtonClasses(
 								theme.color
 							)}`}
 						>

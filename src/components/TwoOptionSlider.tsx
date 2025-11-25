@@ -16,9 +16,9 @@ interface TwoOptionSliderProps<T extends string> {
 
 const sizeStyles = {
 	sm: {
-		buttonHeight: 'h-6 md:h-8',
-		buttonPaddingX: 'px-2.5 md:px-3.5',
-		buttonText: 'text-[10px] md:text-sm',
+		buttonHeight: 'h-[31.2px] md:h-8',
+		buttonPaddingX: 'px-3.5 md:px-3.5',
+		buttonText: 'text-[13px] md:text-sm',
 	},
 	md: {
 		buttonHeight: 'h-7 sm:h-8 md:h-10',
