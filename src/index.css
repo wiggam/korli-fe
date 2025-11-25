@@ -96,3 +96,13 @@ select::-webkit-scrollbar-thumb:hover {
 .dark select::-webkit-scrollbar-thumb:hover {
 	background: #64748b;
 }
+
+/* Mobile-only safe area padding for chat container */
+@media (max-width: 767px) {
+	.chat-container-mobile {
+		padding-bottom: max(
+			calc(env(safe-area-inset-bottom) + 3rem),
+			3rem
+		) !important;
+	}
+}

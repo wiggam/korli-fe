@@ -1,4 +1,4 @@
-import { type FormEvent, useMemo, useState } from 'react';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
 
 import { AppInformation } from './components/AppInformation';
@@ -49,6 +49,33 @@ function App() {
 
 	const hasSession = Boolean(threadId);
 	const sortedLanguages = useMemo(() => [...LANGUAGES].sort(), []);
+
+	// Enable scrolling on info page, disable on chat page
+	useEffect(() => {
+		const rootElement = document.getElementById('root');
+		if (activePage === 'info') {
+			document.documentElement.style.overflow = 'auto';
+			document.body.style.overflow = 'auto';
+			if (rootElement) {
+				rootElement.style.overflow = 'auto';
+			}
+		} else {
+			document.documentElement.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+			if (rootElement) {
+				rootElement.style.overflow = 'hidden';
+			}
+		}
+
+		// Cleanup function to restore defaults when component unmounts
+		return () => {
+			document.documentElement.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+			if (rootElement) {
+				rootElement.style.overflow = 'hidden';
+			}
+		};
+	}, [activePage]);
 
 	const handleField = (field: keyof ChatConfig) => (value: string) => {
 		setForm((prev) => ({ ...prev, [field]: value }));
@@ -168,13 +195,7 @@ function App() {
 					activePage === 'chat' ? 'h-full overflow-hidden' : 'flex-1'
 				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 ${
 					activePage === 'info' ? 'pb-5 sm:pb-6' : ''
-				}`}
-				style={{
-					paddingBottom:
-						activePage === 'chat'
-							? 'max(calc(env(safe-area-inset-bottom) + 1.25rem), 1.25rem)'
-							: undefined,
-				}}
+				} ${activePage === 'chat' ? 'chat-container-mobile' : ''}`}
 			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">

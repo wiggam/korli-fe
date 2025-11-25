@@ -13,7 +13,7 @@ const PlayPauseIcon = ({ isPlaying }: { isPlaying: boolean }) => (
   <svg
     aria-hidden="true"
     viewBox="0 0 24 24"
-    className="h-4 w-4 sm:h-4 sm:w-4"
+    className="h-3.5 w-3.5 sm:h-4 sm:w-4"
     fill="currentColor"
   >
     {isPlaying ? (
@@ -101,7 +101,7 @@ export const AudioPlayer = ({
     audioRef.current.pause();
   };
 
-  const sizeClasses = size === 'sm' ? 'h-7 sm:h-7 px-2 sm:px-2 text-[11.5px]' : 'h-10 px-4 text-sm';
+  const sizeClasses = size === 'sm' ? 'h-6 sm:h-7 px-1.5 sm:px-2 text-[10px]' : 'h-10 px-4 text-sm';
   const toneClasses =
     tone === 'dark'
       ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 focus-visible:ring-white/30'
