@@ -4,7 +4,11 @@ import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js';
 import WaveSurfer from 'wavesurfer.js';
 
 import { useTheme } from '../contexts/ThemeContext';
-import { darkModeColors, getThemeButtonClasses, getThemeColorClasses } from '../utils/theme';
+import {
+	darkModeColors,
+	getThemeButtonClasses,
+	getThemeColorClasses,
+} from '../utils/theme';
 import { transcribeAudio } from '../lib/api';
 
 interface InputBarProps {
@@ -559,7 +563,11 @@ export const InputBar = ({
 				</div>
 			)}
 			<div
-				className={`flex items-center gap-2 rounded-3xl border ${hasSession ? getThemeColorClasses(theme.color).border : darkModeColors.border} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
+				className={`flex items-center gap-2 rounded-3xl border ${
+					hasSession
+						? getThemeColorClasses(theme.color).border
+						: darkModeColors.border
+				} ${darkModeColors.inputBg} px-3 sm:px-4 py-2 sm:py-3`}
 			>
 				{recordingState === 'recording' ? (
 					<div
@@ -581,7 +589,7 @@ export const InputBar = ({
 							}
 						}}
 						rows={1}
-						className={`flex-1 resize-none overflow-y-auto bg-transparent text-base sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+						className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
 						placeholder={
 							hasSession
 								? 'Type your message'
