@@ -166,7 +166,15 @@ function App() {
 					activePage === 'info' ? '' : 'max-w-5xl'
 				} ${
 					activePage === 'chat' ? 'h-full overflow-hidden' : 'flex-1'
-				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 pb-5 sm:pb-6`}
+				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 ${
+					activePage === 'info' ? 'pb-5 sm:pb-6' : ''
+				}`}
+				style={{
+					paddingBottom:
+						activePage === 'chat'
+							? 'max(calc(env(safe-area-inset-bottom) + 1.25rem), 1.25rem)'
+							: undefined,
+				}}
 			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
@@ -192,10 +200,6 @@ function App() {
 								: `border ${getThemeColorClasses(theme.color).border}`,
 							darkModeColors.bgSurface,
 						].join(' ')}
-						style={{
-							paddingBottom:
-								'max(calc(env(safe-area-inset-bottom) + 0.5rem), 0.5rem)',
-						}}
 					>
 						<ChatWindow
 							messages={messages}
