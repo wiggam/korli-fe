@@ -5,6 +5,28 @@
 @layer base {
 	html {
 		scrollbar-gutter: stable;
+		/* Prevent scrolling on html */
+		overflow: hidden;
+		height: 100%;
+		/* Use dynamic viewport height for mobile */
+		height: 100dvh;
+	}
+	
+	body {
+		/* Prevent scrolling on body */
+		overflow: hidden;
+		height: 100%;
+		height: 100dvh;
+		/* Prevent pull-to-refresh on mobile */
+		overscroll-behavior: none;
+		/* Prevent text selection causing scroll issues */
+		-webkit-overflow-scrolling: touch;
+	}
+	
+	#root {
+		height: 100%;
+		height: 100dvh;
+		overflow: hidden;
 	}
 }
 
@@ -26,7 +48,6 @@
 
 /* Let body control the page background in BOTH modes */
 body {
-	min-height: 100vh;
 	margin: 0;
 
 	/* Text stays dark in both modes – we're doing a "dim" theme, not full dark */

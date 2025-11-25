@@ -588,6 +588,15 @@ export const InputBar = ({
 								void sendText();
 							}
 						}}
+						onFocus={(e) => {
+							// Prevent page scroll on mobile when input is focused
+							if (window.innerWidth < 768) {
+								e.target.scrollIntoView({
+									behavior: 'smooth',
+									block: 'nearest',
+								});
+							}
+						}}
 						rows={1}
 						className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
 						placeholder={

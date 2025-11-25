@@ -117,7 +117,7 @@ function App() {
 	return (
 		<div
 			className={`flex flex-col ${
-				activePage === 'chat' ? 'h-screen overflow-hidden' : 'min-h-screen'
+				activePage === 'chat' ? 'h-screen h-[100dvh] overflow-hidden fixed inset-0' : 'min-h-screen min-h-[100dvh]'
 			}`}
 		>
 			{/* Navigation Tabs - Fixed on the left, outside header */}
@@ -141,10 +141,10 @@ function App() {
 			{/* Header - Only for logo on chat page */}
 			{activePage === 'chat' && (
 				<header
-					className={`fixed top-0 left-0 right-0 z-40 px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 bg-transparent`}
+					className={`fixed top-0 left-0 right-0 z-40 px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 bg-transparent pointer-events-none`}
 				>
 					<div className="mx-auto max-w-5xl">
-						<div className="flex items-center justify-center">
+						<div className="flex items-center justify-center pointer-events-auto">
 							<img
 								src={
 									theme.mode === 'dark'
