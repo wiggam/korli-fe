@@ -95,7 +95,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
 							>
 								Theme Color
 							</label>
-							<div className="flex items-center gap-1.5 md:gap-2">
+							<div className="grid grid-cols-3 gap-3 sm:gap-4 md:flex md:items-center md:gap-2">
 								{THEME_COLORS.map((color) => {
 									const colorClasses = getThemeColorClasses(color);
 									const colorMap: Record<ThemeColor, string> = {
@@ -111,7 +111,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
 											key={color}
 											type="button"
 											onClick={() => handleColorChange(color)}
-											className={`h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 rounded-full border transition ${
+											className={`h-[38px] w-[38px] sm:h-[45px] sm:w-[45px] md:h-8 md:w-8 rounded-full border transition mx-auto md:mx-0 ${
 												theme.color === color
 													? `${colorClasses.border} ring-2 ${colorClasses.ring} ring-offset-1`
 													: `${darkModeColors.borderMuted} hover:border-slate-400 dark:hover:border-slate-500`

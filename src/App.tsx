@@ -143,7 +143,7 @@ function App() {
 
 	return (
 		<div
-			className={`flex flex-col ${
+			className={`${
 				activePage === 'chat'
 					? 'h-screen h-[100dvh] overflow-hidden fixed inset-0'
 					: 'min-h-screen min-h-[100dvh]'
@@ -190,15 +190,17 @@ function App() {
 			</header>
 
 			<main
-				className={`mx-auto flex w-full ${
+				className={`mx-auto w-full ${
 					activePage === 'info' ? '' : 'max-w-5xl'
 				} ${
 					activePage === 'chat'
-						? 'h-full md:h-[calc(100%-1.5rem)] overflow-hidden'
-						: 'flex-1'
-				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 mobile-main-margin px-4 ${
+						? 'h-[calc(100dvh-3rem)] sm:h-[calc(100dvh-4rem)] mobile-main-height grid grid-rows-[1fr] overflow-hidden'
+						: 'flex flex-col flex-1'
+				} gap-2 sm:gap-3 mt-14 sm:mt-16 mobile-main-margin px-4 ${
 					activePage === 'info' ? 'pb-5 sm:pb-6' : ''
-				} ${activePage === 'chat' ? 'chat-container-mobile pb-0 md:pb-6' : ''}`}
+				} ${
+					activePage === 'chat' ? 'pb-2 sm:pb-3 mobile-main-padding-bottom' : ''
+				}`}
 			>
 				{error && (
 					<div className="flex items-start justify-between gap-4 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
@@ -217,7 +219,8 @@ function App() {
 					/* Unified chat area - configuration, messages, and input */
 					<section
 						className={[
-							'flex flex-1 flex-col overflow-hidden rounded-3xl h-full',
+							'flex flex-col overflow-hidden rounded-3xl',
+							'grid grid-rows-[1fr_auto] min-h-0',
 							'shadow-lg dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3),0_8px_10px_-6px_rgba(0,0,0,0.2)]',
 							hasSession
 								? darkModeColors.border
@@ -225,28 +228,32 @@ function App() {
 							darkModeColors.bgSurface,
 						].join(' ')}
 					>
-						<ChatWindow
-							messages={messages}
-							activeOverlay={activeOverlay}
-							onToggleOverlay={toggleOverlay}
-							config={form}
-							languages={sortedLanguages}
-							levels={LEVELS}
-							onConfigChange={handleField}
-							onStartSession={handleStart}
-							onReset={resetChat}
-							hasSession={hasSession}
-							isStarting={isStarting}
-						/>
+						<div className="min-h-0 overflow-hidden">
+							<ChatWindow
+								messages={messages}
+								activeOverlay={activeOverlay}
+								onToggleOverlay={toggleOverlay}
+								config={form}
+								languages={sortedLanguages}
+								levels={LEVELS}
+								onConfigChange={handleField}
+								onStartSession={handleStart}
+								onReset={resetChat}
+								hasSession={hasSession}
+								isStarting={isStarting}
+							/>
+						</div>
 
 						{hasSession && (
-							<InputBar
-								disabled={!hasSession || isStreaming}
-								hasSession={hasSession}
-								onSendText={handleSendText}
-								foreignLanguage={form.foreignLanguage}
-								onOpenGenderSettings={handleOpenGenderSettings}
-							/>
+							<div className="flex-shrink-0">
+								<InputBar
+									disabled={!hasSession || isStreaming}
+									hasSession={hasSession}
+									onSendText={handleSendText}
+									foreignLanguage={form.foreignLanguage}
+									onOpenGenderSettings={handleOpenGenderSettings}
+								/>
+							</div>
 						)}
 					</section>
 				) : (
