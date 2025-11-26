@@ -88,40 +88,40 @@ export const Settings = ({ onClose }: SettingsProps) => {
 							/>
 						</div>
 
-					{/* Theme Color Selector */}
-					<div className="space-y-1.5 md:space-y-2">
-						<label
-							className={`text-[9px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}
-						>
-							Theme Color
-						</label>
-						<div className="grid grid-cols-3 gap-3 sm:gap-4 md:flex md:items-center md:gap-2">
-							{THEME_COLORS.map((color) => {
-								const colorClasses = getThemeColorClasses(color);
-								const colorMap: Record<ThemeColor, string> = {
-									yellow: 'bg-yellow-500',
-									green: 'bg-green-500',
-									blue: 'bg-blue-500',
-									pink: 'bg-pink-500',
-									purple: 'bg-purple-500',
-									orange: 'bg-orange-500',
-								};
-								return (
-									<button
-										key={color}
-										type="button"
-										onClick={() => handleColorChange(color)}
-										className={`h-[38px] w-[38px] sm:h-[45px] sm:w-[45px] md:h-8 md:w-8 rounded-full border transition mx-auto md:mx-0 ${
-											theme.color === color
-												? `${colorClasses.border} ring-2 ${colorClasses.ring} ring-offset-1`
-												: `${darkModeColors.borderMuted} hover:border-slate-400 dark:hover:border-slate-500`
-										} ${colorMap[color]}`}
-										aria-label={`Select ${color} theme`}
-									/>
-								);
-							})}
+						{/* Theme Color Selector */}
+						<div className="space-y-1.5 md:space-y-2">
+							<label
+								className={`text-[9px] sm:text-[10px] md:text-sm font-medium ${darkModeColors.textSecondary}`}
+							>
+								Theme Color
+							</label>
+							<div className="grid grid-cols-3 gap-3 sm:gap-4 md:flex md:items-center md:gap-2">
+								{THEME_COLORS.map((color) => {
+									const colorClasses = getThemeColorClasses(color);
+									const colorMap: Record<ThemeColor, string> = {
+										yellow: 'bg-yellow-500',
+										green: 'bg-green-500',
+										blue: 'bg-blue-500',
+										pink: 'bg-pink-500',
+										purple: 'bg-purple-500',
+										orange: 'bg-orange-500',
+									};
+									return (
+										<button
+											key={color}
+											type="button"
+											onClick={() => handleColorChange(color)}
+											className={`h-[38px] w-[38px] sm:h-[45px] sm:w-[45px] md:h-8 md:w-8 rounded-full border transition mx-auto md:mx-0 ${
+												theme.color === color
+													? `${colorClasses.border} ring-2 ${colorClasses.ring} ring-offset-1`
+													: `${darkModeColors.borderMuted} hover:border-slate-400 dark:hover:border-slate-500`
+											} ${colorMap[color]}`}
+											aria-label={`Select ${color} theme`}
+										/>
+									);
+								})}
+							</div>
 						</div>
-					</div>
 					</div>
 
 					{/* Footer */}
