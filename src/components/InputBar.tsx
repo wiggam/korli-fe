@@ -26,7 +26,7 @@ const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const MicIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-4 w-4 sm:h-5 sm:w-5"
+		className="h-4 w-4 sm:h-5 sm:w-5 mobile-icon-md"
 		fill="currentColor"
 	>
 		<path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V22h-2v-2.06A8 8 0 0 1 4 12a1 1 0 0 1 2 0 6 6 0 0 0 12 0z" />
@@ -36,7 +36,7 @@ const MicIcon = () => (
 const SendIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-3.5 w-3.5 sm:h-4 sm:w-4"
+		className="h-3.5 w-3.5 sm:h-4 sm:w-4 mobile-icon-sm"
 		fill="currentColor"
 	>
 		<path d="M3.4 20.4 21 12 3.4 3.6l.05 6.9L15 12l-11.55 1.5z" />
@@ -46,7 +46,7 @@ const SendIcon = () => (
 const CheckIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-4 w-4 sm:h-5 sm:w-5"
+		className="h-4 w-4 sm:h-5 sm:w-5 mobile-icon-md"
 		fill="none"
 		stroke="currentColor"
 		strokeWidth="2"
@@ -60,7 +60,7 @@ const CheckIcon = () => (
 const XIcon = () => (
 	<svg
 		viewBox="0 0 24 24"
-		className="h-4 w-4 sm:h-5 sm:w-5"
+		className="h-4 w-4 sm:h-5 sm:w-5 mobile-icon-md"
 		fill="none"
 		stroke="currentColor"
 		strokeWidth="2"
@@ -540,7 +540,7 @@ export const InputBar = ({
 					<button
 						type="button"
 						onClick={toggleTranscribedAudio}
-						className={`flex items-center gap-1.5 rounded-full border ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm transition`}
+						className={`flex items-center gap-1.5 rounded-full border mobile-btn-md ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm mobile-text-xs transition`}
 						aria-label={
 							isPlayingTranscribedAudio
 								? 'Pause transcribed audio'
@@ -549,7 +549,7 @@ export const InputBar = ({
 					>
 						<svg
 							viewBox="0 0 24 24"
-							className="h-3.5 w-3.5 sm:h-4 sm:w-4"
+							className="h-3.5 w-3.5 sm:h-4 sm:w-4 mobile-icon-sm"
 							fill="currentColor"
 						>
 							{isPlayingTranscribedAudio ? (
@@ -598,7 +598,7 @@ export const InputBar = ({
 							}
 						}}
 						rows={1}
-						className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+						className={`flex-1 resize-none overflow-y-auto bg-transparent text-xs sm:text-sm leading-6 mobile-text-xs ${darkModeColors.inputText} ${darkModeColors.inputPlaceholder} focus:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
 						placeholder={
 							hasSession
 								? 'Type your message'
@@ -620,7 +620,7 @@ export const InputBar = ({
 								type="button"
 								onClick={cancelRecording}
 								disabled={isTranscribing}
-								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${
+								className={`flex h-7 w-7 sm:h-9 sm:w-9 mobile-input-icon items-center justify-center rounded-full border transition ${
 									darkModeColors.inputIconBorder
 								} ${darkModeColors.inputIconBg} ${
 									darkModeColors.inputIconText
@@ -641,7 +641,7 @@ export const InputBar = ({
 								<button
 									type="button"
 									onClick={acceptRecording}
-									className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border transition ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400`}
+									className={`flex h-7 w-7 sm:h-9 sm:w-9 mobile-input-icon items-center justify-center rounded-full border transition ${darkModeColors.inputIconBorder} ${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover} hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400`}
 									aria-label="Accept recording"
 								>
 									<CheckIcon />
@@ -650,50 +650,52 @@ export const InputBar = ({
 						</div>
 					) : (
 						<>
-							<button
-								type="button"
-								onClick={onOpenGenderSettings}
-								disabled={!hasSession}
-								className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${
-									darkModeColors.inputIconBorder
-								} transition ${
-									hasSession
-										? `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
-										: 'cursor-not-allowed opacity-50'
-								}`}
-								aria-label="Gender settings"
-							>
-								<UserCircle2
-									className={`h-4 w-4 sm:h-5 sm:w-5 ${darkModeColors.inputIconText}`}
-								/>
-							</button>
-							{isTranscribing ? (
-								<div className="flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center">
-									<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />
-								</div>
-							) : (
+							<div className="flex items-center gap-0.5 mobile-icon-spacing">
 								<button
 									type="button"
-									className={`flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full border ${
+									onClick={onOpenGenderSettings}
+									disabled={!hasSession}
+									className={`flex h-7 w-7 sm:h-9 sm:w-9 mobile-input-icon items-center justify-center rounded-full border ${
 										darkModeColors.inputIconBorder
-									} transition ${darkModeColors.inputIconBg} ${
-										darkModeColors.inputIconText
-									} ${darkModeColors.inputIconHover} ${
-										micDisabled ? 'cursor-not-allowed opacity-50' : ''
+									} transition ${
+										hasSession
+											? `${darkModeColors.inputIconBg} ${darkModeColors.inputIconText} ${darkModeColors.inputIconHover}`
+											: 'cursor-not-allowed opacity-50'
 									}`}
-									onClick={startRecording}
-									disabled={micDisabled}
-									aria-label="Start recording"
+									aria-label="Gender settings"
 								>
-									<MicIcon />
+									<UserCircle2
+										className={`h-4 w-4 sm:h-5 sm:w-5 mobile-icon-md ${darkModeColors.inputIconText}`}
+									/>
 								</button>
-							)}
+								{isTranscribing ? (
+									<div className="flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center">
+										<div className="h-4 w-4 sm:h-5 sm:w-5 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />
+									</div>
+								) : (
+									<button
+										type="button"
+										className={`flex h-7 w-7 sm:h-9 sm:w-9 mobile-input-icon items-center justify-center rounded-full border ${
+											darkModeColors.inputIconBorder
+										} transition ${darkModeColors.inputIconBg} ${
+											darkModeColors.inputIconText
+										} ${darkModeColors.inputIconHover} ${
+											micDisabled ? 'cursor-not-allowed opacity-50' : ''
+										}`}
+										onClick={startRecording}
+										disabled={micDisabled}
+										aria-label="Start recording"
+									>
+										<MicIcon />
+									</button>
+								)}
+							</div>
 							<div className="w-1 sm:w-1.5" />
 							<button
 								type="button"
 								onClick={sendText}
 								disabled={!hasSession || disabled || !canSend}
-								className={`inline-flex h-7 sm:h-9 items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold transition ${getThemeButtonClasses(
+								className={`inline-flex h-7 sm:h-9 mobile-btn-md items-center justify-center rounded-full px-3 sm:px-4 text-xs sm:text-sm mobile-text-xs font-semibold transition ${getThemeButtonClasses(
 									theme.color,
 									!hasSession || disabled || !canSend
 								)}`}

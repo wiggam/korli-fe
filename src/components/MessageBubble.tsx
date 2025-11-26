@@ -18,7 +18,7 @@ interface MessageBubbleProps {
 
 const TranslationIcon = ({ active }: { active?: boolean }) => (
 	<Languages
-		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
+		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 mobile-icon-sm ${
 			active
 				? 'text-blue-600 dark:text-blue-200'
 				: darkModeColors.messageAiIconText
@@ -29,7 +29,7 @@ const TranslationIcon = ({ active }: { active?: boolean }) => (
 const CorrectionIcon = ({ active }: { active?: boolean }) => (
 	<svg
 		viewBox="0 0 24 24"
-		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${
+		className={`h-3.5 w-3.5 sm:h-4 sm:w-4 mobile-icon-sm ${
 			active
 				? 'text-amber-600 dark:text-amber-200'
 				: darkModeColors.messageAiIconText
@@ -61,11 +61,11 @@ const IconButton = ({
 			type="button"
 			onClick={onClick}
 			aria-label={label}
-			className={`inline-flex h-6 sm:h-7 items-center gap-1.5 rounded-full ${
+			className={`inline-flex h-6 sm:h-7 items-center gap-1.5 rounded-full mobile-btn-sm ${
 				darkModeColors.messageAiIconBg
 			} ${
 				darkModeColors.messageAiIconBorder
-			} px-1.5 sm:px-2 text-[10px] font-medium transition ${
+			} px-1.5 sm:px-2 text-[10px] font-medium mobile-text-xs transition ${
 				active
 					? `${darkModeColors.bgHover} ${activeColorClasses} ${darkModeColors.bgHoverChatButtons}`
 					: `${darkModeColors.messageAiIconText} ${darkModeColors.bgHoverChatButtons}`
@@ -89,7 +89,7 @@ const UserMessage = ({ message }: { message: ChatMessage }) => {
 		<div className="flex justify-end" data-message-id={message.id}>
 			<div className="flex flex-col items-end gap-2 max-w-[85%] sm:max-w-[70%]">
 				<div
-					className={`rounded-3xl ${pillClasses} px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs leading-relaxed sm:text-sm`}
+					className={`rounded-3xl ${pillClasses} px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs leading-relaxed sm:text-sm mobile-text-xs`}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.status === 'transcribing' && (
@@ -143,7 +143,7 @@ const AssistantMessage = ({
 			>
 				{/* Main AI text */}
 				<div
-					className={`text-xs leading-relaxed ${darkModeColors.messageAiText} sm:text-sm`}
+					className={`text-xs leading-relaxed ${darkModeColors.messageAiText} sm:text-sm mobile-text-xs`}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>
 					{message.isStreaming && !message.content && (
@@ -157,9 +157,9 @@ const AssistantMessage = ({
 				</div>
 
 				{/* Actions row - with left and right sections */}
-				<div className="flex flex-wrap items-center justify-between gap-2 mt-1">
+				<div className="flex flex-wrap items-center justify-between gap-2 mt-1 mobile-icon-spacing">
 					{/* Left side: Translation, AI audio, and corrections button */}
-					<div className="flex flex-wrap items-center gap-2">
+					<div className="flex flex-wrap items-center gap-2 mobile-icon-spacing">
 						{message.iconsLoading ? (
 							<div className="flex items-center gap-1.5 rounded-full px-1.5 sm:px-2 py-1">
 								<div className="h-3 w-3 sm:h-3.5 sm:w-3.5 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-300 dark:border-t-transparent" />

@@ -66,7 +66,7 @@ export const ConfigurationForm = ({
 			>
 				<div className="flex items-center justify-between">
 					<div
-						className={`flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-[10px] sm:text-xs ${darkModeColors.textMuted}`}
+						className={`flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-[10px] sm:text-xs mobile-text-xs ${darkModeColors.textMuted}`}
 					>
 						<span>
 							<span className={`font-medium ${darkModeColors.textPrimary}`}>
@@ -86,7 +86,7 @@ export const ConfigurationForm = ({
 					<button
 						type="button"
 						onClick={onReset}
-						className={`h-6 sm:h-8 rounded-full ${darkModeColors.resetButton} px-2.5 sm:px-4 text-[9px] sm:text-xs font-semibold transition ${darkModeColors.resetButtonHover}`}
+						className={`h-6 sm:h-8 mobile-btn-sm rounded-full ${darkModeColors.resetButton} px-2.5 sm:px-4 text-[9px] sm:text-xs mobile-text-xs font-semibold transition ${darkModeColors.resetButtonHover}`}
 					>
 						Reset
 					</button>

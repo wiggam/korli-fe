@@ -170,7 +170,7 @@ function App() {
 										: '/korli-logo.png'
 								}
 								alt="Korli - AI Language Coach"
-								className="h-6 w-auto sm:h-8"
+								className="h-6 w-auto sm:h-8 mobile-header-logo"
 							/>
 						</div>
 					)}
