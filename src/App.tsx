@@ -228,7 +228,7 @@ function App() {
 							darkModeColors.bgSurface,
 						].join(' ')}
 					>
-						<div className="min-h-0 overflow-hidden">
+						<div className="min-h-0 flex flex-col">
 							<ChatWindow
 								messages={messages}
 								activeOverlay={activeOverlay}
