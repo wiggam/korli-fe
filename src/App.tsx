@@ -150,7 +150,7 @@ function App() {
 			}`}
 		>
 			{/* Unified Header - Navigation, Logo, Settings */}
-			<header className="fixed top-0 left-0 right-0 z-40 bg-transparent px-4 pt-2 sm:pt-3 pb-2 sm:pb-3">
+			<header className="fixed top-0 left-0 right-0 z-40 bg-transparent px-4 pt-2 sm:pt-3 pb-2 sm:pb-3 mobile-header-padding">
 				<div className="mx-auto relative flex max-w-5xl items-center">
 					{/* Left: Page slider (chat / info) */}
 					<div className="flex-shrink-0 w-[90px] sm:w-[110px]">
@@ -196,7 +196,7 @@ function App() {
 					activePage === 'chat'
 						? 'h-full md:h-[calc(100%-1.5rem)] overflow-hidden'
 						: 'flex-1'
-				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 px-4 ${
+				} flex-col gap-2 sm:gap-3 mt-14 sm:mt-16 mobile-main-margin px-4 ${
 					activePage === 'info' ? 'pb-5 sm:pb-6' : ''
 				} ${activePage === 'chat' ? 'chat-container-mobile pb-0 md:pb-6' : ''}`}
 			>
