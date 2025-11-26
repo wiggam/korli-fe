@@ -97,12 +97,18 @@ select::-webkit-scrollbar-thumb:hover {
 	background: #64748b;
 }
 
-/* Mobile-only safe area padding for chat container */
+/* Mobile-only safe area padding and height for chat container */
 @media (max-width: 767px) {
-	.chat-container-mobile {
+	/* Calculate main container height accounting for header */
+	.mobile-main-height {
+		height: calc(100dvh - 3rem) !important;
+	}
+
+	/* Apply safe-area-inset to bottom padding to keep entire container visible */
+	.mobile-main-padding-bottom {
 		padding-bottom: max(
-			calc(env(safe-area-inset-bottom) + 3rem),
-			3rem
+			calc(env(safe-area-inset-bottom) + 0.5rem),
+			0.5rem
 		) !important;
 	}
 
