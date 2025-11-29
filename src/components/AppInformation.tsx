@@ -114,7 +114,7 @@ export const AppInformation = () => {
 									<h2
 										className={`text-2xl sm:text-3xl font-bold ${darkModeColors.textPrimary}`}
 									>
-										{languageCount}+ Languages
+										{languageCount} Languages
 									</h2>
 								</div>
 							</div>
