@@ -212,7 +212,6 @@ export const InputBar = ({
 						const newCursorPos = startPos + transcribedText.length;
 						textarea.setSelectionRange(newCursorPos, newCursorPos);
 						textarea.focus();
-						autoResizeTextarea();
 					}, 0);
 				} else {
 					// If textarea is not available, just append to text
@@ -428,8 +427,11 @@ export const InputBar = ({
 			if (textarea) {
 				textarea.style.height = 'auto';
 			}
+		} else {
+			// Auto-resize when text changes (handles both typing and transcription)
+			autoResizeTextarea();
 		}
-	}, [text]);
+	}, [text, autoResizeTextarea]);
 
 	const sendText = async () => {
 		const value = text.trim();
