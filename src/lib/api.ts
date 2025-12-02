@@ -1,6 +1,14 @@
-import type { ChatConfig, ContinueTextChatPayload, SSEventPayload, StartTextChatResponse, VoiceChatPayload } from '../types/chat';
+import type { ChatConfig, ContinueTextChatPayload, SSEventPayload, StartTextChatResponse } from '../types/chat';
+import { getBrowserId } from '../utils/browserId';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
+
+/**
+ * Returns the browser ID header object to include in API requests.
+ */
+const getBrowserIdHeader = (): Record<string, string> => ({
+  'X-Browser-ID': getBrowserId(),
+});
 
 type SSECallbacks = {
   onEvent: (event: SSEventPayload) => void;
@@ -130,6 +138,7 @@ export const startTextChat = async (config: ChatConfig): Promise<StartTextChatRe
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...getBrowserIdHeader(),
     },
     body: buildJsonBody({
       foreign_language: config.foreignLanguage,
@@ -173,33 +182,9 @@ export const continueTextChatSSE = (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...getBrowserIdHeader(),
       },
       body: buildJsonBody(body),
-    },
-    callbacks,
-  );
-};
-
-export const voiceChatSSE = (payload: VoiceChatPayload, callbacks: SSECallbacks) => {
-  const formData = new FormData();
-  formData.append('thread_id', payload.threadId);
-  formData.append('foreign_language', payload.foreignLanguage);
-  formData.append('stream', 'true');
-  formData.append('audio_file', payload.audioFile, 'message.webm');
-
-  // Only include gender if provided
-  if (payload.tutorGender !== undefined) {
-    formData.append('tutor_gender', payload.tutorGender);
-  }
-  if (payload.studentGender !== undefined) {
-    formData.append('student_gender', payload.studentGender);
-  }
-
-  return startSSE(
-    toUrl('/api/chat/voice'),
-    {
-      method: 'POST',
-      body: formData,
     },
     callbacks,
   );
@@ -220,6 +205,9 @@ export const transcribeAudio = async (
 
   const response = await fetch(toUrl('/api/transcribe'), {
     method: 'POST',
+    headers: {
+      ...getBrowserIdHeader(),
+    },
     body: formData,
   });
 

@@ -79,11 +79,3 @@ export interface ContinueTextChatPayload {
   studentGender?: GenderOption;
 }
 
-export interface VoiceChatPayload {
-  threadId: string;
-  audioFile: Blob;
-  foreignLanguage: string;
-  tutorGender?: GenderOption;
-  studentGender?: GenderOption;
-}
-
