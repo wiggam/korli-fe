@@ -60,7 +60,7 @@ export function KorliMessages({
 	}
 
 	return (
-		<div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3">
+		<div ref={scrollRef} className="flex-1 overflow-y-auto px-1 py-1">
 			<div className="flex flex-col gap-2 sm:gap-4">
 				{messages.map((message, index) => {
 					let previousUserMessage: ChatMessage | undefined;
