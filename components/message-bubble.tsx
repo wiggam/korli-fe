@@ -64,13 +64,13 @@ function AssistantMessage({
 
   return (
     <div className="flex justify-start" data-message-id={message.id}>
-      <div className="flex w-full gap-3">
-        <div className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-background ring-1 ring-border">
+      <div className="flex w-full gap-2">
+        <div className="shrink-0">
           <Image
             src="/korli-icon.png"
             alt="Korli"
-            width={20}
-            height={20}
+            width={28}
+            height={28}
             className="object-contain"
           />
         </div>
