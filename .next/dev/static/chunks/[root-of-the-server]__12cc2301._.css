@@ -1049,6 +1049,10 @@
     max-height: 6lh;
   }
 
+  .max-h-\[8lh\] {
+    max-height: 8lh;
+  }
+
   .max-h-\[300px\] {
     max-height: 300px;
   }
@@ -1444,6 +1448,10 @@
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 8) * var(--tw-space-y-reverse));
     margin-block-end: calc(calc(var(--spacing) * 8) * calc(1 - var(--tw-space-y-reverse)));
+  }
+
+  .self-end {
+    align-self: flex-end;
   }
 
   .truncate {
@@ -2095,8 +2103,16 @@
     padding-right: calc(var(--spacing) * 2);
   }
 
+  .pb-0\.5 {
+    padding-bottom: calc(var(--spacing) * .5);
+  }
+
   .pb-1 {
     padding-bottom: calc(var(--spacing) * 1);
+  }
+
+  .pb-1\.5 {
+    padding-bottom: calc(var(--spacing) * 1.5);
   }
 
   .pb-2 {

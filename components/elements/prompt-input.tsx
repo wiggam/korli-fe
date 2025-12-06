@@ -36,7 +36,7 @@ export const PromptInputTextarea = ({
   onChange,
   className,
   placeholder = "What would you like to know?",
-  minHeight = 48,
+  minHeight,
   maxHeight = 164,
   disableAutoResize = false,
   resizeOnNewLinesOnly = false,
@@ -63,12 +63,12 @@ export const PromptInputTextarea = ({
   return (
     <Textarea
       className={cn(
-        "w-full resize-none rounded-none border-none p-3 shadow-none outline-hidden ring-0",
+        "w-full resize-none rounded-none border-none p-0 shadow-none outline-hidden ring-0",
         disableAutoResize
           ? "field-sizing-fixed"
           : resizeOnNewLinesOnly
             ? "field-sizing-fixed"
-            : "field-sizing-content max-h-[6lh]",
+            : "field-sizing-content max-h-[8lh]",
         "bg-transparent dark:bg-transparent",
         "focus-visible:ring-0",
         className

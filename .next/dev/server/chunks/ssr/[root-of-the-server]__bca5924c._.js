@@ -1656,7 +1656,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$
 ;
 const Textarea = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["forwardRef"](({ className, ...props }, ref)=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className),
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className),
         ref: ref,
         ...props
     }, void 0, false, {
@@ -1709,7 +1709,7 @@ const PromptInput = ({ className, ...props })=>/*#__PURE__*/ (0, __TURBOPACK__im
         lineNumber: 19,
         columnNumber: 3
     }, ("TURBOPACK compile-time value", void 0));
-const PromptInputTextarea = ({ onChange, className, placeholder = "What would you like to know?", minHeight = 48, maxHeight = 164, disableAutoResize = false, resizeOnNewLinesOnly = false, ...props })=>{
+const PromptInputTextarea = ({ onChange, className, placeholder = "What would you like to know?", minHeight, maxHeight = 164, disableAutoResize = false, resizeOnNewLinesOnly = false, ...props })=>{
     const handleKeyDown = (e)=>{
         if (e.key === "Enter") {
             if (e.nativeEvent.isComposing) {
@@ -1726,7 +1726,7 @@ const PromptInputTextarea = ({ onChange, className, placeholder = "What would yo
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Textarea"], {
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-full resize-none rounded-none border-none p-3 shadow-none outline-hidden ring-0", disableAutoResize ? "field-sizing-fixed" : resizeOnNewLinesOnly ? "field-sizing-fixed" : "field-sizing-content max-h-[6lh]", "bg-transparent dark:bg-transparent", "focus-visible:ring-0", className),
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-full resize-none rounded-none border-none p-0 shadow-none outline-hidden ring-0", disableAutoResize ? "field-sizing-fixed" : resizeOnNewLinesOnly ? "field-sizing-fixed" : "field-sizing-content max-h-[8lh]", "bg-transparent dark:bg-transparent", "focus-visible:ring-0", className),
         name: "message",
         onChange: (e)=>{
             onChange?.(e);
@@ -2342,7 +2342,7 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
     const micDisabled = disabled || isTranscribing || isStreaming;
     const canSend = recordingState === "idle" && text.trim() && !isTranscribing && !isStreaming;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "relative flex w-full flex-col gap-3",
+        className: "relative flex w-full flex-col gap-2",
         children: [
             transcribedAudioBlob && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center justify-center",
@@ -2357,7 +2357,7 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                             size: 14
                         }, void 0, false, {
                             fileName: "[project]/components/korli-input.tsx",
-                            lineNumber: 399,
+                            lineNumber: 397,
                             columnNumber: 15
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
                             viewBox: "0 0 24 24",
@@ -2367,34 +2367,34 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                                 d: "M7 4.5v15l11-7.5z"
                             }, void 0, false, {
                                 fileName: "[project]/components/korli-input.tsx",
-                                lineNumber: 402,
+                                lineNumber: 400,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/korli-input.tsx",
-                            lineNumber: 401,
+                            lineNumber: 399,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                             children: "Transcribed audio"
                         }, void 0, false, {
                             fileName: "[project]/components/korli-input.tsx",
-                            lineNumber: 405,
+                            lineNumber: 403,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/korli-input.tsx",
-                    lineNumber: 391,
+                    lineNumber: 389,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/korli-input.tsx",
-                lineNumber: 390,
+                lineNumber: 388,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInput"], {
-                className: "rounded-xl border border-border bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50",
+                className: "rounded-xl border border-border bg-background shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50",
                 onSubmit: (event)=>{
                     event.preventDefault();
                     if (canSend) {
@@ -2402,32 +2402,24 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                     }
                 },
                 children: [
-                    recordingState === "recording" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center gap-2 py-2",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "px-3 pt-2",
+                        children: recordingState === "recording" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             ref: liveWaveformRef,
-                            className: "flex-1 overflow-hidden",
+                            className: "flex items-center overflow-hidden",
                             style: {
-                                minHeight: "26px"
+                                minHeight: "24px"
                             }
                         }, void 0, false, {
                             fileName: "[project]/components/korli-input.tsx",
-                            lineNumber: 421,
+                            lineNumber: 420,
                             columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/components/korli-input.tsx",
-                        lineNumber: 420,
-                        columnNumber: 11
-                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-row items-start gap-1 sm:gap-2",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInputTextarea"], {
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInputTextarea"], {
                             autoFocus: true,
-                            className: "grow resize-none border-0 border-none bg-transparent p-2 text-sm outline-none ring-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                            className: "min-h-0 resize-none border-0 border-none bg-transparent p-0 text-sm leading-6 outline-none ring-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
                             "data-testid": "korli-input",
                             disableAutoResize: false,
                             maxHeight: 200,
-                            minHeight: 44,
                             onChange: (e)=>setText(e.target.value),
                             onKeyDown: (e)=>{
                                 if (e.key === "Enter" && !e.shiftKey) {
@@ -2444,19 +2436,19 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                             disabled: textDisabled
                         }, void 0, false, {
                             fileName: "[project]/components/korli-input.tsx",
-                            lineNumber: 429,
+                            lineNumber: 426,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/korli-input.tsx",
-                        lineNumber: 428,
-                        columnNumber: 11
+                        lineNumber: 418,
+                        columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInputToolbar"], {
-                        className: "border-t-0 p-0 shadow-none",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center justify-between px-1.5 pb-1.5 pt-1",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInputTools"], {
-                                className: "gap-0 sm:gap-0.5",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center gap-0.5",
                                 children: recordingState === "recording" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2465,48 +2457,48 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                                             size: "sm",
                                             onClick: cancelRecording,
                                             disabled: isTranscribing,
-                                            className: "h-8 w-8 rounded-lg p-1 text-destructive hover:bg-destructive/10 hover:text-destructive",
+                                            className: "h-7 w-7 rounded-md p-0.5 text-destructive hover:bg-destructive/10 hover:text-destructive",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/components/korli-input.tsx",
-                                                lineNumber: 470,
+                                                lineNumber: 468,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/korli-input.tsx",
-                                            lineNumber: 462,
+                                            lineNumber: 460,
                                             columnNumber: 17
                                         }, this),
                                         isTranscribing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex h-8 w-8 items-center justify-center",
+                                            className: "flex h-7 w-7 items-center justify-center",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/korli-input.tsx",
-                                                lineNumber: 474,
+                                                lineNumber: 472,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/korli-input.tsx",
-                                            lineNumber: 473,
+                                            lineNumber: 471,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                             type: "button",
                                             variant: "ghost",
                                             size: "sm",
                                             onClick: acceptRecording,
-                                            className: "h-8 w-8 rounded-lg p-1 text-green-600 hover:bg-green-600/10 hover:text-green-600 dark:text-green-400 dark:hover:text-green-400",
+                                            className: "h-7 w-7 rounded-md p-0.5 text-green-600 hover:bg-green-600/10 hover:text-green-600 dark:text-green-400 dark:hover:text-green-400",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CheckIcon"], {
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/components/korli-input.tsx",
-                                                lineNumber: 484,
+                                                lineNumber: 482,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/korli-input.tsx",
-                                            lineNumber: 477,
+                                            lineNumber: 475,
                                             columnNumber: 19
                                         }, this)
                                     ]
@@ -2518,31 +2510,31 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                                             size: "sm",
                                             onClick: onOpenGenderSettings,
                                             disabled: !hasSession,
-                                            className: "h-8 w-8 rounded-lg p-1",
+                                            className: "h-7 w-7 rounded-md p-0.5",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PersonaIcon"], {
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/components/korli-input.tsx",
-                                                lineNumber: 498,
+                                                lineNumber: 496,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/korli-input.tsx",
-                                            lineNumber: 490,
+                                            lineNumber: 488,
                                             columnNumber: 17
                                         }, this),
                                         isTranscribing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex h-8 w-8 items-center justify-center",
+                                            className: "flex h-7 w-7 items-center justify-center",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/korli-input.tsx",
-                                                lineNumber: 503,
+                                                lineNumber: 500,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/korli-input.tsx",
-                                            lineNumber: 502,
+                                            lineNumber: 499,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                             type: "button",
@@ -2550,68 +2542,75 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
                                             size: "sm",
                                             onClick: startRecording,
                                             disabled: micDisabled || !hasSession,
-                                            className: "h-8 w-8 rounded-lg p-1",
+                                            className: "h-7 w-7 rounded-md p-0.5",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MicIcon"], {
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/components/korli-input.tsx",
-                                                lineNumber: 514,
+                                                lineNumber: 511,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/korli-input.tsx",
-                                            lineNumber: 506,
+                                            lineNumber: 503,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true)
                             }, void 0, false, {
                                 fileName: "[project]/components/korli-input.tsx",
-                                lineNumber: 459,
+                                lineNumber: 457,
                                 columnNumber: 11
                             }, this),
-                            isStreaming ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                type: "button",
-                                size: "sm",
-                                onClick: ()=>{},
-                                className: "h-8 w-8 rounded-full bg-foreground p-1 text-background hover:bg-foreground/90",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["StopIcon"], {
-                                    size: 14
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center",
+                                children: isStreaming ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    type: "button",
+                                    size: "sm",
+                                    onClick: ()=>{},
+                                    className: "h-7 w-7 rounded-full bg-foreground p-0 text-background hover:bg-foreground/90",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["StopIcon"], {
+                                        size: 14
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/korli-input.tsx",
+                                        lineNumber: 527,
+                                        columnNumber: 17
+                                    }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/korli-input.tsx",
-                                    lineNumber: 528,
+                                    lineNumber: 521,
+                                    columnNumber: 15
+                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInputSubmit"], {
+                                    className: "h-7 w-7 rounded-full bg-primary p-0 text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground",
+                                    "data-testid": "send-button",
+                                    disabled: !canSend,
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ArrowUpIcon"], {
+                                        size: 14
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/korli-input.tsx",
+                                        lineNumber: 535,
+                                        columnNumber: 17
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/components/korli-input.tsx",
+                                    lineNumber: 530,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/korli-input.tsx",
-                                lineNumber: 522,
-                                columnNumber: 13
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$elements$2f$prompt$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PromptInputSubmit"], {
-                                className: "h-8 w-8 rounded-full bg-primary text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground",
-                                "data-testid": "send-button",
-                                disabled: !canSend,
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$icons$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ArrowUpIcon"], {
-                                    size: 14
-                                }, void 0, false, {
-                                    fileName: "[project]/components/korli-input.tsx",
-                                    lineNumber: 536,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/components/korli-input.tsx",
-                                lineNumber: 531,
-                                columnNumber: 13
+                                lineNumber: 519,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/korli-input.tsx",
-                        lineNumber: 458,
+                        lineNumber: 455,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/korli-input.tsx",
-                lineNumber: 410,
+                lineNumber: 408,
                 columnNumber: 7
             }, this),
             recordingError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2625,7 +2624,7 @@ function KorliInput({ disabled, hasSession, isStreaming, onSendText, foreignLang
         ]
     }, void 0, true, {
         fileName: "[project]/components/korli-input.tsx",
-        lineNumber: 388,
+        lineNumber: 386,
         columnNumber: 5
     }, this);
 }

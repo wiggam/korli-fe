@@ -12,8 +12,6 @@ import {
   PromptInput,
   PromptInputSubmit,
   PromptInputTextarea,
-  PromptInputToolbar,
-  PromptInputTools,
 } from "@/components/elements/prompt-input";
 import { ArrowUpIcon, CheckIcon, MicIcon, PersonaIcon, StopIcon } from "@/components/icons";
 
@@ -385,7 +383,7 @@ export function KorliInput({
   const canSend = recordingState === "idle" && text.trim() && !isTranscribing && !isStreaming;
 
   return (
-    <div className="relative flex w-full flex-col gap-3">
+    <div className="relative flex w-full flex-col gap-2">
       {transcribedAudioBlob && (
         <div className="flex items-center justify-center">
           <Button
@@ -408,7 +406,7 @@ export function KorliInput({
       )}
 
       <PromptInput
-        className="rounded-xl border border-border bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
+        className="rounded-xl border border-border bg-background shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
         onSubmit={(event) => {
           event.preventDefault();
           if (canSend) {
@@ -416,23 +414,21 @@ export function KorliInput({
           }
         }}
       >
-        {recordingState === "recording" ? (
-          <div className="flex items-center gap-2 py-2">
+        {/* Row 1: Textarea or waveform (full width) */}
+        <div className="px-3 pt-2">
+          {recordingState === "recording" ? (
             <div
               ref={liveWaveformRef}
-              className="flex-1 overflow-hidden"
-              style={{ minHeight: "26px" }}
+              className="flex items-center overflow-hidden"
+              style={{ minHeight: "24px" }}
             />
-          </div>
-        ) : (
-          <div className="flex flex-row items-start gap-1 sm:gap-2">
+          ) : (
             <PromptInputTextarea
               autoFocus
-              className="grow resize-none border-0 border-none bg-transparent p-2 text-sm outline-none ring-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="min-h-0 resize-none border-0 border-none bg-transparent p-0 text-sm leading-6 outline-none ring-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
               data-testid="korli-input"
               disableAutoResize={false}
               maxHeight={200}
-              minHeight={44}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
@@ -452,11 +448,13 @@ export function KorliInput({
               value={text}
               disabled={textDisabled}
             />
-          </div>
-        )}
+          )}
+        </div>
 
-        <PromptInputToolbar className="border-t-0 p-0 shadow-none">
-          <PromptInputTools className="gap-0 sm:gap-0.5">
+        {/* Row 2: Toolbar - icons on left, send button on right */}
+        <div className="flex items-center justify-between px-1.5 pb-1.5 pt-1">
+          {/* Left side icons */}
+          <div className="flex items-center gap-0.5">
             {recordingState === "recording" ? (
               <>
                 <Button
@@ -465,12 +463,12 @@ export function KorliInput({
                   size="sm"
                   onClick={cancelRecording}
                   disabled={isTranscribing}
-                  className="h-8 w-8 rounded-lg p-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  className="h-7 w-7 rounded-md p-0.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
                 >
                   <X size={16} />
                 </Button>
                 {isTranscribing ? (
-                  <div className="flex h-8 w-8 items-center justify-center">
+                  <div className="flex h-7 w-7 items-center justify-center">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
                   </div>
                 ) : (
@@ -479,7 +477,7 @@ export function KorliInput({
                     variant="ghost"
                     size="sm"
                     onClick={acceptRecording}
-                    className="h-8 w-8 rounded-lg p-1 text-green-600 hover:bg-green-600/10 hover:text-green-600 dark:text-green-400 dark:hover:text-green-400"
+                    className="h-7 w-7 rounded-md p-0.5 text-green-600 hover:bg-green-600/10 hover:text-green-600 dark:text-green-400 dark:hover:text-green-400"
                   >
                     <CheckIcon size={16} />
                   </Button>
@@ -493,13 +491,12 @@ export function KorliInput({
                   size="sm"
                   onClick={onOpenGenderSettings}
                   disabled={!hasSession}
-                  className="h-8 w-8 rounded-lg p-1"
+                  className="h-7 w-7 rounded-md p-0.5"
                 >
                   <PersonaIcon size={16} />
                 </Button>
-
                 {isTranscribing ? (
-                  <div className="flex h-8 w-8 items-center justify-center">
+                  <div className="flex h-7 w-7 items-center justify-center">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
                   </div>
                 ) : (
@@ -509,34 +506,37 @@ export function KorliInput({
                     size="sm"
                     onClick={startRecording}
                     disabled={micDisabled || !hasSession}
-                    className="h-8 w-8 rounded-lg p-1"
+                    className="h-7 w-7 rounded-md p-0.5"
                   >
                     <MicIcon size={16} />
                   </Button>
                 )}
               </>
             )}
-          </PromptInputTools>
+          </div>
 
-          {isStreaming ? (
-            <Button
-              type="button"
-              size="sm"
-              onClick={() => {}}
-              className="h-8 w-8 rounded-full bg-foreground p-1 text-background hover:bg-foreground/90"
-            >
-              <StopIcon size={14} />
-            </Button>
-          ) : (
-            <PromptInputSubmit
-              className="h-8 w-8 rounded-full bg-primary text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
-              data-testid="send-button"
-              disabled={!canSend}
-            >
-              <ArrowUpIcon size={14} />
-            </PromptInputSubmit>
-          )}
-        </PromptInputToolbar>
+          {/* Right side: send/stop button */}
+          <div className="flex items-center">
+            {isStreaming ? (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => {}}
+                className="h-7 w-7 rounded-full bg-foreground p-0 text-background hover:bg-foreground/90"
+              >
+                <StopIcon size={14} />
+              </Button>
+            ) : (
+              <PromptInputSubmit
+                className="h-7 w-7 rounded-full bg-primary p-0 text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
+                data-testid="send-button"
+                disabled={!canSend}
+              >
+                <ArrowUpIcon size={14} />
+              </PromptInputSubmit>
+            )}
+          </div>
+        </div>
       </PromptInput>
 
       {recordingError && (
