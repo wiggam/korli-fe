@@ -1,10 +1,18 @@
-export const SparklesIcon = ({ size = 16 }: { size?: number }) => (
+import { cn } from "@/lib/utils";
+
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+}
+
+export const SparklesIcon = ({ size = 16, className, ...props }: IconProps) => (
   <svg
     height={size}
+    width={size}
     strokeLinejoin="round"
     style={{ color: "currentcolor" }}
     viewBox="0 0 16 16"
-    width={size}
+    className={className}
+    {...props}
   >
     <path
       d="M2.5 0.5V0H3.5V0.5C3.5 1.60457 4.39543 2.5 5.5 2.5H6V3V3.5H5.5C4.39543 3.5 3.5 4.39543 3.5 5.5V6H3H2.5V5.5C2.5 4.39543 1.60457 3.5 0.5 3.5H0V3V2.5H0.5C1.60457 2.5 2.5 1.60457 2.5 0.5Z"
@@ -21,93 +29,90 @@ export const SparklesIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export const MicIcon = ({ size = 16 }: { size?: number }) => (
+export const MicIcon = ({ size = 16, className, ...props }: IconProps) => (
   <svg
     height={size}
+    width={size}
     style={{ color: "currentcolor" }}
     viewBox="0 0 24 24"
-    width={size}
     fill="currentColor"
+    className={className}
+    {...props}
   >
     <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a1 1 0 0 1 2 0 8 8 0 0 1-7 7.94V22h-2v-2.06A8 8 0 0 1 4 12a1 1 0 0 1 2 0 6 6 0 0 0 12 0z" />
   </svg>
 );
 
-export const CheckIcon = ({ size = 16 }: { size?: number }) => (
+export const CheckIcon = ({ size = 16, className, ...props }: IconProps) => (
   <svg
     height={size}
+    width={size}
     style={{ color: "currentcolor" }}
     viewBox="0 0 24 24"
-    width={size}
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={className}
+    {...props}
   >
     <path d="M20 6L9 17l-5-5" />
   </svg>
 );
 
-export const PersonaIcon = ({ size = 16 }: { size?: number }) => (
+export const PersonaIcon = ({ size = 16, className, ...props }: IconProps) => (
   <svg
     height={size}
+    width={size}
     style={{ color: "currentcolor" }}
     viewBox="0 0 24 24"
-    width={size}
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={className}
+    {...props}
   >
     <circle cx="12" cy="8" r="5" />
     <path d="M20 21a8 8 0 1 0-16 0" />
   </svg>
 );
 
-export const ArrowUpIcon = ({
-  size = 16,
-  ...props
-}: { size?: number } & React.SVGProps<SVGSVGElement>) => {
-  return (
-    <svg
-      height={size}
-      strokeLinejoin="round"
-      style={{ color: "currentcolor", ...props.style }}
-      viewBox="0 0 16 16"
-      width={size}
-      {...props}
-    >
-      <path
-        clipRule="evenodd"
-        d="M8.70711 1.39644C8.31659 1.00592 7.68342 1.00592 7.2929 1.39644L2.21968 6.46966L1.68935 6.99999L2.75001 8.06065L3.28034 7.53032L7.25001 3.56065V14.25V15H8.75001V14.25V3.56065L12.7197 7.53032L13.25 8.06065L14.3107 6.99999L13.7803 6.46966L8.70711 1.39644Z"
-        fill="currentColor"
-        fillRule="evenodd"
-      />
-    </svg>
-  );
-};
+export const ArrowUpIcon = ({ size = 16, className, ...props }: IconProps) => (
+  <svg
+    height={size}
+    width={size}
+    strokeLinejoin="round"
+    style={{ color: "currentcolor" }}
+    viewBox="0 0 16 16"
+    className={className}
+    {...props}
+  >
+    <path
+      clipRule="evenodd"
+      d="M8.70711 1.39644C8.31659 1.00592 7.68342 1.00592 7.2929 1.39644L2.21968 6.46966L1.68935 6.99999L2.75001 8.06065L3.28034 7.53032L7.25001 3.56065V14.25V15H8.75001V14.25V3.56065L12.7197 7.53032L13.25 8.06065L14.3107 6.99999L13.7803 6.46966L8.70711 1.39644Z"
+      fill="currentColor"
+      fillRule="evenodd"
+    />
+  </svg>
+);
 
-export const StopIcon = ({
-  size = 16,
-  ...props
-}: { size?: number } & React.SVGProps<SVGSVGElement>) => {
-  return (
-    <svg
-      height={size}
-      style={{ color: "currentcolor", ...props.style }}
-      viewBox="0 0 16 16"
-      width={size}
-      {...props}
-    >
-      <path
-        clipRule="evenodd"
-        d="M3 3H13V13H3V3Z"
-        fill="currentColor"
-        fillRule="evenodd"
-      />
-    </svg>
-  );
-};
-
+export const StopIcon = ({ size = 16, className, ...props }: IconProps) => (
+  <svg
+    height={size}
+    width={size}
+    style={{ color: "currentcolor" }}
+    viewBox="0 0 16 16"
+    className={className}
+    {...props}
+  >
+    <path
+      clipRule="evenodd"
+      d="M3 3H13V13H3V3Z"
+      fill="currentColor"
+      fillRule="evenodd"
+    />
+  </svg>
+);

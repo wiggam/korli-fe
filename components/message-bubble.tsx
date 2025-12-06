@@ -22,7 +22,7 @@ function UserMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-end" data-message-id={message.id}>
       <div className="max-w-[85%] sm:max-w-[70%]">
-        <div className="rounded-2xl bg-primary px-4 py-3 text-base text-primary-foreground">
+        <div className="rounded-2xl bg-primary px-3 py-2 text-sm text-primary-foreground sm:px-4 sm:py-3 sm:text-base">
           <p className="whitespace-pre-wrap">{message.content}</p>
           {message.status === "transcribing" && (
             <span className="mt-2 inline-flex items-center gap-2 text-xs opacity-80">
@@ -64,7 +64,7 @@ function AssistantMessage({
   return (
     <div className="flex justify-start" data-message-id={message.id}>
       <div className="w-full space-y-2">
-          <div className="text-base leading-relaxed text-foreground">
+          <div className="text-sm leading-relaxed text-foreground sm:text-base">
             <p className="whitespace-pre-wrap">{message.content}</p>
             {message.isStreaming && !message.content && (
               <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -148,7 +148,7 @@ function AssistantMessage({
               <p className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
                 Translation
               </p>
-              <p className="mt-1 whitespace-pre-wrap text-base leading-relaxed text-foreground">
+              <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-foreground sm:text-base">
                 {message.translation}
               </p>
             </div>
@@ -172,13 +172,13 @@ function AssistantMessage({
                 )}
 
                 {previousUserMessage.correction.correctedMessage && (
-                  <p className="mt-1 whitespace-pre-wrap text-base font-medium leading-relaxed text-foreground">
+                  <p className="mt-1 whitespace-pre-wrap text-sm font-medium leading-relaxed text-foreground sm:text-base">
                     {previousUserMessage.correction.correctedMessage}
                   </p>
                 )}
 
                 {previousUserMessage.correction.translation && (
-                  <p className="mt-0.5 whitespace-pre-wrap text-base leading-relaxed text-muted-foreground">
+                  <p className="mt-0.5 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground sm:text-base">
                     {previousUserMessage.correction.translation}
                   </p>
                 )}
