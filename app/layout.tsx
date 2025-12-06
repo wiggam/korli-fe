@@ -8,7 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://korli.app"),
-  title: "Korli - AI Language Coach",
+  title: "Korli",
   description: "Learn languages through conversation at your level with Korli, your AI language tutor.",
 };
 
