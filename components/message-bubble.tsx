@@ -91,11 +91,11 @@ function AssistantMessage({
                       variant={showTranslation ? "secondary" : "outline"}
                       size="sm"
                       onClick={onToggleTranslation}
-                      className="h-8 gap-1.5 px-3 text-sm"
+                      className="h-7 gap-1.5 px-2 text-xs"
                     >
                       <Languages
                         className={cn(
-                          "h-4 w-4",
+                          "h-3.5 w-3.5",
                           showTranslation && "text-blue-600 dark:text-blue-400"
                         )}
                       />
@@ -117,11 +117,11 @@ function AssistantMessage({
                       variant={showCorrection ? "secondary" : "outline"}
                       size="sm"
                       onClick={onToggleCorrection}
-                      className="h-8 gap-1.5 px-3 text-sm"
+                      className="h-7 gap-1.5 px-2 text-xs"
                     >
                       <Shield
                         className={cn(
-                          "h-4 w-4",
+                          "h-3.5 w-3.5",
                           showCorrection && "text-amber-600 dark:text-amber-400"
                         )}
                       />
