@@ -161,10 +161,10 @@ function AssistantMessage({
 
 				{showTranslation && message.translation && (
 					<div className="rounded-lg border border-blue-200 bg-blue-50 p-2 dark:border-blue-800 dark:bg-blue-950/50">
-						<p className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
+						<p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
 							Translation
 						</p>
-						<p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-foreground sm:text-base">
+						<p className="mt-1 whitespace-pre-wrap text-xs leading-relaxed text-foreground sm:text-sm">
 							{message.translation}
 						</p>
 					</div>
@@ -174,7 +174,7 @@ function AssistantMessage({
 					previousUserMessage?.role === 'user' &&
 					previousUserMessage.correction && (
 						<div className="relative rounded-lg border border-amber-200 bg-amber-50 p-2 dark:border-amber-800 dark:bg-amber-950/50">
-							<p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
+							<p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
 								Corrections
 							</p>
 
@@ -188,13 +188,13 @@ function AssistantMessage({
 							)}
 
 							{previousUserMessage.correction.correctedMessage && (
-								<p className="mt-1 whitespace-pre-wrap text-sm font-medium leading-relaxed text-foreground sm:text-base">
+								<p className="mt-1 whitespace-pre-wrap text-xs font-medium leading-relaxed text-foreground sm:text-sm">
 									{previousUserMessage.correction.correctedMessage}
 								</p>
 							)}
 
 							{previousUserMessage.correction.translation && (
-								<p className="mt-0.5 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground sm:text-base">
+								<p className="mt-0.5 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground sm:text-sm">
 									{previousUserMessage.correction.translation}
 								</p>
 							)}

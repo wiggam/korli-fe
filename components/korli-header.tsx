@@ -53,9 +53,9 @@ export function KorliHeader() {
 						<Image
 							src="/korli-logo.png"
 							alt="Korli"
-							width={65}
-							height={20}
-							className="h-4 sm:h-5 dark:hidden"
+							width={48}
+							height={16}
+							className="h-3 sm:h-4 dark:hidden"
 							style={{ width: 'auto', height: 'auto' }}
 							priority
 						/>
@@ -63,9 +63,9 @@ export function KorliHeader() {
 						<Image
 							src="/korli-logo-white.png"
 							alt="Korli"
-							width={65}
-							height={20}
-							className="hidden h-4 sm:h-5 dark:block"
+							width={48}
+							height={16}
+							className="hidden h-3 sm:h-4 dark:block"
 							style={{ width: 'auto', height: 'auto' }}
 							priority
 						/>
