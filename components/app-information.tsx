@@ -32,7 +32,7 @@ export function AppInformation() {
             <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               Your AI Language Coach
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground sm:mt-6 sm:text-xl">
+            <p className="mx-auto mt-4 max-w-xl text-xl text-muted-foreground sm:mt-6 sm:text-2xl">
               Practice conversations at your level. Get instant corrections,
               translations, and audio playback to accelerate your language
               learning.
@@ -58,7 +58,7 @@ export function AppInformation() {
                 Language Support
               </h2>
             </div>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 text-lg text-muted-foreground">
               Practice in any of our {LANGUAGES.length} supported languages.
               Select your target language and native language to get started.
             </p>
@@ -67,12 +67,12 @@ export function AppInformation() {
               {LANGUAGES.slice(0, 20).map((lang) => (
                 <span
                   key={lang}
-                  className="rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-foreground"
+                  className="rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-foreground"
                 >
                   {lang}
                 </span>
               ))}
-              <span className="rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+              <span className="rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-muted-foreground">
                 +{LANGUAGES.length - 20} more
               </span>
             </div>
@@ -84,7 +84,7 @@ export function AppInformation() {
             <h2 className="text-center text-2xl font-semibold text-foreground sm:text-3xl">
               Everything you need to learn faster
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground">
+            <p className="mx-auto mt-4 max-w-xl text-center text-lg text-muted-foreground">
               Korli combines adaptive conversations with powerful learning tools
               to help you improve quickly.
             </p>
@@ -98,7 +98,7 @@ export function AppInformation() {
                   <h3 className="mt-4 font-semibold text-foreground">
                     Adaptive Learning
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-base text-muted-foreground">
                     Choose your proficiency level (A1-C2) and Korli adapts the
                     conversation complexity to match.
                   </p>
@@ -113,7 +113,7 @@ export function AppInformation() {
                   <h3 className="mt-4 font-semibold text-foreground">
                     Instant Translations
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-base text-muted-foreground">
                     Tap translate on any AI message to instantly see it in your
                     native language.
                   </p>
@@ -128,7 +128,7 @@ export function AppInformation() {
                   <h3 className="mt-4 font-semibold text-foreground">
                     Audio Playback
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-base text-muted-foreground">
                     Listen to AI messages spoken aloud to improve your listening
                     skills and pronunciation.
                   </p>
@@ -143,7 +143,7 @@ export function AppInformation() {
                   <h3 className="mt-4 font-semibold text-foreground">
                     Smart Corrections
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-base text-muted-foreground">
                     Get gentle corrections on your messages with the proper
                     phrasing and audio playback.
                   </p>
@@ -158,7 +158,7 @@ export function AppInformation() {
                   <h3 className="mt-4 font-semibold text-foreground">
                     Voice Recording
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-base text-muted-foreground">
                     Record voice messages that are transcribed and sent to your
                     tutor for natural conversation.
                   </p>
@@ -173,7 +173,7 @@ export function AppInformation() {
                   <h3 className="mt-4 font-semibold text-foreground">
                     Customization
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-base text-muted-foreground">
                     Choose your tutor's voice gender and your student voice for
                     playback of your corrected messages.
                   </p>
@@ -188,7 +188,7 @@ export function AppInformation() {
             <h2 className="text-center text-2xl font-semibold text-foreground sm:text-3xl">
               See it in action
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground">
+            <p className="mx-auto mt-4 max-w-xl text-center text-lg text-muted-foreground">
               Here's what translations and corrections look like during a
               conversation.
             </p>
@@ -205,7 +205,7 @@ export function AppInformation() {
                     className="w-full"
                   />
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   Tap the translate button to see any message in your native
                   language.
                 </p>
@@ -222,7 +222,7 @@ export function AppInformation() {
                     className="w-full"
                   />
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   When you make a mistake, Korli gently shows you the correct
                   phrasing.
                 </p>
@@ -236,7 +236,7 @@ export function AppInformation() {
             <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
               Ready to start learning?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+            <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
               Begin a conversation with your AI tutor right now. No account
               needed.
             </p>

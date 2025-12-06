@@ -86,13 +86,13 @@ export function AudioPlayer({ src, label, size = "md" }: AudioPlayerProps) {
       disabled={!src}
       className={cn(
         "gap-1.5",
-        size === "sm" && "h-7 px-2 text-xs"
+        size === "sm" && "h-8 px-3 text-sm"
       )}
     >
       {isPlaying ? (
-        <Pause className={cn("h-3.5 w-3.5", size === "md" && "h-4 w-4")} />
+        <Pause className="h-4 w-4" />
       ) : (
-        <Play className={cn("h-3.5 w-3.5", size === "md" && "h-4 w-4")} />
+        <Play className="h-4 w-4" />
       )}
       {label && <span className="hidden sm:inline">{label}</span>}
       <audio ref={audioRef} src={src} preload="none" className="hidden" />

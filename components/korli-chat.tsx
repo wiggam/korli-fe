@@ -111,7 +111,7 @@ export function KorliChat() {
 						/>
 
 						<div className="flex-1 overflow-hidden px-4 py-3">
-							<div className="mx-auto flex h-full max-w-3xl flex-col">
+							<div className="mx-auto flex h-full max-w-5xl flex-col">
 								<KorliMessages
 									messages={messages}
 									activeOverlay={activeOverlay}
@@ -120,8 +120,8 @@ export function KorliChat() {
 							</div>
 						</div>
 
-						<div className="border-t border-border bg-background px-4 py-3">
-							<div className="mx-auto max-w-3xl">
+						<div className="px-4 pb-6 pt-3">
+							<div className="mx-auto max-w-5xl">
 								{error && (
 									<p className="mb-2 text-sm text-destructive">{error}</p>
 								)}

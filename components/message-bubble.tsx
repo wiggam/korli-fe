@@ -1,7 +1,6 @@
 "use client";
 
 import { Languages, Shield } from "lucide-react";
-import Image from "next/image";
 
 import { AudioPlayer } from "@/components/audio-player";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,7 @@ function UserMessage({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-end" data-message-id={message.id}>
       <div className="max-w-[85%] sm:max-w-[70%]">
-        <div className="rounded-2xl bg-primary px-3 py-2 text-sm text-primary-foreground">
+        <div className="rounded-2xl bg-primary px-4 py-3 text-base text-primary-foreground">
           <p className="whitespace-pre-wrap">{message.content}</p>
           {message.status === "transcribing" && (
             <span className="mt-2 inline-flex items-center gap-2 text-xs opacity-80">
@@ -64,22 +63,11 @@ function AssistantMessage({
 
   return (
     <div className="flex justify-start" data-message-id={message.id}>
-      <div className="flex w-full gap-2">
-        <div className="shrink-0">
-          <Image
-            src="/korli-icon.png"
-            alt="Korli"
-            width={28}
-            height={28}
-            className="object-contain"
-          />
-        </div>
-
-        <div className="flex-1 space-y-2">
-          <div className="text-sm leading-relaxed text-foreground">
+      <div className="w-full space-y-2">
+          <div className="text-base leading-relaxed text-foreground">
             <p className="whitespace-pre-wrap">{message.content}</p>
             {message.isStreaming && !message.content && (
-              <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
                 Korli is responding…
               </span>
@@ -103,11 +91,11 @@ function AssistantMessage({
                       variant={showTranslation ? "secondary" : "outline"}
                       size="sm"
                       onClick={onToggleTranslation}
-                      className="h-7 gap-1.5 px-2 text-xs"
+                      className="h-8 gap-1.5 px-3 text-sm"
                     >
                       <Languages
                         className={cn(
-                          "h-3.5 w-3.5",
+                          "h-4 w-4",
                           showTranslation && "text-blue-600 dark:text-blue-400"
                         )}
                       />
@@ -129,11 +117,11 @@ function AssistantMessage({
                       variant={showCorrection ? "secondary" : "outline"}
                       size="sm"
                       onClick={onToggleCorrection}
-                      className="h-7 gap-1.5 px-2 text-xs"
+                      className="h-8 gap-1.5 px-3 text-sm"
                     >
                       <Shield
                         className={cn(
-                          "h-3.5 w-3.5",
+                          "h-4 w-4",
                           showCorrection && "text-amber-600 dark:text-amber-400"
                         )}
                       />
@@ -157,10 +145,10 @@ function AssistantMessage({
 
           {showTranslation && message.translation && (
             <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-950/50">
-              <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
+              <p className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
                 Translation
               </p>
-              <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+              <p className="mt-1 whitespace-pre-wrap text-base leading-relaxed text-foreground">
                 {message.translation}
               </p>
             </div>
@@ -170,7 +158,7 @@ function AssistantMessage({
             previousUserMessage?.role === "user" &&
             previousUserMessage.correction && (
               <div className="relative rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/50">
-                <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
+                <p className="text-sm font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
                   Corrections
                 </p>
 
@@ -184,13 +172,13 @@ function AssistantMessage({
                 )}
 
                 {previousUserMessage.correction.correctedMessage && (
-                  <p className="mt-1 whitespace-pre-wrap text-sm font-medium leading-relaxed text-foreground">
+                  <p className="mt-1 whitespace-pre-wrap text-base font-medium leading-relaxed text-foreground">
                     {previousUserMessage.correction.correctedMessage}
                   </p>
                 )}
 
                 {previousUserMessage.correction.translation && (
-                  <p className="mt-0.5 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-0.5 whitespace-pre-wrap text-base leading-relaxed text-muted-foreground">
                     {previousUserMessage.correction.translation}
                   </p>
                 )}
@@ -206,7 +194,6 @@ function AssistantMessage({
                 )}
               </div>
             )}
-        </div>
       </div>
     </div>
   );

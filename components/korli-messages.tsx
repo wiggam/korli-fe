@@ -56,7 +56,7 @@ export function KorliMessages({
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto rounded-xl bg-muted/30 px-4 py-3"
+      className="flex-1 overflow-y-auto px-4 py-3"
     >
       <div className="flex flex-col gap-4">
         {messages.map((message, index) => {
