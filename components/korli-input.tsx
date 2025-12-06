@@ -367,6 +367,18 @@ export function KorliInput({
 		};
 	}, [transcribedAudioBlob]);
 
+	// Manually resize textarea when text changes (especially after transcription)
+	useEffect(() => {
+		const textarea = textareaRef.current;
+		if (!textarea || !text) return;
+
+		// Reset height to auto to get the correct scrollHeight
+		textarea.style.height = 'auto';
+		// Set height to scrollHeight, capped at maxHeight (200px)
+		const newHeight = Math.min(textarea.scrollHeight, 200);
+		textarea.style.height = `${newHeight}px`;
+	}, [text]);
+
 	const toggleTranscribedAudio = useCallback(async () => {
 		const audio = transcribedAudioRef.current;
 		if (!audio || !transcribedAudioBlob) return;
