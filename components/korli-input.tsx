@@ -20,10 +20,19 @@ import {
 	PersonaIcon,
 	StopIcon,
 } from '@/components/icons';
+import { type AccentColor, ACCENT_COLORS } from '@/contexts/korli-chat-context';
+import { cn } from '@/lib/utils';
 
 type RecordingState = 'idle' | 'recording';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
+
+function getAccentButtonClasses(color: AccentColor) {
+	const found = ACCENT_COLORS.find((c) => c.value === color);
+	return found
+		? `${found.bgClass} ${found.hoverClass}`
+		: 'bg-blue-600 hover:bg-blue-700';
+}
 
 interface KorliInputProps {
 	disabled: boolean;
@@ -32,6 +41,7 @@ interface KorliInputProps {
 	onSendText: (message: string) => Promise<void>;
 	foreignLanguage: string;
 	onOpenGenderSettings: () => void;
+	accentColor: AccentColor;
 }
 
 export function KorliInput({
@@ -41,6 +51,7 @@ export function KorliInput({
 	onSendText,
 	foreignLanguage,
 	onOpenGenderSettings,
+	accentColor,
 }: KorliInputProps) {
 	const { resolvedTheme } = useTheme();
 	const waveformColor = resolvedTheme === 'dark' ? '#ffffff' : '#475569';
@@ -269,7 +280,7 @@ export function KorliInput({
 			cursorWidth: 0,
 
 			// bar styling – make them thinner & closer together
-			barHeight: 6,
+			barHeight: 5,
 			barWidth: 3,
 			barGap: 2,
 			barRadius: 2,
@@ -553,7 +564,10 @@ export function KorliInput({
 							</Button>
 						) : (
 							<PromptInputSubmit
-								className="h-7 w-7 rounded-full bg-primary p-0 text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground sm:h-8 sm:w-8"
+								className={cn(
+									'h-7 w-7 rounded-full p-0 text-white transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground sm:h-8 sm:w-8',
+									getAccentButtonClasses(accentColor)
+								)}
 								data-testid="send-button"
 								disabled={!canSend}
 							>

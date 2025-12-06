@@ -20,6 +20,7 @@ export function KorliChat() {
 		tutorGender,
 		studentGender,
 		showGenderSettings,
+		accentColor,
 		handleConfigChange,
 		handleStartSession,
 		handleReset,
@@ -28,6 +29,7 @@ export function KorliChat() {
 		setTutorGender,
 		setStudentGender,
 		setShowGenderSettings,
+		setAccentColor,
 	} = useKorliChatContext();
 
 	return (
@@ -69,6 +71,7 @@ export function KorliChat() {
 									messages={messages}
 									activeOverlay={activeOverlay}
 									onToggleOverlay={toggleOverlay}
+									accentColor={accentColor}
 								/>
 							</div>
 						</div>
@@ -87,6 +90,7 @@ export function KorliChat() {
 										config?.foreignLanguage || formConfig.foreignLanguage
 									}
 									onOpenGenderSettings={() => setShowGenderSettings(true)}
+									accentColor={accentColor}
 								/>
 							</div>
 						</div>
@@ -101,6 +105,8 @@ export function KorliChat() {
 				studentGender={studentGender}
 				onTutorGenderChange={setTutorGender}
 				onStudentGenderChange={setStudentGender}
+				accentColor={accentColor}
+				onAccentColorChange={setAccentColor}
 			/>
 		</div>
 	);
