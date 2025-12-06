@@ -370,7 +370,7 @@ export function KorliInput({
 	// Manually resize textarea when text changes (especially after transcription)
 	useEffect(() => {
 		const textarea = textareaRef.current;
-		if (!textarea || !text) return;
+		if (!textarea) return;
 
 		// Reset height to auto to get the correct scrollHeight
 		textarea.style.height = 'auto';
