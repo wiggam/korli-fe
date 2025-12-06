@@ -20,10 +20,19 @@ import {
 	PersonaIcon,
 	StopIcon,
 } from '@/components/icons';
+import { type AccentColor, ACCENT_COLORS } from '@/contexts/korli-chat-context';
+import { cn } from '@/lib/utils';
 
 type RecordingState = 'idle' | 'recording';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
+
+function getAccentButtonClasses(color: AccentColor) {
+	const found = ACCENT_COLORS.find((c) => c.value === color);
+	return found
+		? `${found.bgClass} ${found.hoverClass}`
+		: 'bg-blue-600 hover:bg-blue-700';
+}
 
 interface KorliInputProps {
 	disabled: boolean;
@@ -32,6 +41,7 @@ interface KorliInputProps {
 	onSendText: (message: string) => Promise<void>;
 	foreignLanguage: string;
 	onOpenGenderSettings: () => void;
+	accentColor: AccentColor;
 }
 
 export function KorliInput({
@@ -41,6 +51,7 @@ export function KorliInput({
 	onSendText,
 	foreignLanguage,
 	onOpenGenderSettings,
+	accentColor,
 }: KorliInputProps) {
 	const { resolvedTheme } = useTheme();
 	const waveformColor = resolvedTheme === 'dark' ? '#ffffff' : '#475569';
@@ -269,7 +280,7 @@ export function KorliInput({
 			cursorWidth: 0,
 
 			// bar styling – make them thinner & closer together
-			barHeight: 6,
+			barHeight: 3,
 			barWidth: 3,
 			barGap: 2,
 			barRadius: 2,
@@ -450,7 +461,7 @@ export function KorliInput({
 					) : (
 						<PromptInputTextarea
 							autoFocus
-							className="min-h-0 resize-none border-0 border-none bg-transparent p-0 text-base leading-6 outline-none ring-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+							className="min-h-0 resize-none border-0 border-none bg-transparent p-0 text-sm leading-6 outline-none ring-0 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-base"
 							data-testid="korli-input"
 							disableAutoResize={false}
 							maxHeight={200}
@@ -488,13 +499,13 @@ export function KorliInput({
 									size="sm"
 									onClick={cancelRecording}
 									disabled={isTranscribing}
-									className="h-8 w-8 rounded-md p-0.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
+									className="h-7 w-7 rounded-md p-0.5 text-destructive hover:bg-destructive/10 hover:text-destructive sm:h-8 sm:w-8"
 								>
-									<X size={18} />
+									<X className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
 								</Button>
 								{isTranscribing ? (
-									<div className="flex h-8 w-8 items-center justify-center">
-										<div className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+									<div className="flex h-7 w-7 items-center justify-center sm:h-8 sm:w-8">
+										<div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent sm:h-4 sm:w-4" />
 									</div>
 								) : (
 									<Button
@@ -502,9 +513,9 @@ export function KorliInput({
 										variant="ghost"
 										size="sm"
 										onClick={acceptRecording}
-										className="h-8 w-8 rounded-md p-0.5 text-green-600 hover:bg-green-600/10 hover:text-green-600 dark:text-green-400 dark:hover:text-green-400"
+										className="h-7 w-7 rounded-md p-0.5 text-green-600 hover:bg-green-600/10 hover:text-green-600 dark:text-green-400 dark:hover:text-green-400 sm:h-8 sm:w-8"
 									>
-										<CheckIcon size={18} />
+										<CheckIcon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
 									</Button>
 								)}
 							</>
@@ -516,13 +527,13 @@ export function KorliInput({
 									size="sm"
 									onClick={onOpenGenderSettings}
 									disabled={!hasSession}
-									className="h-8 w-8 rounded-md p-0.5"
+									className="h-7 w-7 rounded-md p-0.5 sm:h-8 sm:w-8"
 								>
-									<PersonaIcon size={18} />
+									<PersonaIcon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
 								</Button>
 								{isTranscribing ? (
-									<div className="flex h-8 w-8 items-center justify-center">
-										<div className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+									<div className="flex h-7 w-7 items-center justify-center sm:h-8 sm:w-8">
+										<div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent sm:h-4 sm:w-4" />
 									</div>
 								) : (
 									<Button
@@ -531,9 +542,9 @@ export function KorliInput({
 										size="sm"
 										onClick={startRecording}
 										disabled={micDisabled || !hasSession}
-										className="h-8 w-8 rounded-md p-0.5"
+										className="h-7 w-7 rounded-md p-0.5 sm:h-8 sm:w-8"
 									>
-										<MicIcon size={18} />
+										<MicIcon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
 									</Button>
 								)}
 							</>
@@ -547,17 +558,20 @@ export function KorliInput({
 								type="button"
 								size="sm"
 								onClick={() => {}}
-								className="h-8 w-8 rounded-full bg-foreground p-0 text-background hover:bg-foreground/90"
+								className="h-7 w-7 rounded-full bg-foreground p-0 text-background hover:bg-foreground/90 sm:h-8 sm:w-8"
 							>
-								<StopIcon size={16} />
+								<StopIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
 							</Button>
 						) : (
 							<PromptInputSubmit
-								className="h-8 w-8 rounded-full bg-primary p-0 text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
+								className={cn(
+									'h-7 w-7 rounded-full p-0 text-white transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground sm:h-8 sm:w-8',
+									getAccentButtonClasses(accentColor)
+								)}
 								data-testid="send-button"
 								disabled={!canSend}
 							>
-								<ArrowUpIcon size={16} />
+								<ArrowUpIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
 							</PromptInputSubmit>
 						)}
 					</div>

@@ -3,18 +3,21 @@
 import { useEffect, useRef } from "react";
 
 import { MessageBubble } from "@/components/message-bubble";
+import type { AccentColor } from "@/contexts/korli-chat-context";
 import type { ChatMessage, OverlayState } from "@/lib/types";
 
 interface KorliMessagesProps {
   messages: ChatMessage[];
   activeOverlay: OverlayState | null;
   onToggleOverlay: (messageId: string, type: "translation" | "correction") => void;
+  accentColor: AccentColor;
 }
 
 export function KorliMessages({
   messages,
   activeOverlay,
   onToggleOverlay,
+  accentColor,
 }: KorliMessagesProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -93,6 +96,7 @@ export function KorliMessages({
                   ? () => onToggleOverlay(message.id, "correction")
                   : undefined
               }
+              accentColor={accentColor}
             />
           );
         })}

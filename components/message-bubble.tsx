@@ -4,6 +4,7 @@ import { Languages, Shield } from "lucide-react";
 
 import { AudioPlayer } from "@/components/audio-player";
 import { Button } from "@/components/ui/button";
+import { type AccentColor, ACCENT_COLORS } from "@/contexts/korli-chat-context";
 import type { ChatMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -14,15 +15,24 @@ interface MessageBubbleProps {
   showCorrection?: boolean;
   onToggleTranslation?: () => void;
   onToggleCorrection?: () => void;
+  accentColor: AccentColor;
 }
 
-function UserMessage({ message }: { message: ChatMessage }) {
+function getAccentClasses(color: AccentColor) {
+  const found = ACCENT_COLORS.find((c) => c.value === color);
+  return found ? `${found.bgClass}` : "bg-blue-600";
+}
+
+function UserMessage({ message, accentColor }: { message: ChatMessage; accentColor: AccentColor }) {
   if (message.role !== "user") return null;
 
   return (
     <div className="flex justify-end" data-message-id={message.id}>
       <div className="max-w-[85%] sm:max-w-[70%]">
-        <div className="rounded-2xl bg-primary px-4 py-3 text-base text-primary-foreground">
+        <div className={cn(
+          "rounded-2xl px-3 py-2 text-sm text-white sm:px-4 sm:py-3 sm:text-base",
+          getAccentClasses(accentColor)
+        )}>
           <p className="whitespace-pre-wrap">{message.content}</p>
           {message.status === "transcribing" && (
             <span className="mt-2 inline-flex items-center gap-2 text-xs opacity-80">
@@ -64,7 +74,7 @@ function AssistantMessage({
   return (
     <div className="flex justify-start" data-message-id={message.id}>
       <div className="w-full space-y-2">
-          <div className="text-base leading-relaxed text-foreground">
+          <div className="text-sm leading-relaxed text-foreground sm:text-base">
             <p className="whitespace-pre-wrap">{message.content}</p>
             {message.isStreaming && !message.content && (
               <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -148,7 +158,7 @@ function AssistantMessage({
               <p className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
                 Translation
               </p>
-              <p className="mt-1 whitespace-pre-wrap text-base leading-relaxed text-foreground">
+              <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-foreground sm:text-base">
                 {message.translation}
               </p>
             </div>
@@ -172,13 +182,13 @@ function AssistantMessage({
                 )}
 
                 {previousUserMessage.correction.correctedMessage && (
-                  <p className="mt-1 whitespace-pre-wrap text-base font-medium leading-relaxed text-foreground">
+                  <p className="mt-1 whitespace-pre-wrap text-sm font-medium leading-relaxed text-foreground sm:text-base">
                     {previousUserMessage.correction.correctedMessage}
                   </p>
                 )}
 
                 {previousUserMessage.correction.translation && (
-                  <p className="mt-0.5 whitespace-pre-wrap text-base leading-relaxed text-muted-foreground">
+                  <p className="mt-0.5 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground sm:text-base">
                     {previousUserMessage.correction.translation}
                   </p>
                 )}
@@ -206,9 +216,10 @@ export function MessageBubble({
   onToggleTranslation,
   onToggleCorrection,
   previousUserMessage,
+  accentColor,
 }: MessageBubbleProps) {
   if (message.role === "user") {
-    return <UserMessage message={message} />;
+    return <UserMessage message={message} accentColor={accentColor} />;
   }
 
   return (
@@ -222,4 +233,3 @@ export function MessageBubble({
     />
   );
 }
-
