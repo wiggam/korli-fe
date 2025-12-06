@@ -280,7 +280,7 @@ export function KorliInput({
 			cursorWidth: 0,
 
 			// bar styling – make them thinner & closer together
-			barHeight: 5,
+			barHeight: 3,
 			barWidth: 3,
 			barGap: 2,
 			barRadius: 2,
