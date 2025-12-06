@@ -8,8 +8,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://korli.app"),
-  title: "Korli - AI Language Coach",
+  title: "Korli",
   description: "Learn languages through conversation at your level with Korli, your AI language tutor.",
+  icons: {
+    icon: "/korli-icon.png",
+  },
 };
 
 export const viewport = {
@@ -60,6 +63,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="icon" href="/korli-icon.png" type="image/png" />
         <script
           dangerouslySetInnerHTML={{
             __html: THEME_COLOR_SCRIPT,

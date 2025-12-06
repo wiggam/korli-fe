@@ -255,6 +255,23 @@ export function AppInformation() {
 			<footer className="border-t border-border bg-muted/30 px-4 py-6">
 				<div className="mx-auto max-w-4xl text-center text-sm text-muted-foreground">
 					<p>© {new Date().getFullYear()} Korli. All rights reserved.</p>
+					<div className="mt-3 flex items-center justify-center gap-4">
+						<a
+							href="mailto:georgewiggam8@gmail.com"
+							className="text-muted-foreground transition-colors hover:text-foreground"
+						>
+							georgewiggam8@gmail.com
+						</a>
+						<span className="text-muted-foreground/50">•</span>
+						<a
+							href="https://www.linkedin.com/in/george-wiggam/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-muted-foreground transition-colors hover:text-foreground"
+						>
+							LinkedIn
+						</a>
+					</div>
 				</div>
 			</footer>
 		</div>
