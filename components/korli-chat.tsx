@@ -76,7 +76,7 @@ export function KorliChat() {
 							</div>
 						</div>
 
-						<div className="px-4 pb-6 pt-3">
+						<div className="px-4 pb-3 pt-3 sm:pb-6">
 							<div className="mx-auto max-w-5xl">
 								{error && (
 									<p className="mb-2 text-sm text-destructive">{error}</p>
