@@ -5,14 +5,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { Moon, Sun, MessageSquare, Info } from 'lucide-react';
+import { MessageSquare, Info } from 'lucide-react';
 
+import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export function KorliHeader() {
 	const pathname = usePathname();
-	const { resolvedTheme, setTheme } = useTheme();
+	const { resolvedTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
@@ -72,18 +73,7 @@ export function KorliHeader() {
 				</div>
 
 				<div className="flex items-center">
-					<Button
-						variant="ghost"
-						size="sm"
-						onClick={() =>
-							setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-						}
-						className="h-8 w-8 p-0"
-					>
-						<Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-						<Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-						<span className="sr-only">Toggle theme</span>
-					</Button>
+					<AnimatedThemeToggler className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&_svg]:h-4 [&_svg]:w-4" />
 				</div>
 			</div>
 		</header>
