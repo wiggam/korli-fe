@@ -24,26 +24,24 @@ interface GenderSettingsProps {
 
 interface GenderButtonProps {
   label: string;
-  description: string;
   selected: boolean;
   onClick: () => void;
 }
 
-function GenderButton({ label, description, selected, onClick }: GenderButtonProps) {
+function GenderButton({ label, selected, onClick }: GenderButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "flex flex-1 flex-col items-center gap-2 rounded-lg border p-4 transition-all",
+        "flex flex-1 items-center justify-center gap-1.5 rounded-md border px-3 py-2 transition-all",
         selected
           ? "border-primary bg-primary/5 text-primary"
           : "border-border bg-background text-muted-foreground hover:border-muted-foreground/50 hover:bg-muted/50"
       )}
     >
-      <User className={cn("h-6 w-6", selected && "text-primary")} />
-      <span className="font-medium">{label}</span>
-      <span className="text-xs opacity-70">{description}</span>
+      <User className={cn("h-4 w-4", selected && "text-primary")} />
+      <span className="text-xs font-medium">{label}</span>
     </button>
   );
 }
@@ -67,47 +65,43 @@ export function GenderSettings({
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-8 space-y-8">
-          <div className="space-y-3">
+        <div className="mt-6 space-y-6">
+          <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">
               Tutor Voice
             </label>
             <p className="text-xs text-muted-foreground">
               The voice used for AI messages and tutor responses.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <GenderButton
                 label="Male"
-                description="Deeper voice"
                 selected={tutorGender === "male"}
                 onClick={() => onTutorGenderChange("male")}
               />
               <GenderButton
                 label="Female"
-                description="Higher voice"
                 selected={tutorGender === "female"}
                 onClick={() => onTutorGenderChange("female")}
               />
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">
               Your Voice (for corrections)
             </label>
             <p className="text-xs text-muted-foreground">
               The voice used when playing back your corrected messages.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <GenderButton
                 label="Male"
-                description="Deeper voice"
                 selected={studentGender === "male"}
                 onClick={() => onStudentGenderChange("male")}
               />
               <GenderButton
                 label="Female"
-                description="Higher voice"
                 selected={studentGender === "female"}
                 onClick={() => onStudentGenderChange("female")}
               />

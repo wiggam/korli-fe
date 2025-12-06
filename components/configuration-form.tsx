@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import Image from "next/image";
+import { User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { LevelSlider } from "@/components/level-slider";
 import { LANGUAGE_TO_FLAG, LANGUAGES, LEVELS } from "@/lib/constants/languages";
-import type { ChatConfig, StudentLevel } from "@/lib/types";
+import type { ChatConfig, GenderOption, StudentLevel } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 interface ConfigurationFormProps {
@@ -23,6 +24,10 @@ interface ConfigurationFormProps {
   onReset?: () => void;
   hasSession: boolean;
   isStarting: boolean;
+  tutorGender: GenderOption;
+  studentGender: GenderOption;
+  onTutorGenderChange: (gender: GenderOption) => void;
+  onStudentGenderChange: (gender: GenderOption) => void;
 }
 
 function getFlagPath(language: string): string | null {
@@ -50,6 +55,32 @@ function LanguageItem({ language }: { language: string }) {
   );
 }
 
+function GenderButton({ 
+  label, 
+  selected, 
+  onClick 
+}: { 
+  label: string; 
+  selected: boolean; 
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "flex flex-1 items-center justify-center gap-1.5 rounded-md border px-3 py-2 transition-all",
+        selected
+          ? "border-primary bg-primary/5 text-primary"
+          : "border-border bg-background text-muted-foreground hover:border-muted-foreground/50 hover:bg-muted/50"
+      )}
+    >
+      <User className={cn("h-4 w-4", selected && "text-primary")} />
+      <span className="text-xs font-medium">{label}</span>
+    </button>
+  );
+}
+
 export function ConfigurationForm({
   config,
   onChange,
@@ -57,44 +88,50 @@ export function ConfigurationForm({
   onReset,
   hasSession,
   isStarting,
+  tutorGender,
+  studentGender,
+  onTutorGenderChange,
+  onStudentGenderChange,
 }: ConfigurationFormProps) {
   const sortedLanguages = [...LANGUAGES].sort();
 
   if (hasSession) {
     return (
-      <div className="flex items-center justify-between border-b border-border px-4 py-2">
-        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          <span>
-            <span className="font-medium text-foreground">
-              {config.foreignLanguage}
-            </span>{" "}
-            → {config.nativeLanguage}
-          </span>
-          <span className="text-muted-foreground/50">•</span>
-          <span>
-            Level:{" "}
-            <span className="font-medium text-foreground">
-              {config.studentLevel}
+      <div className="border-b border-border">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <span>
+              <span className="font-medium text-foreground">
+                {config.foreignLanguage}
+              </span>{" "}
+              → {config.nativeLanguage}
             </span>
-          </span>
-        </div>
+            <span className="text-muted-foreground/50">•</span>
+            <span>
+              Level:{" "}
+              <span className="font-medium text-foreground">
+                {config.studentLevel}
+              </span>
+            </span>
+          </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={onReset}
-          className="h-7 px-3 text-xs"
-        >
-          Reset
-        </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onReset}
+            className="h-7 px-3 text-xs"
+          >
+            Reset
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-[480px] items-center justify-center p-6">
-      <form onSubmit={onSubmit} className="w-full max-w-xl space-y-8">
+    <div className="flex flex-1 items-center justify-center overflow-auto p-6">
+      <form onSubmit={onSubmit} className="w-full max-w-xl space-y-6">
         <div className="text-center">
           <h2 className="text-xl font-semibold text-foreground">
             Start your language practice
@@ -104,7 +141,7 @@ export function ConfigurationForm({
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">
@@ -153,7 +190,7 @@ export function ConfigurationForm({
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">
               Proficiency Level
             </label>
@@ -171,9 +208,47 @@ export function ConfigurationForm({
               {config.studentLevel === "C2" && "Mastery - Near-native proficiency"}
             </p>
           </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">
+                Tutor Voice
+              </label>
+              <div className="flex gap-2">
+                <GenderButton
+                  label="Male"
+                  selected={tutorGender === "male"}
+                  onClick={() => onTutorGenderChange("male")}
+                />
+                <GenderButton
+                  label="Female"
+                  selected={tutorGender === "female"}
+                  onClick={() => onTutorGenderChange("female")}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">
+                Your Voice
+              </label>
+              <div className="flex gap-2">
+                <GenderButton
+                  label="Male"
+                  selected={studentGender === "male"}
+                  onClick={() => onStudentGenderChange("male")}
+                />
+                <GenderButton
+                  label="Female"
+                  selected={studentGender === "female"}
+                  onClick={() => onStudentGenderChange("female")}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center">
           <Button
             type="submit"
             disabled={isStarting}

@@ -1,10 +1,10 @@
 "use client";
 
 import { Languages, Shield } from "lucide-react";
+import Image from "next/image";
 
 import { AudioPlayer } from "@/components/audio-player";
 import { Button } from "@/components/ui/button";
-import { SparklesIcon } from "@/components/icons";
 import type { ChatMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -65,8 +65,14 @@ function AssistantMessage({
   return (
     <div className="flex justify-start" data-message-id={message.id}>
       <div className="flex w-full gap-3">
-        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-background ring-1 ring-border">
-          <SparklesIcon size={14} />
+        <div className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-background ring-1 ring-border">
+          <Image
+            src="/korli-icon.png"
+            alt="Korli"
+            width={20}
+            height={20}
+            className="object-contain"
+          />
         </div>
 
         <div className="flex-1 space-y-2">
