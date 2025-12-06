@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTheme } from 'next-themes';
 import { MessageSquare, Info } from 'lucide-react';
 
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
@@ -13,12 +11,6 @@ import { cn } from '@/lib/utils';
 
 export function KorliHeader() {
 	const pathname = usePathname();
-	const { resolvedTheme } = useTheme();
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		setMounted(true);
-	}, []);
 
 	const isChat = pathname === '/' || pathname.startsWith('/chat');
 	const isInfo = pathname === '/info';
@@ -57,16 +49,22 @@ export function KorliHeader() {
 
 				<div className="absolute left-1/2 -translate-x-1/2">
 					<Link href="/" className="flex items-center">
+						{/* Light mode logo */}
 						<Image
-							src={
-								mounted && resolvedTheme === 'dark'
-									? '/korli-logo-white.png'
-									: '/korli-logo.png'
-							}
+							src="/korli-logo.png"
 							alt="Korli"
 							width={80}
 							height={28}
-							className="h-6 w-auto sm:h-7"
+							className="h-6 w-auto sm:h-7 dark:hidden"
+							priority
+						/>
+						{/* Dark mode logo */}
+						<Image
+							src="/korli-logo-white.png"
+							alt="Korli"
+							width={80}
+							height={28}
+							className="hidden h-6 w-auto sm:h-7 dark:block"
 							priority
 						/>
 					</Link>

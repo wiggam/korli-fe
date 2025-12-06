@@ -213,9 +213,9 @@ export function ConfigurationForm({
 						</p>
 					</div>
 
-					<div className="grid gap-3 sm:grid-cols-2">
-						<div className="space-y-1.5">
-							<label className="text-sm font-medium text-foreground">
+					<div className="grid gap-4 sm:grid-cols-2">
+						<div className="space-y-2">
+							<label className="text-base font-medium text-foreground">
 								Tutor Voice
 							</label>
 							<div className="flex gap-2">
@@ -232,8 +232,8 @@ export function ConfigurationForm({
 							</div>
 						</div>
 
-						<div className="space-y-1.5">
-							<label className="text-sm font-medium text-foreground">
+						<div className="space-y-2">
+							<label className="text-base font-medium text-foreground">
 								Your Voice
 							</label>
 							<div className="flex gap-2">
