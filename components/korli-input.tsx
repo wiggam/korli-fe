@@ -255,9 +255,9 @@ export function KorliInput({
 			renderRecordedAudio: false,
 			// show a longer window so the waveform advances more slowly
 			scrollingWaveform: true,
-			scrollingWaveformWindow: 2, // was 0.5
+			scrollingWaveformWindow: 10, // was 0.5
 			continuousWaveform: true,
-			continuousWaveformDuration: 2, // was 0.5
+			continuousWaveformDuration: 10, // was 0.5
 			mediaRecorderTimeslice: 40, // a bit smoother than 20
 		});
 
@@ -269,15 +269,15 @@ export function KorliInput({
 			cursorWidth: 0,
 
 			// bar styling – make them thinner & closer together
-			barHeight: 4,
-			barWidth: 2,
-			barGap: 0.5,
+			barHeight: 6,
+			barWidth: 3,
+			barGap: 2,
 			barRadius: 2,
 
 			interact: false,
 
 			// scrolling speed – lower = slower movement
-			minPxPerSec: 100, // was 300
+			minPxPerSec: 1, // was 300
 
 			normalize: false,
 			autoScroll: true,
