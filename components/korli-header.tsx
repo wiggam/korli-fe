@@ -55,7 +55,8 @@ export function KorliHeader() {
 							alt="Korli"
 							width={80}
 							height={28}
-							className="h-6 w-auto sm:h-7 dark:hidden"
+							className="h-6 sm:h-7 dark:hidden"
+							style={{ width: 'auto', height: 'auto' }}
 							priority
 						/>
 						{/* Dark mode logo */}
@@ -64,7 +65,8 @@ export function KorliHeader() {
 							alt="Korli"
 							width={80}
 							height={28}
-							className="hidden h-6 w-auto sm:h-7 dark:block"
+							className="hidden h-6 sm:h-7 dark:block"
+							style={{ width: 'auto', height: 'auto' }}
 							priority
 						/>
 					</Link>

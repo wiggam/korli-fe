@@ -69,14 +69,14 @@ function GenderButton({
 			type="button"
 			onClick={onClick}
 			className={cn(
-				'flex flex-1 items-center justify-center gap-1.5 rounded-md border px-3 py-2 transition-all',
+				'flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-lg border px-2 py-2 sm:px-3 sm:py-3 transition-all',
 				selected
 					? 'border-primary bg-primary/5 text-primary'
 					: 'border-border bg-background text-muted-foreground hover:border-muted-foreground/50 hover:bg-muted/50'
 			)}
 		>
-			<User className={cn('h-4 w-4', selected && 'text-primary')} />
-			<span className="text-sm font-medium">{label}</span>
+			<User className={cn('h-3.5 w-3.5 sm:h-4 sm:w-4', selected && 'text-primary')} />
+			<span className="text-xs sm:text-sm font-medium">{label}</span>
 		</button>
 	);
 }
@@ -256,8 +256,7 @@ export function ConfigurationForm({
 					<Button
 						type="submit"
 						disabled={isStarting}
-						size="lg"
-						className="px-8"
+						className="h-10 sm:h-11 px-6 sm:px-8 text-sm sm:text-base"
 					>
 						{isStarting ? 'Starting...' : "Let's Chat"}
 					</Button>
