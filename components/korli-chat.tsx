@@ -21,6 +21,10 @@ export function KorliChat() {
 		studentGender,
 		showGenderSettings,
 		accentColor,
+		// Mode state
+		currentMode,
+		collapsedAskBlocks,
+		// Actions
 		handleConfigChange,
 		handleStartSession,
 		handleReset,
@@ -30,6 +34,9 @@ export function KorliChat() {
 		setStudentGender,
 		setShowGenderSettings,
 		setAccentColor,
+		// Mode actions
+		setCurrentMode,
+		toggleAskBlockCollapse,
 	} = useKorliChatContext();
 
 	return (
@@ -72,6 +79,8 @@ export function KorliChat() {
 									activeOverlay={activeOverlay}
 									onToggleOverlay={toggleOverlay}
 									accentColor={accentColor}
+									collapsedAskBlocks={collapsedAskBlocks}
+									onToggleAskBlockCollapse={toggleAskBlockCollapse}
 								/>
 							</div>
 						</div>
@@ -91,6 +100,8 @@ export function KorliChat() {
 									}
 									onOpenGenderSettings={() => setShowGenderSettings(true)}
 									accentColor={accentColor}
+									currentMode={currentMode}
+									onModeChange={setCurrentMode}
 								/>
 							</div>
 						</div>

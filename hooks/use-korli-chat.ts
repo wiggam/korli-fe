@@ -1,502 +1,674 @@
-"use client";
+'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { continueTextChatSSE, startTextChat } from '@/lib/korli-api';
 import type {
-  AIMessage,
-  ChatConfig,
-  ChatMessage,
-  GenderOption,
-  OverlayState,
-  OverlayType,
-  SSEventPayload,
-  StartTextChatResponse,
-  UserMessage,
+	AIMessage,
+	ChatConfig,
+	ChatMessage,
+	ChatMode,
+	GenderOption,
+	OverlayState,
+	OverlayType,
+	SSEventPayload,
+	StartTextChatResponse,
+	UserMessage,
 } from '@/lib/types';
 import { generateUUID } from '@/lib/utils';
 
 const releaseAudioFromMessages = (messages: ChatMessage[]) => {
-  if (typeof URL === 'undefined' || typeof URL.revokeObjectURL !== 'function') {
-    return;
-  }
+	if (typeof URL === 'undefined' || typeof URL.revokeObjectURL !== 'function') {
+		return;
+	}
 
-  messages.forEach((message) => {
-    if (message.role === 'user' && message.userAudio?.localUrl) {
-      URL.revokeObjectURL(message.userAudio.localUrl);
-    }
-  });
+	messages.forEach((message) => {
+		if (message.role === 'user' && message.userAudio?.localUrl) {
+			URL.revokeObjectURL(message.userAudio.localUrl);
+		}
+	});
 };
 
 export const useKorliChat = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [threadId, setThreadId] = useState<string | null>(null);
-  const [config, setConfig] = useState<ChatConfig | null>(null);
-  const [activeOverlay, setActiveOverlay] = useState<OverlayState | null>(null);
-  const [status, setStatus] = useState({ isStarting: false, isStreaming: false });
-  const [error, setError] = useState<string | null>(null);
+	const [messages, setMessages] = useState<ChatMessage[]>([]);
+	const [threadId, setThreadId] = useState<string | null>(null);
+	const [config, setConfig] = useState<ChatConfig | null>(null);
+	const [activeOverlay, setActiveOverlay] = useState<OverlayState | null>(null);
+	const [status, setStatus] = useState({
+		isStarting: false,
+		isStreaming: false,
+	});
+	const [error, setError] = useState<string | null>(null);
 
-  const messagesRef = useRef<ChatMessage[]>([]);
-  const streamAbortRef = useRef<(() => void) | null>(null);
-  const currentUserMessageIdRef = useRef<string | null>(null);
-  const currentAIMessageIdRef = useRef<string | null>(null);
-  const pendingAIDataRef = useRef<{ translation?: string; audioUrl?: string } | null>(null);
-  const pendingCorrectionRef = useRef<{
-    corrected?: boolean;
-    correctedMessage?: string;
-    translation?: string;
-    audioUrl?: string;
-  } | null>(null);
+	// Ask mode collapsed blocks state
+	const [collapsedAskBlocks, setCollapsedAskBlocks] = useState<Set<string>>(
+		new Set()
+	);
 
-  useEffect(() => {
-    messagesRef.current = messages;
-  }, [messages]);
+	const messagesRef = useRef<ChatMessage[]>([]);
+	const streamAbortRef = useRef<(() => void) | null>(null);
+	const currentUserMessageIdRef = useRef<string | null>(null);
+	const currentAIMessageIdRef = useRef<string | null>(null);
+	const pendingAIDataRef = useRef<{
+		translation?: string;
+		audioUrl?: string;
+		mode?: ChatMode;
+		askBlockId?: string;
+	} | null>(null);
+	const pendingCorrectionRef = useRef<{
+		corrected?: boolean;
+		correctedMessage?: string;
+		translation?: string;
+		audioUrl?: string;
+	} | null>(null);
 
-  useEffect(
-    () => () => {
-      streamAbortRef.current?.();
-      releaseAudioFromMessages(messagesRef.current);
-    },
-    [],
-  );
+	// Track current mode and ask_block_id for the streaming message
+	const currentModeRef = useRef<ChatMode>('practice');
+	const currentAskBlockIdRef = useRef<string | null>(null);
 
-  const finishStream = useCallback(() => {
-    // Apply pending translation and audioUrl to AI message
-    if (currentAIMessageIdRef.current) {
-      const aiMessageId = currentAIMessageIdRef.current;
-      const pendingData = pendingAIDataRef.current;
+	useEffect(() => {
+		messagesRef.current = messages;
+	}, [messages]);
 
-      setMessages((prev) =>
-        prev.map((message) => {
-          if (message.id !== aiMessageId || message.role !== 'ai') {
-            return message;
-          }
+	useEffect(
+		() => () => {
+			streamAbortRef.current?.();
+			releaseAudioFromMessages(messagesRef.current);
+		},
+		[]
+	);
 
-          return {
-            ...message,
-            translation: pendingData?.translation ?? message.translation,
-            audioUrl: pendingData?.audioUrl ?? message.audioUrl,
-            isStreaming: false,
-            iconsLoading: false,
-          };
-        }),
-      );
-    }
+	const finishStream = useCallback(() => {
+		// Apply pending translation, audioUrl, mode, and askBlockId to AI message
+		if (currentAIMessageIdRef.current) {
+			const aiMessageId = currentAIMessageIdRef.current;
+			const pendingData = pendingAIDataRef.current;
 
-    // Apply pending correction to user message
-    if (currentUserMessageIdRef.current && pendingCorrectionRef.current) {
-      const userId = currentUserMessageIdRef.current;
-      const correctionData = pendingCorrectionRef.current;
+			setMessages((prev) =>
+				prev.map((message) => {
+					if (message.id !== aiMessageId || message.role !== 'ai') {
+						return message;
+					}
 
-      setMessages((prev) =>
-        prev.map((message) => {
-          if (message.id !== userId || message.role !== 'user') {
-            return message;
-          }
+					return {
+						...message,
+						translation: pendingData?.translation ?? message.translation,
+						audioUrl: pendingData?.audioUrl ?? message.audioUrl,
+						mode: pendingData?.mode ?? message.mode,
+						askBlockId: pendingData?.askBlockId ?? message.askBlockId,
+						isStreaming: false,
+						iconsLoading: false,
+					};
+				})
+			);
+		}
 
-          return {
-            ...message,
-            correction: {
-              corrected: Boolean(correctionData.corrected),
-              correctedMessage: correctionData.correctedMessage ?? message.correction?.correctedMessage,
-              translation: correctionData.translation ?? message.correction?.translation,
-              audioUrl: correctionData.audioUrl ?? message.correction?.audioUrl,
-            },
-            status: 'complete',
-          };
-        }),
-      );
-    }
+		// Apply pending correction to user message (only for practice mode)
+		if (
+			currentUserMessageIdRef.current &&
+			pendingCorrectionRef.current &&
+			currentModeRef.current === 'practice'
+		) {
+			const userId = currentUserMessageIdRef.current;
+			const correctionData = pendingCorrectionRef.current;
 
-    // Clean up
-    streamAbortRef.current?.();
-    streamAbortRef.current = null;
-    currentUserMessageIdRef.current = null;
-    currentAIMessageIdRef.current = null;
-    pendingAIDataRef.current = null;
-    pendingCorrectionRef.current = null;
+			setMessages((prev) =>
+				prev.map((message) => {
+					if (message.id !== userId || message.role !== 'user') {
+						return message;
+					}
 
-    setStatus((prev) =>
-      prev.isStreaming ? { ...prev, isStreaming: false } : prev,
-    );
-  }, []);
+					return {
+						...message,
+						correction: {
+							corrected: Boolean(correctionData.corrected),
+							correctedMessage:
+								correctionData.correctedMessage ??
+								message.correction?.correctedMessage,
+							translation:
+								correctionData.translation ?? message.correction?.translation,
+							audioUrl: correctionData.audioUrl ?? message.correction?.audioUrl,
+						},
+						status: 'complete',
+					};
+				})
+			);
+		} else if (
+			currentUserMessageIdRef.current &&
+			currentModeRef.current === 'ask'
+		) {
+			// For ask mode, just mark the user message as complete (no correction)
+			const userId = currentUserMessageIdRef.current;
+			setMessages((prev) =>
+				prev.map((message) => {
+					if (message.id !== userId || message.role !== 'user') {
+						return message;
+					}
+					return { ...message, status: 'complete' };
+				})
+			);
+		}
 
-  const handleStreamError = useCallback(
-    (err: Error) => {
-      console.error(err);
-      setError(err.message || 'Streaming request failed');
-      finishStream();
-    },
-    [finishStream],
-  );
+		// Clean up
+		streamAbortRef.current?.();
+		streamAbortRef.current = null;
+		currentUserMessageIdRef.current = null;
+		currentAIMessageIdRef.current = null;
+		pendingAIDataRef.current = null;
+		pendingCorrectionRef.current = null;
+		currentModeRef.current = 'practice';
+		currentAskBlockIdRef.current = null;
 
-  const handleStreamComplete = useCallback(() => {
-    finishStream();
-  }, [finishStream]);
+		setStatus((prev) =>
+			prev.isStreaming ? { ...prev, isStreaming: false } : prev
+		);
+	}, []);
 
-  const toggleOverlay = useCallback((messageId: string, type: OverlayType) => {
-    setActiveOverlay((prev) => {
-      if (prev && prev.messageId === messageId && prev.type === type) {
-        return null;
-      }
+	const handleStreamError = useCallback(
+		(err: Error) => {
+			console.error(err);
+			setError(err.message || 'Streaming request failed');
+			finishStream();
+		},
+		[finishStream]
+	);
 
-      return { messageId, type };
-    });
-  }, []);
+	const handleStreamComplete = useCallback(() => {
+		finishStream();
+	}, [finishStream]);
 
-  const resetChat = useCallback(() => {
-    streamAbortRef.current?.();
-    streamAbortRef.current = null;
-    currentUserMessageIdRef.current = null;
-    currentAIMessageIdRef.current = null;
-    pendingAIDataRef.current = null;
-    pendingCorrectionRef.current = null;
+	const toggleOverlay = useCallback((messageId: string, type: OverlayType) => {
+		setActiveOverlay((prev) => {
+			if (prev && prev.messageId === messageId && prev.type === type) {
+				return null;
+			}
 
-    setMessages((prev) => {
-      releaseAudioFromMessages(prev);
-      return [];
-    });
+			return { messageId, type };
+		});
+	}, []);
 
-    setThreadId(null);
-    setConfig(null);
-    setActiveOverlay(null);
-    setStatus({ isStarting: false, isStreaming: false });
-    setError(null);
-  }, []);
+	const resetChat = useCallback(() => {
+		streamAbortRef.current?.();
+		streamAbortRef.current = null;
+		currentUserMessageIdRef.current = null;
+		currentAIMessageIdRef.current = null;
+		pendingAIDataRef.current = null;
+		pendingCorrectionRef.current = null;
+		currentModeRef.current = 'practice';
+		currentAskBlockIdRef.current = null;
 
-  const applyToCurrentUserMessage = useCallback(
-    (updater: (message: UserMessage) => UserMessage) => {
-      const targetId = currentUserMessageIdRef.current;
-      if (!targetId) {
-        return;
-      }
+		setMessages((prev) => {
+			releaseAudioFromMessages(prev);
+			return [];
+		});
 
-      setMessages((prev) =>
-        prev.map((message) => {
-          if (message.id !== targetId || message.role !== 'user') {
-            return message;
-          }
+		setThreadId(null);
+		setConfig(null);
+		setActiveOverlay(null);
+		setStatus({ isStarting: false, isStreaming: false });
+		setError(null);
+		setCollapsedAskBlocks(new Set());
+	}, []);
 
-          return updater(message);
-        }),
-      );
-    },
-    [],
-  );
+	// Ask block collapse functions
+	const toggleAskBlockCollapse = useCallback((blockId: string) => {
+		setCollapsedAskBlocks((prev) => {
+			const next = new Set(prev);
+			if (next.has(blockId)) {
+				next.delete(blockId);
+			} else {
+				next.add(blockId);
+			}
+			return next;
+		});
+	}, []);
 
-  const handleAssistantStart = useCallback((id: string) => {
-    currentAIMessageIdRef.current = id;
-    pendingAIDataRef.current = null;
+	const collapseAllAskBlocks = useCallback(() => {
+		// Get all unique ask block IDs from messages
+		const askBlockIds = new Set<string>();
+		messagesRef.current.forEach((msg) => {
+			if (msg.askBlockId) {
+				askBlockIds.add(msg.askBlockId);
+			}
+		});
+		setCollapsedAskBlocks(askBlockIds);
+	}, []);
 
-    setMessages((prev) => {
-      if (prev.some((message) => message.id === id)) {
-        return prev;
-      }
+	const expandAllAskBlocks = useCallback(() => {
+		setCollapsedAskBlocks(new Set());
+	}, []);
 
-      return [
-        ...prev,
-        {
-          id,
-          role: 'ai',
-          content: '',
-          createdAt: Date.now(),
-          translation: undefined,
-          isStreaming: true,
-          iconsLoading: true,
-        } as AIMessage,
-      ];
-    });
-  }, []);
+	const applyToCurrentUserMessage = useCallback(
+		(updater: (message: UserMessage) => UserMessage) => {
+			const targetId = currentUserMessageIdRef.current;
+			if (!targetId) {
+				return;
+			}
 
-  const handleAssistantDelta = useCallback((id: string, text: string) => {
-    if (!text) {
-      return;
-    }
+			setMessages((prev) =>
+				prev.map((message) => {
+					if (message.id !== targetId || message.role !== 'user') {
+						return message;
+					}
 
-    setMessages((prev) => {
-      let touched = false;
+					return updater(message);
+				})
+			);
+		},
+		[]
+	);
 
-      const next = prev.map((message) => {
-        if (message.id !== id || message.role !== 'ai') {
-          return message;
-        }
+	const handleAssistantStart = useCallback(
+		(id: string, mode?: ChatMode, askBlockId?: string | null) => {
+			currentAIMessageIdRef.current = id;
+			pendingAIDataRef.current = null;
 
-        touched = true;
-        return {
-          ...message,
-          content: `${message.content}${text}`,
-        };
-      });
+			// Update current mode refs
+			if (mode) {
+				currentModeRef.current = mode;
+			}
+			if (askBlockId) {
+				currentAskBlockIdRef.current = askBlockId;
+			}
 
-      if (!touched) {
-        currentAIMessageIdRef.current = id;
-        next.push({
-          id,
-          role: 'ai',
-          content: text,
-          translation: undefined,
-          createdAt: Date.now(),
-          isStreaming: true,
-          iconsLoading: true,
-        });
-      }
+			setMessages((prev) => {
+				if (prev.some((message) => message.id === id)) {
+					return prev;
+				}
 
-      return next;
-    });
-  }, []);
+				return [
+					...prev,
+					{
+						id,
+						role: 'ai',
+						content: '',
+						createdAt: Date.now(),
+						translation: undefined,
+						isStreaming: true,
+						iconsLoading: true,
+						mode: mode ?? currentModeRef.current,
+						askBlockId: askBlockId ?? currentAskBlockIdRef.current ?? undefined,
+					} as AIMessage,
+				];
+			});
+		},
+		[]
+	);
 
-  const handleAssistantEnd = useCallback((payload: unknown) => {
-    if (!payload || typeof payload !== 'object') {
-      return;
-    }
+	const handleAssistantDelta = useCallback(
+		(id: string, text: string, mode?: ChatMode, askBlockId?: string | null) => {
+			if (!text) {
+				return;
+			}
 
-    const data = payload as {
-      id?: string;
-      ai_message?: string;
-      translation?: string;
-      audio_url?: string;
-    };
+			setMessages((prev) => {
+				let touched = false;
 
-    if (!data.id) {
-      return;
-    }
+				const next = prev.map((message) => {
+					if (message.id !== id || message.role !== 'ai') {
+						return message;
+					}
 
-    // Store translation and audioUrl to apply when "done" event is received
-    currentAIMessageIdRef.current = data.id;
-    pendingAIDataRef.current = {
-      translation: data.translation,
-      audioUrl: data.audio_url,
-    };
+					touched = true;
+					return {
+						...message,
+						content: `${message.content}${text}`,
+						// Update mode/askBlockId if provided
+						mode: mode ?? message.mode,
+						askBlockId: askBlockId ?? message.askBlockId,
+					};
+				});
 
-    // Only update content if needed, but don't set translation/audioUrl yet
-    setMessages((prev) => {
-      const exists = prev.find((message) => message.id === data.id && message.role === 'ai');
+				if (!touched) {
+					currentAIMessageIdRef.current = id;
+					next.push({
+						id,
+						role: 'ai',
+						content: text,
+						translation: undefined,
+						createdAt: Date.now(),
+						isStreaming: true,
+						iconsLoading: true,
+						mode: mode ?? currentModeRef.current,
+						askBlockId: askBlockId ?? currentAskBlockIdRef.current ?? undefined,
+					});
+				}
 
-      if (!exists) {
-        return [
-          ...prev,
-          {
-            id: data.id,
-            role: 'ai',
-            content: data.ai_message ?? '',
-            translation: undefined,
-            createdAt: Date.now(),
-            isStreaming: true,
-            iconsLoading: true,
-          } as AIMessage,
-        ];
-      }
+				return next;
+			});
+		},
+		[]
+	);
 
-      return prev.map((message) => {
-        if (message.id !== data.id || message.role !== 'ai') {
-          return message;
-        }
+	const handleAssistantEnd = useCallback((payload: unknown) => {
+		if (!payload || typeof payload !== 'object') {
+			return;
+		}
 
-        return {
-          ...message,
-          content: message.content || data.ai_message || '',
-          // Keep isStreaming true until "done" event
-        };
-      });
-    });
-  }, []);
+		const data = payload as {
+			id?: string;
+			ai_message?: string;
+			translation?: string;
+			audio_url?: string;
+			mode?: ChatMode;
+			ask_block_id?: string;
+		};
 
-  const handleCorrection = useCallback(
-    (payload: unknown) => {
-      if (!payload || typeof payload !== 'object') {
-        return;
-      }
+		if (!data.id) {
+			return;
+		}
 
-      const data = payload as {
-        corrected?: boolean;
-        corrected_message?: string;
-        correctedMessage?: string;
-        translation?: string;
-        audio_url?: string;
-        audioUrl?: string;
-      };
+		// Update mode refs from payload
+		if (data.mode) {
+			currentModeRef.current = data.mode;
+		}
+		if (data.ask_block_id) {
+			currentAskBlockIdRef.current = data.ask_block_id;
+		}
 
-      // Store correction data to apply when "done" event is received
-      pendingCorrectionRef.current = {
-        corrected: data.corrected,
-        correctedMessage: data.corrected_message ?? data.correctedMessage,
-        translation: data.translation,
-        audioUrl: data.audio_url ?? data.audioUrl,
-      };
-    },
-    [],
-  );
+		// Store translation, audioUrl, mode, and askBlockId to apply when "done" event is received
+		currentAIMessageIdRef.current = data.id;
+		pendingAIDataRef.current = {
+			translation: data.translation,
+			audioUrl: data.audio_url,
+			mode: data.mode ?? currentModeRef.current,
+			askBlockId:
+				data.ask_block_id ?? currentAskBlockIdRef.current ?? undefined,
+		};
 
-  const handleTranscript = useCallback(
-    (payload: unknown) => {
-      if (!payload || typeof payload !== 'object') {
-        return;
-      }
+		// Only update content if needed, but don't set translation/audioUrl yet
+		setMessages((prev) => {
+			const exists = prev.find(
+				(message) => message.id === data.id && message.role === 'ai'
+			);
 
-      const data = payload as { text?: string };
+			if (!exists) {
+				return [
+					...prev,
+					{
+						id: data.id,
+						role: 'ai',
+						content: data.ai_message ?? '',
+						translation: undefined,
+						createdAt: Date.now(),
+						isStreaming: true,
+						iconsLoading: true,
+						mode: data.mode ?? currentModeRef.current,
+						askBlockId:
+							data.ask_block_id ?? currentAskBlockIdRef.current ?? undefined,
+					} as AIMessage,
+				];
+			}
 
-      if (!data.text) {
-        return;
-      }
+			return prev.map((message) => {
+				if (message.id !== data.id || message.role !== 'ai') {
+					return message;
+				}
 
-      const transcript = data.text;
+				return {
+					...message,
+					content: message.content || data.ai_message || '',
+					mode: data.mode ?? message.mode,
+					askBlockId: data.ask_block_id ?? message.askBlockId,
+					// Keep isStreaming true until "done" event
+				};
+			});
+		});
+	}, []);
 
-      applyToCurrentUserMessage((message) => ({
-        ...message,
-        content: transcript,
-        status: message.status === 'transcribing' ? 'pending' : message.status,
-      }));
-    },
-    [applyToCurrentUserMessage],
-  );
+	const handleCorrection = useCallback((payload: unknown) => {
+		if (!payload || typeof payload !== 'object') {
+			return;
+		}
 
-  const handleStreamEvent = useCallback(
-    (event: SSEventPayload) => {
-      switch (event.event) {
-        case 'thread':
-          if (event.data && typeof (event.data as { thread_id?: string }).thread_id === 'string') {
-            setThreadId((event.data as { thread_id: string }).thread_id);
-          }
-          break;
-        case 'assistant_start':
-          if (event.data && typeof (event.data as { id?: string }).id === 'string') {
-            handleAssistantStart((event.data as { id: string }).id);
-          }
-          break;
-        case 'assistant_delta':
-          {
-            const data = event.data as { id?: string; channel?: string; text?: string };
-            if (data?.id && data.channel === 'foreign' && typeof data.text === 'string') {
-              handleAssistantDelta(data.id, data.text);
-            }
-          }
-          break;
-        case 'assistant_end':
-          handleAssistantEnd(event.data);
-          break;
-        case 'correction':
-          handleCorrection(event.data);
-          break;
-        case 'transcript':
-          handleTranscript(event.data);
-          break;
-        case 'done':
-          finishStream();
-          break;
-        default:
-          break;
-      }
-    },
-    [finishStream, handleAssistantDelta, handleAssistantEnd, handleAssistantStart, handleCorrection, handleTranscript],
-  );
+		const data = payload as {
+			corrected?: boolean;
+			corrected_message?: string;
+			correctedMessage?: string;
+			translation?: string;
+			audio_url?: string;
+			audioUrl?: string;
+		};
 
-  const startConversation = useCallback(
-    async (chatConfig: ChatConfig) => {
-      streamAbortRef.current?.();
-      streamAbortRef.current = null;
-      currentUserMessageIdRef.current = null;
-      currentAIMessageIdRef.current = null;
-      pendingAIDataRef.current = null;
-      pendingCorrectionRef.current = null;
+		// Store correction data to apply when "done" event is received
+		pendingCorrectionRef.current = {
+			corrected: data.corrected,
+			correctedMessage: data.corrected_message ?? data.correctedMessage,
+			translation: data.translation,
+			audioUrl: data.audio_url ?? data.audioUrl,
+		};
+	}, []);
 
-      setActiveOverlay(null);
-      setStatus({ isStarting: true, isStreaming: false });
-      setError(null);
+	const handleTranscript = useCallback(
+		(payload: unknown) => {
+			if (!payload || typeof payload !== 'object') {
+				return;
+			}
 
-      setMessages((prev) => {
-        releaseAudioFromMessages(prev);
-        return [];
-      });
+			const data = payload as { text?: string };
 
-      try {
-        const response: StartTextChatResponse = await startTextChat(chatConfig);
-        setThreadId(response.thread_id);
-        setConfig(chatConfig);
+			if (!data.text) {
+				return;
+			}
 
-        setMessages([
-          {
-            id: response.thread_id ? `assistant-${response.thread_id}` : generateUUID(),
-            role: 'ai',
-            content: response.ai_message?.content ?? '',
-            translation: response.ai_message?.translation,
-            audioUrl: response.ai_message?.audio_url,
-            createdAt: Date.now(),
-            isStreaming: false,
-          },
-        ]);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unable to start chat');
-        throw err;
-      } finally {
-        setStatus((prev) => ({ ...prev, isStarting: false }));
-      }
-    },
-    [],
-  );
+			const transcript = data.text;
 
-  const sendTextMessage = useCallback(
-    async (rawMessage: string, tutorGender?: GenderOption, studentGender?: GenderOption) => {
-      if (!threadId || !config) {
-        throw new Error('Start the session before sending a message.');
-      }
+			applyToCurrentUserMessage((message) => ({
+				...message,
+				content: transcript,
+				status: message.status === 'transcribing' ? 'pending' : message.status,
+			}));
+		},
+		[applyToCurrentUserMessage]
+	);
 
-      const message = rawMessage.trim();
-      if (!message || status.isStreaming) {
-        return;
-      }
+	const handleStreamEvent = useCallback(
+		(event: SSEventPayload) => {
+			switch (event.event) {
+				case 'thread':
+					if (
+						event.data &&
+						typeof (event.data as { thread_id?: string }).thread_id === 'string'
+					) {
+						setThreadId((event.data as { thread_id: string }).thread_id);
+					}
+					break;
+				case 'assistant_start':
+					{
+						const data = event.data as {
+							id?: string;
+							mode?: ChatMode;
+							ask_block_id?: string;
+						};
+						if (data?.id) {
+							handleAssistantStart(data.id, data.mode, data.ask_block_id);
+						}
+					}
+					break;
+				case 'assistant_delta':
+					{
+						const data = event.data as {
+							id?: string;
+							channel?: string;
+							text?: string;
+							mode?: ChatMode;
+							ask_block_id?: string;
+						};
+						if (
+							data?.id &&
+							data.channel === 'foreign' &&
+							typeof data.text === 'string'
+						) {
+							handleAssistantDelta(
+								data.id,
+								data.text,
+								data.mode,
+								data.ask_block_id
+							);
+						}
+					}
+					break;
+				case 'assistant_end':
+					handleAssistantEnd(event.data);
+					break;
+				case 'correction':
+					handleCorrection(event.data);
+					break;
+				case 'transcript':
+					handleTranscript(event.data);
+					break;
+				case 'done':
+					finishStream();
+					break;
+				default:
+					break;
+			}
+		},
+		[
+			finishStream,
+			handleAssistantDelta,
+			handleAssistantEnd,
+			handleAssistantStart,
+			handleCorrection,
+			handleTranscript,
+		]
+	);
 
-      const userMessageId = generateUUID();
-      currentUserMessageIdRef.current = userMessageId;
-      currentAIMessageIdRef.current = null;
-      pendingAIDataRef.current = null;
-      pendingCorrectionRef.current = null;
+	const startConversation = useCallback(async (chatConfig: ChatConfig) => {
+		streamAbortRef.current?.();
+		streamAbortRef.current = null;
+		currentUserMessageIdRef.current = null;
+		currentAIMessageIdRef.current = null;
+		pendingAIDataRef.current = null;
+		pendingCorrectionRef.current = null;
 
-      const newMessage: UserMessage = {
-        id: userMessageId,
-        role: 'user',
-        type: 'text',
-        content: message,
-        createdAt: Date.now(),
-        status: 'pending',
-      };
+		setActiveOverlay(null);
+		setStatus({ isStarting: true, isStreaming: false });
+		setError(null);
 
-      setMessages((prev) => [...prev, newMessage]);
-      setActiveOverlay(null);
-      setStatus((prev) => ({ ...prev, isStreaming: true }));
+		setMessages((prev) => {
+			releaseAudioFromMessages(prev);
+			return [];
+		});
 
-      streamAbortRef.current = continueTextChatSSE(
-        {
-          threadId,
-          message,
-          foreignLanguage: config.foreignLanguage,
-          tutorGender,
-          studentGender,
-        },
-        {
-          onEvent: handleStreamEvent,
-          onError: handleStreamError,
-          onComplete: handleStreamComplete,
-        },
-      );
-    },
-    [config, handleStreamComplete, handleStreamError, handleStreamEvent, status.isStreaming, threadId],
-  );
+		try {
+			const response: StartTextChatResponse = await startTextChat(chatConfig);
+			setThreadId(response.thread_id);
+			setConfig(chatConfig);
 
-  const clearError = useCallback(() => setError(null), []);
+			setMessages([
+				{
+					id: response.thread_id
+						? `assistant-${response.thread_id}`
+						: generateUUID(),
+					role: 'ai',
+					content: response.ai_message?.content ?? '',
+					translation: response.ai_message?.translation,
+					audioUrl: response.ai_message?.audio_url,
+					createdAt: Date.now(),
+					isStreaming: false,
+				},
+			]);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Unable to start chat');
+			throw err;
+		} finally {
+			setStatus((prev) => ({ ...prev, isStarting: false }));
+		}
+	}, []);
 
-  return {
-    threadId,
-    config,
-    messages,
-    activeOverlay,
-    isStarting: status.isStarting,
-    isStreaming: status.isStreaming,
-    error,
-    startConversation,
-    sendTextMessage,
-    toggleOverlay,
-    resetChat,
-    clearError,
-  };
+	const sendTextMessage = useCallback(
+		async (
+			rawMessage: string,
+			tutorGender?: GenderOption,
+			studentGender?: GenderOption,
+			mode: ChatMode = 'practice',
+			askBlockId?: string
+		) => {
+			if (!threadId || !config) {
+				throw new Error('Start the session before sending a message.');
+			}
+
+			const message = rawMessage.trim();
+			if (!message || status.isStreaming) {
+				return;
+			}
+
+			// Auto-collapse all ask blocks when sending a practice message
+			if (mode === 'practice') {
+				collapseAllAskBlocks();
+			}
+
+			const userMessageId = generateUUID();
+			currentUserMessageIdRef.current = userMessageId;
+			currentAIMessageIdRef.current = null;
+			pendingAIDataRef.current = null;
+			pendingCorrectionRef.current = null;
+			currentModeRef.current = mode;
+			currentAskBlockIdRef.current = askBlockId ?? null;
+
+			const newMessage: UserMessage = {
+				id: userMessageId,
+				role: 'user',
+				type: 'text',
+				content: message,
+				createdAt: Date.now(),
+				status: 'pending',
+				mode,
+				askBlockId,
+			};
+
+			setMessages((prev) => [...prev, newMessage]);
+			setActiveOverlay(null);
+			setStatus((prev) => ({ ...prev, isStreaming: true }));
+
+			streamAbortRef.current = continueTextChatSSE(
+				{
+					threadId,
+					message,
+					foreignLanguage: config.foreignLanguage,
+					tutorGender,
+					studentGender,
+					mode,
+					askBlockId,
+				},
+				{
+					onEvent: handleStreamEvent,
+					onError: handleStreamError,
+					onComplete: handleStreamComplete,
+				}
+			);
+		},
+		[
+			collapseAllAskBlocks,
+			config,
+			handleStreamComplete,
+			handleStreamError,
+			handleStreamEvent,
+			status.isStreaming,
+			threadId,
+		]
+	);
+
+	const clearError = useCallback(() => setError(null), []);
+
+	return {
+		threadId,
+		config,
+		messages,
+		activeOverlay,
+		isStarting: status.isStarting,
+		isStreaming: status.isStreaming,
+		error,
+		startConversation,
+		sendTextMessage,
+		toggleOverlay,
+		resetChat,
+		clearError,
+		// Ask mode block collapse management
+		collapsedAskBlocks,
+		toggleAskBlockCollapse,
+		collapseAllAskBlocks,
+		expandAllAskBlocks,
+	};
 };
-

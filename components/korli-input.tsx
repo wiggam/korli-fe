@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js';
 import { useTheme } from 'next-themes';
-import { X } from 'lucide-react';
+import { HelpCircle, MessageSquare, X } from 'lucide-react';
 
 import { transcribeAudio } from '@/lib/korli-api';
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,7 @@ import {
 	StopIcon,
 } from '@/components/icons';
 import { type AccentColor, ACCENT_COLORS } from '@/contexts/korli-chat-context';
+import type { ChatMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 type RecordingState = 'idle' | 'recording';
@@ -42,6 +43,8 @@ interface KorliInputProps {
 	foreignLanguage: string;
 	onOpenGenderSettings: () => void;
 	accentColor: AccentColor;
+	currentMode: ChatMode;
+	onModeChange: (mode: ChatMode) => void;
 }
 
 export function KorliInput({
@@ -52,6 +55,8 @@ export function KorliInput({
 	foreignLanguage,
 	onOpenGenderSettings,
 	accentColor,
+	currentMode,
+	onModeChange,
 }: KorliInputProps) {
 	const { resolvedTheme } = useTheme();
 	const waveformColor = resolvedTheme === 'dark' ? '#ffffff' : '#475569';
@@ -427,6 +432,44 @@ export function KorliInput({
 
 	return (
 		<div className="relative flex w-full flex-col gap-2">
+			{/* Mode Toggle */}
+			{hasSession && (
+				<div className="flex items-center justify-center">
+					<div className="inline-flex items-center rounded-lg border border-border bg-muted/50 p-0.5">
+						<Button
+							type="button"
+							variant="ghost"
+							size="sm"
+							onClick={() => onModeChange('practice')}
+							className={cn(
+								'h-7 gap-1.5 rounded-md px-3 text-xs font-medium transition-all',
+								currentMode === 'practice'
+									? 'bg-background text-foreground shadow-sm'
+									: 'text-muted-foreground hover:text-foreground'
+							)}
+						>
+							<MessageSquare className="h-3.5 w-3.5" />
+							<span>Practice</span>
+						</Button>
+						<Button
+							type="button"
+							variant="ghost"
+							size="sm"
+							onClick={() => onModeChange('ask')}
+							className={cn(
+								'h-7 gap-1.5 rounded-md px-3 text-xs font-medium transition-all',
+								currentMode === 'ask'
+									? 'bg-violet-100 text-violet-700 shadow-sm dark:bg-violet-900/50 dark:text-violet-300'
+									: 'text-muted-foreground hover:text-foreground'
+							)}
+						>
+							<HelpCircle className="h-3.5 w-3.5" />
+							<span>Ask</span>
+						</Button>
+					</div>
+				</div>
+			)}
+
 			{transcribedAudioBlob && (
 				<div className="flex items-center justify-center">
 					<Button
@@ -453,7 +496,12 @@ export function KorliInput({
 			)}
 
 			<PromptInput
-				className="rounded-xl border border-border bg-background shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
+				className={cn(
+					'rounded-xl border bg-background shadow-xs transition-all duration-200',
+					currentMode === 'ask'
+						? 'border-violet-300 focus-within:border-violet-400 hover:border-violet-400 dark:border-violet-700 dark:focus-within:border-violet-600 dark:hover:border-violet-600'
+						: 'border-border focus-within:border-border hover:border-muted-foreground/50'
+				)}
 				onSubmit={(event) => {
 					event.preventDefault();
 					if (canSend) {
@@ -488,7 +536,9 @@ export function KorliInput({
 							}}
 							placeholder={
 								hasSession
-									? 'Type your message...'
+									? currentMode === 'ask'
+										? 'Ask a question about the conversation...'
+										: 'Type your message...'
 									: 'Start the session to begin chatting'
 							}
 							ref={textareaRef}
@@ -578,7 +628,9 @@ export function KorliInput({
 							<PromptInputSubmit
 								className={cn(
 									'h-7 w-7 rounded-full p-0 text-white transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground sm:h-8 sm:w-8',
-									getAccentButtonClasses(accentColor)
+									currentMode === 'ask'
+										? 'bg-violet-600 hover:bg-violet-700'
+										: getAccentButtonClasses(accentColor)
 								)}
 								data-testid="send-button"
 								disabled={!canSend}
