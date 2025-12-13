@@ -81,8 +81,9 @@ export function KorliMessages({
 		});
 
 		// Don't forget the last ask block - use type assertion since TS can't track mutations in forEach
-		if (currentAskBlock as AskBlock | null) {
-			pushAskBlock(currentAskBlock as AskBlock);
+		const finalBlock = currentAskBlock as unknown as AskBlock | null;
+		if (finalBlock) {
+			pushAskBlock(finalBlock);
 		}
 
 		return groups;
