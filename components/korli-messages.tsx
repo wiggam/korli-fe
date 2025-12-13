@@ -36,8 +36,18 @@ export function KorliMessages({
 
 	// Group messages: practice messages as individual items, ask messages grouped by blockId
 	const messageGroups = useMemo(() => {
+		type AskBlock = { blockId: string; messages: ChatMessage[]; indices: number[] };
 		const groups: MessageGroup[] = [];
-		let currentAskBlock: { blockId: string; messages: ChatMessage[]; indices: number[] } | null = null;
+		let currentAskBlock: AskBlock | null = null;
+
+		const pushAskBlock = (block: AskBlock) => {
+			groups.push({
+				type: 'ask-block',
+				blockId: block.blockId,
+				messages: block.messages,
+				indices: block.indices,
+			});
+		};
 
 		messages.forEach((message, index) => {
 			const isAskMode = message.mode === 'ask' && message.askBlockId;
@@ -50,12 +60,7 @@ export function KorliMessages({
 				} else {
 					// Save current block if exists
 					if (currentAskBlock) {
-						groups.push({
-							type: 'ask-block',
-							blockId: currentAskBlock.blockId,
-							messages: currentAskBlock.messages,
-							indices: currentAskBlock.indices,
-						});
+						pushAskBlock(currentAskBlock);
 					}
 					// Start new block
 					currentAskBlock = {
@@ -67,12 +72,7 @@ export function KorliMessages({
 			} else {
 				// Save current ask block if exists
 				if (currentAskBlock) {
-					groups.push({
-						type: 'ask-block',
-						blockId: currentAskBlock.blockId,
-						messages: currentAskBlock.messages,
-						indices: currentAskBlock.indices,
-					});
+					pushAskBlock(currentAskBlock);
 					currentAskBlock = null;
 				}
 				// Add practice message
@@ -80,15 +80,9 @@ export function KorliMessages({
 			}
 		});
 
-		// Don't forget the last ask block
-		if (currentAskBlock !== null) {
-			const finalBlock = currentAskBlock;
-			groups.push({
-				type: 'ask-block',
-				blockId: finalBlock.blockId,
-				messages: finalBlock.messages,
-				indices: finalBlock.indices,
-			});
+		// Don't forget the last ask block - use type assertion since TS can't track mutations in forEach
+		if (currentAskBlock as AskBlock | null) {
+			pushAskBlock(currentAskBlock as AskBlock);
 		}
 
 		return groups;
