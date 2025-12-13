@@ -81,12 +81,13 @@ export function KorliMessages({
 		});
 
 		// Don't forget the last ask block
-		if (currentAskBlock) {
+		if (currentAskBlock !== null) {
+			const finalBlock = currentAskBlock;
 			groups.push({
 				type: 'ask-block',
-				blockId: currentAskBlock.blockId,
-				messages: currentAskBlock.messages,
-				indices: currentAskBlock.indices,
+				blockId: finalBlock.blockId,
+				messages: finalBlock.messages,
+				indices: finalBlock.indices,
 			});
 		}
 
