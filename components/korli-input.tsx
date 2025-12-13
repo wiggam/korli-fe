@@ -592,7 +592,7 @@ export function KorliInput({
 							>
 								<SelectTrigger
 									className={cn(
-										'h-7 w-auto gap-1 border-0 bg-transparent px-2 text-xs font-medium shadow-none hover:bg-muted focus:ring-0 focus:ring-offset-0 sm:h-8 sm:text-sm',
+										'h-7 w-auto gap-1 rounded-md border-0 bg-muted/80 px-2 text-xs font-medium shadow-none hover:bg-muted focus:ring-0 focus:ring-offset-0 sm:h-8 sm:text-sm',
 										currentMode === 'ask'
 											? 'text-violet-600 dark:text-violet-400'
 											: 'text-muted-foreground'
@@ -622,7 +622,7 @@ export function KorliInput({
 										</div>
 									</SelectItem>
 									<SelectItem value="ask" className="cursor-pointer">
-										<div className="flex items-center gap-2 text-violet-600 dark:text-violet-400">
+										<div className="flex items-center gap-2">
 											<HelpCircle className="h-4 w-4" />
 											<span>Ask</span>
 										</div>
