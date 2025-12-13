@@ -9,11 +9,12 @@ import {
 	Volume2,
 	Mic,
 	Shield,
-	Moon,
-	Sun,
 	User,
 	GraduationCap,
 	ArrowRight,
+	MessageCircle,
+	CircleHelp,
+	Check,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -179,6 +180,149 @@ export function AppInformation() {
 									</p>
 								</CardContent>
 							</Card>
+						</div>
+					</div>
+				</section>
+
+				<section className="border-b border-border px-4 py-16">
+					<div className="mx-auto max-w-4xl">
+						<h2 className="text-center text-2xl font-semibold text-foreground sm:text-3xl">
+							Two Ways to Learn
+						</h2>
+						<p className="mx-auto mt-4 max-w-xl text-center text-lg text-muted-foreground">
+							Switch seamlessly between practice conversations and asking
+							questions about your learning journey.
+						</p>
+
+						<div className="mt-12 grid gap-8 md:grid-cols-2">
+							<Card className="relative overflow-hidden border-border bg-card">
+								<div className="absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8 rounded-full bg-emerald-500/10" />
+								<CardContent className="relative p-6">
+									<div className="flex items-center gap-3">
+										<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
+											<MessageCircle className="h-6 w-6" />
+										</div>
+										<div>
+											<h3 className="text-xl font-semibold text-foreground">
+												Practice Mode
+											</h3>
+											<p className="text-sm text-muted-foreground">
+												Immersive conversation practice
+											</p>
+										</div>
+									</div>
+
+									<p className="mt-4 text-muted-foreground">
+										Have natural conversations with your AI tutor entirely in
+										your target language. Perfect for building fluency and
+										confidence.
+									</p>
+
+									<ul className="mt-6 space-y-3">
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												AI responds in your target language only
+											</span>
+										</li>
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												Instant translations available on every message
+											</span>
+										</li>
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												Your messages get gentle corrections with audio
+											</span>
+										</li>
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												Natural speech playback to improve pronunciation
+											</span>
+										</li>
+									</ul>
+								</CardContent>
+							</Card>
+
+							<Card className="relative overflow-hidden border-border bg-card">
+								<div className="absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8 rounded-full bg-violet-500/10" />
+								<CardContent className="relative p-6">
+									<div className="flex items-center gap-3">
+										<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400">
+											<CircleHelp className="h-6 w-6" />
+										</div>
+										<div>
+											<h3 className="text-xl font-semibold text-foreground">
+												Ask Mode
+											</h3>
+											<p className="text-sm text-muted-foreground">
+												Get answers about your learning
+											</p>
+										</div>
+									</div>
+
+									<p className="mt-4 text-muted-foreground">
+										Ask questions about grammar, vocabulary, or anything from
+										your conversation. Your tutor will explain in whatever
+										language helps you understand best.
+									</p>
+
+									<ul className="mt-6 space-y-3">
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												Ask in any language you prefer
+											</span>
+										</li>
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												AI responds contextually in the most helpful language
+											</span>
+										</li>
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												Questions grouped together for cleaner chat view
+											</span>
+										</li>
+										<li className="flex items-start gap-3">
+											<div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400">
+												<Check className="h-3 w-3" />
+											</div>
+											<span className="text-sm text-muted-foreground">
+												No corrections—focus on understanding concepts
+											</span>
+										</li>
+									</ul>
+								</CardContent>
+							</Card>
+						</div>
+
+						<div className="mt-8 rounded-xl border border-border bg-muted/30 p-6">
+							<p className="text-center text-muted-foreground">
+								<strong className="text-foreground">Pro tip:</strong> Toggle
+								between modes anytime using the mode switch in the chat input.
+								Ask a quick grammar question, then switch back to continue your
+								conversation!
+							</p>
 						</div>
 					</div>
 				</section>
