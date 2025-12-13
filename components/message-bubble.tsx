@@ -16,6 +16,7 @@ interface MessageBubbleProps {
 	onToggleTranslation?: () => void;
 	onToggleCorrection?: () => void;
 	accentColor: AccentColor;
+	isAskMode?: boolean;
 }
 
 function getAccentClasses(color: AccentColor) {
@@ -26,9 +27,11 @@ function getAccentClasses(color: AccentColor) {
 function UserMessage({
 	message,
 	accentColor,
+	isAskMode,
 }: {
 	message: ChatMessage;
 	accentColor: AccentColor;
+	isAskMode?: boolean;
 }) {
 	if (message.role !== 'user') return null;
 
@@ -38,7 +41,9 @@ function UserMessage({
 				<div
 					className={cn(
 						'rounded-2xl px-3 py-2 text-sm text-white sm:px-4 sm:py-3 sm:text-base',
-						getAccentClasses(accentColor)
+						isAskMode 
+							? 'bg-violet-600 hover:bg-violet-700' 
+							: getAccentClasses(accentColor)
 					)}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>
@@ -61,6 +66,7 @@ function AssistantMessage({
 	previousUserMessage,
 	showCorrection,
 	onToggleCorrection,
+	isAskMode,
 }: {
 	message: ChatMessage;
 	showTranslation?: boolean;
@@ -68,14 +74,16 @@ function AssistantMessage({
 	previousUserMessage?: ChatMessage;
 	showCorrection?: boolean;
 	onToggleCorrection?: () => void;
+	isAskMode?: boolean;
 }) {
 	if (message.role !== 'ai') return null;
 
 	const translationAvailable = Boolean(message.translation);
-	const correctionAvailable =
+	// No corrections in ask mode
+	const correctionAvailable = !isAskMode &&
 		previousUserMessage?.role === 'user' &&
 		Boolean(previousUserMessage.correction?.corrected);
-	const userTTSAvailable =
+	const userTTSAvailable = !isAskMode &&
 		previousUserMessage?.role === 'user' &&
 		Boolean(previousUserMessage.correction?.audioUrl);
 
@@ -223,9 +231,10 @@ export function MessageBubble({
 	onToggleCorrection,
 	previousUserMessage,
 	accentColor,
+	isAskMode,
 }: MessageBubbleProps) {
 	if (message.role === 'user') {
-		return <UserMessage message={message} accentColor={accentColor} />;
+		return <UserMessage message={message} accentColor={accentColor} isAskMode={isAskMode} />;
 	}
 
 	return (
@@ -236,6 +245,7 @@ export function MessageBubble({
 			onToggleTranslation={onToggleTranslation}
 			onToggleCorrection={onToggleCorrection}
 			previousUserMessage={previousUserMessage}
+			isAskMode={isAskMode}
 		/>
 	);
 }

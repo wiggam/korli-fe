@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js';
 import { useTheme } from 'next-themes';
-import { X } from 'lucide-react';
+import { HelpCircle, MessageSquare, X } from 'lucide-react';
 
 import { transcribeAudio } from '@/lib/korli-api';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,12 @@ import {
 	PromptInputTextarea,
 } from '@/components/elements/prompt-input';
 import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+} from '@/components/ui/select';
+import {
 	ArrowUpIcon,
 	CheckIcon,
 	MicIcon,
@@ -21,6 +27,7 @@ import {
 	StopIcon,
 } from '@/components/icons';
 import { type AccentColor, ACCENT_COLORS } from '@/contexts/korli-chat-context';
+import type { ChatMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 type RecordingState = 'idle' | 'recording';
@@ -42,6 +49,8 @@ interface KorliInputProps {
 	foreignLanguage: string;
 	onOpenGenderSettings: () => void;
 	accentColor: AccentColor;
+	currentMode: ChatMode;
+	onModeChange: (mode: ChatMode) => void;
 }
 
 export function KorliInput({
@@ -52,6 +61,8 @@ export function KorliInput({
 	foreignLanguage,
 	onOpenGenderSettings,
 	accentColor,
+	currentMode,
+	onModeChange,
 }: KorliInputProps) {
 	const { resolvedTheme } = useTheme();
 	const waveformColor = resolvedTheme === 'dark' ? '#ffffff' : '#475569';
@@ -453,7 +464,12 @@ export function KorliInput({
 			)}
 
 			<PromptInput
-				className="rounded-xl border border-border bg-background shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
+				className={cn(
+					'rounded-xl border bg-background shadow-xs transition-all duration-200',
+					currentMode === 'ask'
+						? 'border-violet-300 focus-within:border-violet-400 hover:border-violet-400 dark:border-violet-700 dark:focus-within:border-violet-600 dark:hover:border-violet-600'
+						: 'border-border focus-within:border-border hover:border-muted-foreground/50'
+				)}
 				onSubmit={(event) => {
 					event.preventDefault();
 					if (canSend) {
@@ -488,7 +504,9 @@ export function KorliInput({
 							}}
 							placeholder={
 								hasSession
-									? 'Type your message...'
+									? currentMode === 'ask'
+										? 'Ask a question about the conversation...'
+										: 'Type your message...'
 									: 'Start the session to begin chatting'
 							}
 							ref={textareaRef}
@@ -563,8 +581,56 @@ export function KorliInput({
 						)}
 					</div>
 
-					{/* Right side: send/stop button */}
-					<div className="flex items-center">
+					{/* Right side: mode dropdown + send/stop button */}
+					<div className="flex items-center gap-1">
+						{/* Mode Dropdown - Cursor style */}
+						{hasSession && (
+							<Select
+								value={currentMode}
+								onValueChange={(value) => onModeChange(value as ChatMode)}
+								disabled={isStreaming || isTranscribing}
+							>
+								<SelectTrigger
+									className={cn(
+										'h-7 w-auto gap-1 rounded-md border-0 bg-muted/80 px-2 text-xs font-medium shadow-none hover:bg-muted focus:ring-0 focus:ring-offset-0 sm:h-8 sm:text-sm',
+										currentMode === 'ask'
+											? 'text-violet-600 dark:text-violet-400'
+											: 'text-muted-foreground'
+									)}
+								>
+									{currentMode === 'practice' ? (
+										<>
+											<MessageSquare className="h-3.5 w-3.5" />
+											<span className="hidden sm:inline">Practice</span>
+										</>
+									) : (
+										<>
+											<HelpCircle className="h-3.5 w-3.5" />
+											<span className="hidden sm:inline">Ask</span>
+										</>
+									)}
+								</SelectTrigger>
+								<SelectContent
+									align="end"
+									side="top"
+									className="min-w-[140px]"
+								>
+									<SelectItem value="practice" className="cursor-pointer">
+										<div className="flex items-center gap-2">
+											<MessageSquare className="h-4 w-4" />
+											<span>Practice</span>
+										</div>
+									</SelectItem>
+									<SelectItem value="ask" className="cursor-pointer">
+										<div className="flex items-center gap-2">
+											<HelpCircle className="h-4 w-4" />
+											<span>Ask</span>
+										</div>
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						)}
+
 						{isStreaming ? (
 							<Button
 								type="button"
@@ -578,7 +644,9 @@ export function KorliInput({
 							<PromptInputSubmit
 								className={cn(
 									'h-7 w-7 rounded-full p-0 text-white transition-colors duration-200 disabled:bg-muted disabled:text-muted-foreground sm:h-8 sm:w-8',
-									getAccentButtonClasses(accentColor)
+									currentMode === 'ask'
+										? 'bg-violet-600 hover:bg-violet-700'
+										: getAccentButtonClasses(accentColor)
 								)}
 								data-testid="send-button"
 								disabled={!canSend}

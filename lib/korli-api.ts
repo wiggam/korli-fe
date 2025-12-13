@@ -172,6 +172,14 @@ export const continueTextChatSSE = (
   if (payload.studentGender !== undefined) {
     body.student_gender = payload.studentGender;
   }
+  
+  // Include mode and ask_block_id for ask mode support
+  if (payload.mode !== undefined) {
+    body.mode = payload.mode;
+  }
+  if (payload.askBlockId !== undefined) {
+    body.ask_block_id = payload.askBlockId;
+  }
 
   return startSSE(
     toUrl('/api/chat/text'),

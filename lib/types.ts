@@ -4,6 +4,9 @@ export type GenderOption = 'male' | 'female';
 
 export type StudentLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 
+// Chat mode type
+export type ChatMode = 'practice' | 'ask';
+
 export interface ChatConfig {
   nativeLanguage: string;
   foreignLanguage: string;
@@ -29,6 +32,8 @@ export interface BaseMessage {
   id: string;
   createdAt: number;
   role: 'ai' | 'user';
+  mode?: ChatMode;
+  askBlockId?: string;
 }
 
 export interface AIMessage extends BaseMessage {
@@ -79,6 +84,8 @@ export interface ContinueTextChatPayload {
   foreignLanguage: string;
   tutorGender?: GenderOption;
   studentGender?: GenderOption;
+  mode?: ChatMode;
+  askBlockId?: string;
 }
 
 export interface VoiceChatPayload {
@@ -87,4 +94,6 @@ export interface VoiceChatPayload {
   foreignLanguage: string;
   tutorGender?: GenderOption;
   studentGender?: GenderOption;
+  mode?: ChatMode;
+  askBlockId?: string;
 }

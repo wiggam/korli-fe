@@ -13,10 +13,12 @@ import { useKorliChat } from '@/hooks/use-korli-chat';
 import type {
 	ChatConfig,
 	ChatMessage,
+	ChatMode,
 	GenderOption,
 	OverlayState,
 	StudentLevel,
 } from '@/lib/types';
+import { generateUUID } from '@/lib/utils';
 
 export type AccentColor =
 	| 'blue'
@@ -102,6 +104,11 @@ interface KorliChatContextValue {
 	studentGender: GenderOption;
 	showGenderSettings: boolean;
 	accentColor: AccentColor;
+	
+	// Chat mode state
+	currentMode: ChatMode;
+	currentAskBlockId: string | null;
+	collapsedAskBlocks: Set<string>;
 
 	// Actions
 	handleConfigChange: (field: keyof ChatConfig) => (value: string) => void;
@@ -116,6 +123,12 @@ interface KorliChatContextValue {
 	setStudentGender: (gender: GenderOption) => void;
 	setShowGenderSettings: (show: boolean) => void;
 	setAccentColor: (color: AccentColor) => void;
+	
+	// Mode actions
+	setCurrentMode: (mode: ChatMode) => void;
+	toggleAskBlockCollapse: (blockId: string) => void;
+	collapseAllAskBlocks: () => void;
+	expandAllAskBlocks: () => void;
 }
 
 const KorliChatContext = createContext<KorliChatContextValue | null>(null);
@@ -133,6 +146,10 @@ export function KorliChatProvider({ children }: { children: ReactNode }) {
 		sendTextMessage,
 		toggleOverlay,
 		resetChat,
+		collapsedAskBlocks,
+		toggleAskBlockCollapse,
+		collapseAllAskBlocks,
+		expandAllAskBlocks,
 	} = useKorliChat();
 
 	const [formConfig, setFormConfig] = useState<ChatConfig>(DEFAULT_CONFIG);
@@ -140,6 +157,10 @@ export function KorliChatProvider({ children }: { children: ReactNode }) {
 	const [studentGender, setStudentGender] = useState<GenderOption>('male');
 	const [showGenderSettings, setShowGenderSettings] = useState(false);
 	const [accentColor, setAccentColor] = useState<AccentColor>('blue');
+	
+	// Chat mode state
+	const [currentMode, setCurrentMode] = useState<ChatMode>('practice');
+	const [currentAskBlockId, setCurrentAskBlockId] = useState<string | null>(null);
 
 	const hasSession = Boolean(threadId);
 
@@ -171,13 +192,33 @@ export function KorliChatProvider({ children }: { children: ReactNode }) {
 		setFormConfig(DEFAULT_CONFIG);
 		setTutorGender('female');
 		setStudentGender('male');
+		setCurrentMode('practice');
+		setCurrentAskBlockId(null);
 	}, [resetChat]);
+
+	// Handle mode change - generate new ask block ID when switching to ask mode
+	const handleSetCurrentMode = useCallback((mode: ChatMode) => {
+		setCurrentMode(mode);
+		if (mode === 'ask') {
+			// Generate new ask block ID when entering ask mode
+			setCurrentAskBlockId(generateUUID());
+		} else {
+			// Clear ask block ID when switching back to practice
+			setCurrentAskBlockId(null);
+		}
+	}, []);
 
 	const handleSendText = useCallback(
 		async (message: string) => {
-			await sendTextMessage(message, tutorGender, studentGender);
+			await sendTextMessage(
+				message, 
+				tutorGender, 
+				studentGender, 
+				currentMode,
+				currentAskBlockId ?? undefined
+			);
 		},
-		[sendTextMessage, tutorGender, studentGender]
+		[sendTextMessage, tutorGender, studentGender, currentMode, currentAskBlockId]
 	);
 
 	const value: KorliChatContextValue = {
@@ -194,6 +235,11 @@ export function KorliChatProvider({ children }: { children: ReactNode }) {
 		studentGender,
 		showGenderSettings,
 		accentColor,
+		// Mode state
+		currentMode,
+		currentAskBlockId,
+		collapsedAskBlocks,
+		// Actions
 		handleConfigChange,
 		handleStartSession,
 		handleReset,
@@ -203,6 +249,11 @@ export function KorliChatProvider({ children }: { children: ReactNode }) {
 		setStudentGender,
 		setShowGenderSettings,
 		setAccentColor,
+		// Mode actions
+		setCurrentMode: handleSetCurrentMode,
+		toggleAskBlockCollapse,
+		collapseAllAskBlocks,
+		expandAllAskBlocks,
 	};
 
 	return (
