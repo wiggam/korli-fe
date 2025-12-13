@@ -50,7 +50,12 @@ export function KorliMessages({
 				} else {
 					// Save current block if exists
 					if (currentAskBlock) {
-						groups.push({ type: 'ask-block', ...currentAskBlock });
+						groups.push({
+							type: 'ask-block',
+							blockId: currentAskBlock.blockId,
+							messages: currentAskBlock.messages,
+							indices: currentAskBlock.indices,
+						});
 					}
 					// Start new block
 					currentAskBlock = {
@@ -62,7 +67,12 @@ export function KorliMessages({
 			} else {
 				// Save current ask block if exists
 				if (currentAskBlock) {
-					groups.push({ type: 'ask-block', ...currentAskBlock });
+					groups.push({
+						type: 'ask-block',
+						blockId: currentAskBlock.blockId,
+						messages: currentAskBlock.messages,
+						indices: currentAskBlock.indices,
+					});
 					currentAskBlock = null;
 				}
 				// Add practice message
@@ -72,7 +82,12 @@ export function KorliMessages({
 
 		// Don't forget the last ask block
 		if (currentAskBlock) {
-			groups.push({ type: 'ask-block', ...currentAskBlock });
+			groups.push({
+				type: 'ask-block',
+				blockId: currentAskBlock.blockId,
+				messages: currentAskBlock.messages,
+				indices: currentAskBlock.indices,
+			});
 		}
 
 		return groups;
