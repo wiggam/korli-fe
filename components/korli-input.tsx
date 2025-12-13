@@ -14,6 +14,12 @@ import {
 	PromptInputTextarea,
 } from '@/components/elements/prompt-input';
 import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+} from '@/components/ui/select';
+import {
 	ArrowUpIcon,
 	CheckIcon,
 	MicIcon,
@@ -432,44 +438,6 @@ export function KorliInput({
 
 	return (
 		<div className="relative flex w-full flex-col gap-2">
-			{/* Mode Toggle */}
-			{hasSession && (
-				<div className="flex items-center justify-center">
-					<div className="inline-flex items-center rounded-lg border border-border bg-muted/50 p-0.5">
-						<Button
-							type="button"
-							variant="ghost"
-							size="sm"
-							onClick={() => onModeChange('practice')}
-							className={cn(
-								'h-7 gap-1.5 rounded-md px-3 text-xs font-medium transition-all',
-								currentMode === 'practice'
-									? 'bg-background text-foreground shadow-sm'
-									: 'text-muted-foreground hover:text-foreground'
-							)}
-						>
-							<MessageSquare className="h-3.5 w-3.5" />
-							<span>Practice</span>
-						</Button>
-						<Button
-							type="button"
-							variant="ghost"
-							size="sm"
-							onClick={() => onModeChange('ask')}
-							className={cn(
-								'h-7 gap-1.5 rounded-md px-3 text-xs font-medium transition-all',
-								currentMode === 'ask'
-									? 'bg-violet-100 text-violet-700 shadow-sm dark:bg-violet-900/50 dark:text-violet-300'
-									: 'text-muted-foreground hover:text-foreground'
-							)}
-						>
-							<HelpCircle className="h-3.5 w-3.5" />
-							<span>Ask</span>
-						</Button>
-					</div>
-				</div>
-			)}
-
 			{transcribedAudioBlob && (
 				<div className="flex items-center justify-center">
 					<Button
@@ -613,8 +581,56 @@ export function KorliInput({
 						)}
 					</div>
 
-					{/* Right side: send/stop button */}
-					<div className="flex items-center">
+					{/* Right side: mode dropdown + send/stop button */}
+					<div className="flex items-center gap-1">
+						{/* Mode Dropdown - Cursor style */}
+						{hasSession && (
+							<Select
+								value={currentMode}
+								onValueChange={(value) => onModeChange(value as ChatMode)}
+								disabled={isStreaming || isTranscribing}
+							>
+								<SelectTrigger
+									className={cn(
+										'h-7 w-auto gap-1 border-0 bg-transparent px-2 text-xs font-medium shadow-none hover:bg-muted focus:ring-0 focus:ring-offset-0 sm:h-8 sm:text-sm',
+										currentMode === 'ask'
+											? 'text-violet-600 dark:text-violet-400'
+											: 'text-muted-foreground'
+									)}
+								>
+									{currentMode === 'practice' ? (
+										<>
+											<MessageSquare className="h-3.5 w-3.5" />
+											<span className="hidden sm:inline">Practice</span>
+										</>
+									) : (
+										<>
+											<HelpCircle className="h-3.5 w-3.5" />
+											<span className="hidden sm:inline">Ask</span>
+										</>
+									)}
+								</SelectTrigger>
+								<SelectContent
+									align="end"
+									side="top"
+									className="min-w-[140px]"
+								>
+									<SelectItem value="practice" className="cursor-pointer">
+										<div className="flex items-center gap-2">
+											<MessageSquare className="h-4 w-4" />
+											<span>Practice</span>
+										</div>
+									</SelectItem>
+									<SelectItem value="ask" className="cursor-pointer">
+										<div className="flex items-center gap-2 text-violet-600 dark:text-violet-400">
+											<HelpCircle className="h-4 w-4" />
+											<span>Ask</span>
+										</div>
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						)}
+
 						{isStreaming ? (
 							<Button
 								type="button"
